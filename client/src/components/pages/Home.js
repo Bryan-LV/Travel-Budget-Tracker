@@ -5,8 +5,8 @@ import axios from 'axios'
 function Home(props) {
   const [countries, setCountries] = useState([]);
 
-  useEffect(async () => {
-    const countryList = await axios.get(`http://localhost:4000/`)
+  useEffect( () => {
+
   }, [])
 
   return (
