@@ -4,9 +4,12 @@ const { check, validationResult } = require('express-validator');
 const router = express.Router();
 
 // get items from expense
-router.get('/', async (req,res) => {
+router.post('/country', async (req,res) => {
   try {
-    let expenses = await Expense.find({});
+    let expenses = await Expense.findById(req.body.id);
+    if(!expenses) {
+      return res.status(400).json({error:'No expenses found'});
+    }
     res.json(expenses);
   } catch (error) {
     res.status(400).json({error});

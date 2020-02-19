@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const categorySchema = Schema({
   name: {type: String, required:true},
+  totalBalance: {type: Number, required:true},
   country: {type: Schema.Types.ObjectId, required: true}
 })
 

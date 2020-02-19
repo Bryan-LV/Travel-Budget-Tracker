@@ -14,7 +14,7 @@ router.get('/', async (req,res) => {
 })
 
 // get single country
-router.get('/country', async (req,res) => {
+router.post('/country', async (req,res) => {
   console.log(req.body);
     if(req.body.id){
       try {
