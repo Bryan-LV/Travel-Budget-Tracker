@@ -3,17 +3,17 @@ import { withRouter } from 'react-router-dom';
 import CountryContext from '../../context/countries/CountryContext';
 
 function CountryList(props) {
-  const {country, id} = props;
+  const {name, _id} = props.country;
   const context = useContext(CountryContext);
 
   const handleClick = () => {
-    context.getSelectedCountry(id);
-    props.history.push(`/${country}`);
+    context.getSelectedCountry(_id)
+    props.history.push(`/${name}`);
   }
   
   return (
-    <div className="country__list-item" id={id} onClick={handleClick}>
-      <h3 className="country__name">{country}</h3>
+    <div className="country__list-item" id={_id} onClick={handleClick}>
+      <h3 className="country__name">{name}</h3>
     </div>
   )
 }

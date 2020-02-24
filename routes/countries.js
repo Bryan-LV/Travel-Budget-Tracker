@@ -70,7 +70,7 @@ router.put('/', async (req,res) => {
   const {country, id} = req.body;
   const updatedObj = {};
   try {
-    // create updated object
+    // update country name if request is there
     if(country) updatedObj.country = country;
     // find country and update
     await Country.findByIdAndUpdate(id,{$set: updatedObj});
@@ -80,5 +80,19 @@ router.put('/', async (req,res) => {
     res.status(400).json({error});
   }
 })
+
+
+// add new category to country
+router.put('/category', async (req,res) => {
+  const {countryId, name} = req.body;
+  try {
+    let category =  await Country.findByIdAndUpdate(countryId, { $push: {categories: {name}}})
+    await category.save();
+    res.json({msg: 'Category has been saved to country'});
+  } catch (error) {
+    res.status(400).json({error});
+  }
+})
+
 
 module.exports = router;

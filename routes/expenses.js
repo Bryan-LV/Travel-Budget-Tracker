@@ -1,5 +1,6 @@
 const express = require('express');
 const Expense = require('../models/expense');
+const Country = require('../models/countries');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 
@@ -20,7 +21,7 @@ router.post('/country', async (req,res) => {
 router.post('/', [
   check('price', 'please enter a price').not().isEmpty(),
   check('name', 'please enter a name').not().isEmpty(),
-  check('category', 'please enter a category').not().isEmpty()
+  check('country', 'please enter country').not().isEmpty(),
 ], async (req,res) => {
   const errors = validationResult(req);
   if(!errors) {
@@ -28,12 +29,14 @@ router.post('/', [
   }
 
   try {
+    let country = await Country.findById(req.body.country);
     let expense = new Expense({
       name: req.body.name,
-      price: req.body.price,
-      category: req.body.category
+      price: req.body.price
     })
+
     await expense.save();
+    console.log(expense);
     res.json({msg: 'Expense has been added'});
   } catch (error) {
     res.status(400).json({error});

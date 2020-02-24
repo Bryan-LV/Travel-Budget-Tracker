@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const countries = Schema({
   country: {type:String, required: true},
-  totalBalance: {type:Number, default:0}
+  categories:[{ name: {type:String, required: true}, expenses: [] }]
 })
 
 const Countries = mongoose.model('Countries', countries)

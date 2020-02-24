@@ -1,0 +1,9 @@
+.country__list-item{
+  border:1px solid #eee;
+  cursor: pointer;
+}
+
+.category__btn{
+  border-radius: 4px;
+  cursor: pointer;
+}
