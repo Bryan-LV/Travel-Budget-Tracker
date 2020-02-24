@@ -62,25 +62,23 @@ export default function CountryState(props) {
     
   }
   
-  
   // get selected country
   const getSelectedCountry = (id) => {
     const country = state.countries.filter(country => country._id === id);
     dispatch({type:'GET_COUNTRY', payload:country})
   }
-
+  // get single category
   const getSingleCategory = (categoryID, countryID) => {
     const country = state.countries.filter(country => country._id === countryID);
     const category =  country[0].categories.filter(category => category._id ===  categoryID);
     dispatch({type: 'GET_CATEGORY', payload: category})
   }
-  
-  
 
   return (
     <CountryContext.Provider value={{
       countries: state.countries,
       selectedCountry: state.selectedCountry,
+      selectedCategory: state.selectedCategory,
       loading: state.loading,
       addCountry,
       addCategory,
