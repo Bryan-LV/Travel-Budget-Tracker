@@ -11,8 +11,13 @@ const CountryReducer = (state, action) => {
       return {...state, selectedCategory: payload, loading:false};
       break;
     case 'ADD_CATEGORY':
-      const updatedCountries = state.countries.map(country => country._id === payload.country ? country.categories.push(payload.newCategory) : null)
-      return {...state, countries: [updatedCountries]}
+      const updatedCountries = state.countries.map(country => { 
+        if(country._id === payload.country){
+          country.categories.push(payload.newCategory);
+        }
+        return country
+      })
+      return {...state, countries: [...updatedCountries]}
     default:
       return {...state}
       break;

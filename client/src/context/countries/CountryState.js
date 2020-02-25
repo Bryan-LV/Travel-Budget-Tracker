@@ -45,7 +45,7 @@ export default function CountryState(props) {
   // add category to country
   const addCategory = ({category, country}) => {
     const newCategory = {
-      category,
+      category: category,
       _id:uuid(),
       expenses: []
     }
@@ -69,7 +69,7 @@ export default function CountryState(props) {
   }
   // get single category
   const getSingleCategory = (categoryID, countryID) => {
-    const country = state.countries.filter(country => country._id === countryID);
+    const country = state.countries.filter(country => country._id === countryID)
     const category =  country[0].categories.filter(category => category._id ===  categoryID);
     dispatch({type: 'GET_CATEGORY', payload: category})
   }

@@ -1,7 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react'
 import CountryContext from '../../context/countries/CountryContext'
 import Axios from 'axios';
-import { ContextRunnerImpl } from 'express-validator/src/chain';
 
 export default function SingleCountry(props) {
   const [category, setCategory ] = useState('');
@@ -27,7 +26,7 @@ export default function SingleCountry(props) {
   }
 
   const handleCategoryDetails = (categoryName, categoryID, countryID) => {
-    context.getSingleCategory(categoryID,countryID);
+    context.getSingleCategory(categoryID, countryID);
     props.history.push(`/${country.name}/${categoryName}`)
   }
   
@@ -40,6 +39,7 @@ export default function SingleCountry(props) {
         <input type="text" value={category} name="category" onChange={(e) => setCategory(e.target.value)}/>
         <button onClick={addNewCategory}>Add Category</button>
       </form>
+
       <div className="categories">
         {country.categories.map(category => (<div data-id={category._id}>
           <h3>{category.category}</h3>
