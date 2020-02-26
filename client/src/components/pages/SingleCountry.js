@@ -30,6 +30,15 @@ export default function SingleCountry(props) {
     props.history.push(`/${country.name}/${categoryName}`)
   }
   
+  const createCategories = () => {
+    const categories = country.categories.map(category => {
+      return ( <div key={category._id} data-id={category._id}>
+                <h3>{category.category}</h3>
+                <button className="category__btn" onClick={() => handleCategoryDetails(category.category, category._id, country._id)}>Category Details</button>
+              </div> )
+    })
+    return categories;
+  }
   
   return (
     <div id={country._id}>
@@ -41,10 +50,7 @@ export default function SingleCountry(props) {
       </form>
 
       <div className="categories">
-        {country.categories.map(category => (<div data-id={category._id}>
-          <h3>{category.category}</h3>
-          <button className="category__btn" onClick={() => handleCategoryDetails(category.category, category._id, country._id)}>Category Details</button>
-          </div>))}
+        {createCategories()}
       </div>
     </div>
   )

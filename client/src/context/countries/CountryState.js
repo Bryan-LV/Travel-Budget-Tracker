@@ -58,13 +58,14 @@ export default function CountryState(props) {
   }
 
   // add new expense to category
-  const addExpense = ({categoryID, countryID, expense}) => {
-    
+  const addExpense = (payload) => {
+    payload.expense._id = uuid();
+    dispatch({type:'ADD_EXPENSE', payload: payload})
   }
   
   // get selected country
-  const getSelectedCountry = (id) => {
-    const country = state.countries.filter(country => country._id === id);
+  const getSelectedCountry = (countryID) => {
+    const country = state.countries.filter(country => country._id === countryID);
     dispatch({type:'GET_COUNTRY', payload:country})
   }
   // get single category
@@ -83,7 +84,8 @@ export default function CountryState(props) {
       addCountry,
       addCategory,
       getSelectedCountry,
-      getSingleCategory
+      getSingleCategory,
+      addExpense
       }}>
       {props.children}
     </CountryContext.Provider>

@@ -10,6 +10,22 @@ const CountryReducer = (state, action) => {
     case 'GET_CATEGORY':
       return {...state, selectedCategory: payload, loading:false};
       break;
+    case 'ADD_EXPENSE':
+      const updatedExpense = state.countries.map(country =>  {
+        if(country._id === payload.countryID){
+          country.categories.map(category => {
+            if(category._id === payload.categoryID){
+              category.expenses.push(payload.expense)
+              return category;
+            }
+          })
+          return country;
+        }
+        return country;
+      })
+      console.log(updatedExpense);
+      return {...state};
+      break;
     case 'ADD_CATEGORY':
       const updatedCountries = state.countries.map(country => { 
         if(country._id === payload.country){
