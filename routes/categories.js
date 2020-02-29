@@ -80,7 +80,7 @@ router.delete('/',[
 router.put('/', async (req,res) => {
   const {categoryName, categoryID, countryID} = req.body;
   const updatedObj = {};
-  try {
+  try { 
     // create updated object
     if(categoryName) {updatedObj.categoryName = categoryName;}
 
