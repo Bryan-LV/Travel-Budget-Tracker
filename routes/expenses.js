@@ -123,15 +123,34 @@ router.post('/country/add', [
 })
 
 // delete item in expense
-router.delete('/', async (req,res) => {
+router.delete('/', [ 
+  check('countryID', 'Please enter country ID').not().isEmpty(),
+  check('categoryID', 'Please enter categoryID').not().isEmpty(),
+  check('expenseID', 'Please enter expenseID').not().isEmpty()
+], async (req,res) => {
+  const errors = validationResult(req);
+  if(!errors) {
+    return res.status(400).json({errors: errors.array()});
+  }
+
+  const {countryID, categoryID, expenseID} = req.body;
+
   try {
-    // find item by id delete item
-    await Expense.findOneAndDelete({_id: req.body.id});
-    res.json({msg: 'Expense has been deleted'});
+    let country = await Country.findById(countryID);
+    if(!country) {
+      return res.status(400).json({error:'No country found'});
+    }
+
+    let category = country.categories.id(categoryID);
+    await category.expenses.id(expenseID).remove();
+    await country.save()
+
+    res.json({country});
 
   } catch (error) {
     res.status(400).json({error});
   }
+
 })
 
 // edit item in expense
