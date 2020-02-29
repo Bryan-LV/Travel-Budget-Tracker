@@ -3,8 +3,74 @@ const Country = require('../models/countries');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 
+// get all expenses from category
+router.post('/country',[
+  check('countryID', 'Please enter country ID').not().isEmpty(),
+  check('categoryID', 'Please enter categoryID').not().isEmpty(),
+], async (req,res) => {
+  const errors = validationResult(req);
+  if(!errors) {
+    return res.status(400).json({errors: errors.array()});
+  }
+
+  const {countryID, categoryID} = req.body;
+  const stringifyCategoryID = JSON.stringify(categoryID);
+
+   try {
+    // find country
+    let country = await Country.findById(countryID);
+    if(!country) {
+      return res.status(400).json({error:'No country found'});
+    }
+
+    // find category
+    let categories = country.categories;
+    let expenses = []
+    for(let i = 0; i < categories.length; i++ ){
+      let categories_id = JSON.stringify(categories[i]._id);
+      if(categories_id === stringifyCategoryID){
+        expenses.push(...categories[i].expenses);
+      }
+    }
+    res.json({msg: expenses});
+    
+  } catch (error) {
+    
+  }
+})
+
+// get all expenses from category
+router.post('/country/expense',[
+  check('countryID', 'Please enter country ID').not().isEmpty(),
+  check('categoryID', 'Please enter categoryID').not().isEmpty(),
+], async (req,res) => {
+  const errors = validationResult(req);
+  if(!errors) {
+    return res.status(400).json({errors: errors.array()});
+  }
+
+  const {countryID, categoryID} = req.body;
+  const stringifyCategoryID = JSON.stringify(categoryID);
+
+   try {
+    // find country
+    let country = await Country.findById(countryID);
+    if(!country) {
+      return res.status(400).json({error:'No country found'});
+    }
+
+    // find category
+    let category = country.categories;
+
+
+  } catch (error) {
+    
+  }
+})
+
+
 // add expense item to category
-router.post('/country', [
+router.post('/country/add', [
   check('countryID', 'Please enter country ID').not().isEmpty(),
   check('categoryID', 'Please enter categoryID').not().isEmpty(),
   check('expenseName', 'Please enter expense name').not().isEmpty(),
@@ -48,33 +114,6 @@ router.post('/country', [
     console.log(error);
     res.status(400).json({error});
   }
-})
-
-// post item to expense
-router.post('/', [
-  check('price', 'please enter a price').not().isEmpty(),
-  check('name', 'please enter a name').not().isEmpty(),
-  check('country', 'please enter country').not().isEmpty(),
-], async (req,res) => {
-  const errors = validationResult(req);
-  if(!errors) {
-    return res.status(400).json({errors: errors.array()});
-  }
-
-  try {
-    let country = await Country.findById(req.body.country);
-    let expense = new Expense({
-      name: req.body.name,
-      price: req.body.price
-    })
-
-    await expense.save();
-    console.log(expense);
-    res.json({msg: 'Expense has been added'});
-  } catch (error) {
-    res.status(400).json({error});
-  }
-  
 })
 
 // delete item in expense
