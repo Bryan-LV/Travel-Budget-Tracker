@@ -35,22 +35,25 @@ router.post('/country',[
     res.json({msg: expenses});
     
   } catch (error) {
-    
+    return res.status(400).json({error:'No expenses found'});
   }
 })
 
-// get all expenses from category
+// get single expense from category
 router.post('/country/expense',[
   check('countryID', 'Please enter country ID').not().isEmpty(),
   check('categoryID', 'Please enter categoryID').not().isEmpty(),
+  check('expenseID', 'Please enter expenseID').not().isEmpty()
 ], async (req,res) => {
   const errors = validationResult(req);
   if(!errors) {
     return res.status(400).json({errors: errors.array()});
   }
 
-  const {countryID, categoryID} = req.body;
+  const {countryID, categoryID, expenseID} = req.body;
+
   const stringifyCategoryID = JSON.stringify(categoryID);
+  const stringifyExpenseID = JSON.stringify(expenseID)
 
    try {
     // find country
@@ -60,11 +63,14 @@ router.post('/country/expense',[
     }
 
     // find category
-    let category = country.categories;
+    let category = country.categories.filter(category => JSON.stringify(category._id) === stringifyCategoryID);
+    let [singleExpense] = category;
+    let expense = singleExpense.expenses.filter(expense => JSON.stringify(expense._id) === stringifyExpenseID);
 
+    res.json({msg: expense});
 
   } catch (error) {
-    
+    return res.status(400).json({error:'No expense found'});
   }
 })
 
