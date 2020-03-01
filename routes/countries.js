@@ -26,6 +26,7 @@ router.post('/', [
     let country = new Country({
       name: req.body.country
     })
+    
     await country.save();
     res.json({msg: 'Country has been added'});
 

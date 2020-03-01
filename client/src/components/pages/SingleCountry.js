@@ -20,7 +20,7 @@ export default function SingleCountry(props) {
   const addNewCategory = (e) => {
     e.preventDefault();
     if(category !== ''){
-      const newCategory = {category, country: country._id}
+      const newCategory = {categoryName: category, countryID: country._id}
       context.addCategory(newCategory)
     }
   }

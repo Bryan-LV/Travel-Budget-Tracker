@@ -1,6 +1,5 @@
 import React, {useEffect, useState, useContext} from 'react'
 import CountryContext from '../../context/countries/CountryContext';
-import PropTypes from 'prop-types'
 import axios from 'axios'
 import CountryList from '../helpers/CountryList';
 
@@ -8,17 +7,8 @@ function Home(props) {
   const context = useContext(CountryContext);
   const [country, setCountry] = useState('');
 
-  const fetchCountries = async () => {
-    // fetch countries
-    try {
-      
-    } catch (error) {
-    }
-  }
-  
-
   useEffect( () => {
-    fetchCountries()
+    context.fetchCountries()
   }, [])
   
   const addCountry = (e) => {
@@ -39,10 +29,6 @@ function Home(props) {
       {context.countries.map(country => <CountryList country={country} key={country._id} id={country._id}/>)}
     </div>
   )
-}
-
-Home.propTypes = {
-
 }
 
 export default Home

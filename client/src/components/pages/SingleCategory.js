@@ -22,13 +22,17 @@ export default function SingleCategory(props) {
 
   const submitExpense = (e) => {
     e.preventDefault();
+
     if(expense.name !== '' && expense.price !== 0){
       const expensePayload = {
-        expense,
-        categoryID: category._id,
-        countryID: context.selectedCountry[0]._id
+        expenseName: expense.name,
+        expensePrice: expense.price,
+        countryID: context.selectedCountry[0]._id,
+        categoryID: category._id
       }
+
       context.addExpense(expensePayload);
+      
       setExpense({
         name: '',
         price: ''

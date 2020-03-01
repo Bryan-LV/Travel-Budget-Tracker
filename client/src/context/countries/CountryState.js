@@ -1,7 +1,7 @@
 import React, {useReducer} from 'react'
 import CountryContext from './CountryContext'
 import CountryReducer from './CountryReducer'
-// import Axios from 'axios';
+import axios from 'axios';
 import uuid from 'uuid/v4'
 
 const countries = [
@@ -23,7 +23,7 @@ const countries = [
 ]
 
 const initialState = {
-  countries: countries,
+  countries: [],
   selectedCountry:null,
   selectedCategory: null,
   loading:true
@@ -32,35 +32,57 @@ const initialState = {
 export default function CountryState(props) {
   const [state, dispatch] = useReducer(CountryReducer, initialState);
   
-  // add new country
-  const addCountry = (country) => {
-    const newCountry = {
-      name: country,
-      categories:[],
-      _id: uuid()
+
+  // fetch countries
+  const fetchCountries = async () => {
+    try {
+      const request = await axios.get('http://localhost:4000/api/countries');
+      const countries = request.data;
+      dispatch({type:'SET_COUNTRIES', payload: countries})
+
+    } catch (error) {
+      console.log(error);
     }
-    dispatch({type:'ADD_COUNTRIES', payload: newCountry});
+  }
+  
+
+  // add new country
+  const addCountry = async (country) => {
+    try {
+      const req = await axios.post('http://localhost:4000/api/countries', {country});
+      const res = req.data;
+      fetchCountries()
+    } catch (error) {
+      console.log(error.response.data.msg);
+    }
+    
   }
 
   // add category to country
-  const addCategory = ({category, country}) => {
-    const newCategory = {
-      category: category,
-      _id:uuid(),
-      expenses: []
-    }
+  const addCategory = async ({categoryName, countryID}) => {
 
-    const payload = {
-      newCategory,
-      country
+    try {
+      const req = await axios.post('http://localhost:4000/api/categories', {categoryName, countryID})
+      const res = req.data;
+      dispatch({type:'ADD_CATEGORY', payload:res})
+      fetchCountries()
+
+    } catch (error) {
+      console.log(error);
     }
-    dispatch({type:'ADD_CATEGORY', payload});
+    
   }
 
   // add new expense to category
-  const addExpense = (payload) => {
-    payload.expense._id = uuid();
-    dispatch({type:'ADD_EXPENSE', payload: payload})
+  const addExpense = async ({expenseName, expensePrice, countryID, categoryID}) => {
+
+    try {
+      const req = await axios.post('http://localhost:4000/api/expense/country/add', {expenseName, expensePrice, countryID, categoryID});
+      const res = req.data;
+      fetchCountries()
+    } catch (error) {
+      console.log(error);
+    }
   }
   
   // get selected country
@@ -81,6 +103,7 @@ export default function CountryState(props) {
       selectedCountry: state.selectedCountry,
       selectedCategory: state.selectedCategory,
       loading: state.loading,
+      fetchCountries,
       addCountry,
       addCategory,
       getSelectedCountry,
