@@ -5,17 +5,22 @@ import Axios from 'axios';
 export default function SingleCountry(props) {
   const [category, setCategory ] = useState('');
   const context = useContext(CountryContext);
-  const country = context.selectedCountry[0];
 
-  const fetchCountryData = () => {
+  const {countries} = context.countries;
+  const selectedCountry = context.selectedCountry[0];
+  const filterCountry = context.countries.filter(Country => Country._id === selectedCountry._id);
+  const [country] = filterCountry;
+
+  const checkCountryIsSelected = () => {
    if(!country){
      props.history.push('/');
    }
   }
   
   useEffect(() => {
-    fetchCountryData()
-  }, [])
+    checkCountryIsSelected()
+
+  }, [countries]);
 
   const addNewCategory = (e) => {
     e.preventDefault();

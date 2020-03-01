@@ -5,11 +5,12 @@ import CountryList from '../helpers/CountryList';
 
 function Home(props) {
   const context = useContext(CountryContext);
+  const {countries} = context.countries;
   const [country, setCountry] = useState('');
 
   useEffect( () => {
     context.fetchCountries()
-  }, [])
+  }, [countries])
   
   const addCountry = (e) => {
     e.preventDefault();

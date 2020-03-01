@@ -87,9 +87,11 @@ export default function CountryState(props) {
   
   // get selected country
   const getSelectedCountry = (countryID) => {
+    console.log('get selected country rendered');
     const country = state.countries.filter(country => country._id === countryID);
     dispatch({type:'GET_COUNTRY', payload:country})
   }
+
   // get single category
   const getSingleCategory = (categoryID, countryID) => {
     const country = state.countries.filter(country => country._id === countryID)
