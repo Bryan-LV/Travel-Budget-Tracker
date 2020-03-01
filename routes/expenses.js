@@ -154,23 +154,36 @@ router.delete('/', [
 })
 
 // edit item in expense
-router.put('/', async (req,res) => {
-  const {name, price, category} = req.body;
-  const updatedObj = {};
+router.put('/',[
+  check('countryID', 'Please enter country ID').not().isEmpty(),
+  check('categoryID', 'Please enter categoryID').not().isEmpty(),
+  check('expenseID', 'Please enter expenseID').not().isEmpty(),
+  check('expenseName', 'Please enter expense name').not().isEmpty(),
+  check('expensePrice', 'Please enter expense price').not().isEmpty()
+], async (req,res) => {
+
+  const {countryID, categoryID, expenseID, expenseName, expensePrice} = req.body;
+
   try {
-    // create updated object
-    if(name) {updatedObj.name = name;}
-    if(price) {updatedObj.price = price;}
-    if(category) {updatedObj.category = category;}
-    // find item and update
-    let expense = Expense.findById(req.body.id);
-    if(!expense){
+
+    // find country
+    let country = await Country.findById(countryID);
+    if(!country){
       return res.status(400).json({errors: errors.array()});
     }
-    await Expense.findByIdAndUpdate(req.body.id,{$set: updatedObj});
+
+    // find category
+    let category = country.categories.id(categoryID);
+    let expense = category.expenses.id(expenseID);
+    if(expenseName) expense.name = expenseName;
+    if(expensePrice) expense.price = expensePrice;
+    await country.save();
+
+    // await Expense.findByIdAndUpdate(req.body.id,{$set: updatedObj});
     res.json({msg: 'Expense has been updated'});
     
   } catch (error) {
+    console.log(error);
     res.status(400).json({error});
   }
 })
