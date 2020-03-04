@@ -54,8 +54,7 @@ router.post('/country', async (req,res) => {
 })
 
 
-
-// delete item in country
+// delete country
 router.delete('/country', async (req,res) => {
   try {
     // find item by id delete item

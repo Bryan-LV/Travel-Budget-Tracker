@@ -11,9 +11,15 @@ function CountryList(props) {
     props.history.push(`/${name}`);
   }
   
+  const handleDelete = () => {
+    context.deleteCountry(_id);
+  }
+  
+
   return (
-    <div className="country__list-item" id={_id} onClick={handleClick}>
-      <h3 className="country__name">{name}</h3>
+    <div className="country__list-item" id={_id} >
+      <h3 className="country__name" onClick={handleClick}>{name}</h3>
+      <button onClick={handleDelete}>Delete Country</button>
     </div>
   )
 }

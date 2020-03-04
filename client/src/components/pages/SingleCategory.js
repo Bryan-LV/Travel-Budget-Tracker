@@ -22,7 +22,6 @@ export default function SingleCategory(props) {
     setExpense({...expense, [e.target.name]: e.target.value});
   }
   
-
   const submitExpense = (e) => {
     e.preventDefault();
 

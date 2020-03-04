@@ -55,8 +55,18 @@ export default function CountryState(props) {
     } catch (error) {
       console.log(error.response.data.msg);
     }
-    
   }
+
+  // delete country
+  const deleteCountry = async (id) => {
+    try {
+      await axios.delete('http://localhost:4000/api/countries/country', { data: {countryID: id}})
+    } catch (error) {
+      console.log(error.response.data.msg);
+    }
+    fetchCountries()
+  }
+  
 
   // add category to country
   const addCategory = async ({categoryName, countryID}) => {
@@ -107,6 +117,7 @@ export default function CountryState(props) {
       loading: state.loading,
       fetchCountries,
       addCountry,
+      deleteCountry,
       addCategory,
       getSelectedCountry,
       getSingleCategory,
