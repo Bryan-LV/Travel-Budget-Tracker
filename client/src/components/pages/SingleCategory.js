@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import CountryContext from '../../context/countries/CountryContext'
 import Expense from '../helpers/Expense';
+import {format} from 'date-fns';
 
 export default function SingleCategory(props) {
   const [expense, setExpense] = useState({
@@ -17,7 +18,6 @@ export default function SingleCategory(props) {
     context.deleteExpense(getCountry[0]._id, category._id, expenseID);
   }
   
-
   const loadExpenses = () => {
     const expenses =  getCategory[0].expenses.map(expense => <Expense key={expense._id} expense={expense} deleteExpense={deleteExpense}/>)
     return expenses;

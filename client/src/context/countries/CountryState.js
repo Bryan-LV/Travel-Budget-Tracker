@@ -109,7 +109,7 @@ export default function CountryState(props) {
       await axios.delete('http://localhost:4000/api/expense/', { data: { countryID, categoryID, expenseID } } )
       fetchCountries();
     } catch (error) {
-      
+      console.log(error);
     }
   }
   

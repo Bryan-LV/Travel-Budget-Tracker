@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react'
 import CountryContext from '../../context/countries/CountryContext'
+import format from 'date-fns/format'
 
 export default function SingleCountry(props) {
   const [category, setCategory ] = useState('');
@@ -50,10 +51,33 @@ export default function SingleCountry(props) {
     return categoriesList;
   }
 
+  const createDate = () => {
+    const months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ]
+
+    const fullDate = new Date(country.date);
+    const year = fullDate.getFullYear();
+    const month = fullDate.getMonth()
+    const getMonth = months[month]
+    return `${getMonth}, ${year}`
+  }
   
   return (
     <div id={country._id}>
       <h2>{country.name}</h2>
+      <h3>{createDate()}</h3>
       <form>
         <label htmlFor="category">Category</label>
         <input type="text" value={category} name="category" onChange={(e) => setCategory(e.target.value)}/>
