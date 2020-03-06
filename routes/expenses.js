@@ -114,7 +114,7 @@ router.post('/country/add', [
     }
 
     await country.save()
-    res.json({msg: 'Expense has been saved'});
+    res.json({msg: country});
 
   } catch (error) {
     console.log(error);
@@ -145,7 +145,7 @@ router.delete('/', [
     await category.expenses.id(expenseID).remove();
     await country.save()
 
-    res.json({country});
+    res.json({msg: country});
 
   } catch (error) {
     res.status(400).json({error});
@@ -179,8 +179,7 @@ router.put('/',[
     if(expensePrice) expense.price = expensePrice;
     await country.save();
 
-    // await Expense.findByIdAndUpdate(req.body.id,{$set: updatedObj});
-    res.json({msg: 'Expense has been updated'});
+    res.json({msg: country});
     
   } catch (error) {
     console.log(error);

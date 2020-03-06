@@ -46,7 +46,7 @@ router.post('/', [
     }
     let country = await Country.findOneAndUpdate({_id: req.body.countryID}, { $push: {categories: category}});
     await country.save();
-    res.json({msg: 'Category has been saved'});
+    res.json({msg: country});
 
   } catch (error) {
     res.status(400).json({error});
@@ -69,7 +69,7 @@ router.delete('/',[
     let country = await Country.findById(req.body.countryID);
     country.categories.id(req.body.categoryID).remove();
     await country.save()
-    res.json({msg: 'Category has been deleted'});
+    res.json({msg: country});
 
   } catch (error) {
     res.status(400).json({error});
@@ -93,7 +93,7 @@ router.put('/', async (req,res) => {
     let category = country.categories.id(categoryID);
     category.category = categoryName;
     await country.save()
-    res.json({msg: 'Category has been updated'});
+    res.json({msg: country});
     
   } catch (error) {
     console.log(error);

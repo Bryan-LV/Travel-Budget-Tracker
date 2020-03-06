@@ -70,12 +70,11 @@ export default function CountryState(props) {
 
   // add category to country
   const addCategory = async ({categoryName, countryID}) => {
-
     try {
       const req = await axios.post('http://localhost:4000/api/categories', {categoryName, countryID})
       const res = req.data;
-      dispatch({type:'ADD_CATEGORY', payload:res})
-      fetchCountries()
+      fetchCountries();
+      dispatch({type:'ADD_CATEGORY', payload: countryID})
 
     } catch (error) {
       console.log(error);
@@ -83,17 +82,37 @@ export default function CountryState(props) {
     
   }
 
+  // delete category
+  const deleteCategory = async (countryID, categoryID) => {
+    try {
+      await axios.delete('http://localhost:4000/api/categories', {data: {countryID, categoryID}});
+      fetchCountries();
+      dispatch({type:'DELETE_CATEGORY', payload: countryID});
+    } catch (error) {
+      console.log(error.response.data.msg);
+    }
+  }
+  
+
   // add new expense to category
   const addExpense = async ({expenseName, expensePrice, countryID, categoryID}) => {
-
     try {
       const req = await axios.post('http://localhost:4000/api/expense/country/add', {expenseName, expensePrice, countryID, categoryID});
-      const res = req.data;
       fetchCountries()
     } catch (error) {
       console.log(error);
     }
   }
+
+  const deleteExpense = async (countryID, categoryID, expenseID) => {
+    try {
+      await axios.delete('http://localhost:4000/api/expense/', { data: { countryID, categoryID, expenseID } } )
+      fetchCountries();
+    } catch (error) {
+      
+    }
+  }
+  
   
   // get selected country
   const getSelectedCountry = (countryID) => {
@@ -119,9 +138,11 @@ export default function CountryState(props) {
       addCountry,
       deleteCountry,
       addCategory,
+      deleteCategory,
       getSelectedCountry,
       getSingleCategory,
-      addExpense
+      addExpense,
+      deleteExpense
       }}>
       {props.children}
     </CountryContext.Provider>

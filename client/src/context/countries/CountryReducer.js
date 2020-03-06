@@ -12,6 +12,11 @@ const CountryReducer = (state, action) => {
     case 'GET_CATEGORY':
       return {...state, selectedCategory: payload, loading:false};
       break;
+    case 'ADD_CATEGORY':
+    case 'DELETE_CATEGORY':
+      const selectedCountry = state.countries.filter(country => country._id === payload);
+      return {...state, selectedCountry: selectedCountry, loading: false};
+      break;
     case 'ADD_EXPENSE':
       
       return {...state};

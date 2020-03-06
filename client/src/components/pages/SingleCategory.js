@@ -13,8 +13,13 @@ export default function SingleCategory(props) {
   const getCategory =  getCountry[0].categories.filter(category => category._id === context.selectedCategory[0]._id);
 
 
+  const deleteExpense = (expenseID) => {
+    context.deleteExpense(getCountry[0]._id, category._id, expenseID);
+  }
+  
+
   const loadExpenses = () => {
-    const expenses =  getCategory[0].expenses.map(expense => <Expense key={expense._id} expense={expense}/>)
+    const expenses =  getCategory[0].expenses.map(expense => <Expense key={expense._id} expense={expense} deleteExpense={deleteExpense}/>)
     return expenses;
   }
   
