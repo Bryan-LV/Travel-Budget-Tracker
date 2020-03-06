@@ -18,7 +18,6 @@ const CountryReducer = (state, action) => {
       return {...state, selectedCountry: selectedCountry, loading: false};
       break;
     case 'ADD_EXPENSE':
-      
       return {...state};
       break;
     default:

@@ -2,6 +2,7 @@ import React, {useEffect, useState, useContext} from 'react'
 import CountryContext from '../../context/countries/CountryContext';
 import axios from 'axios'
 import CountryList from '../helpers/CountryList';
+import Currencies from '../helpers/Currencies';
 
 function Home(props) {
   const context = useContext(CountryContext);
@@ -22,6 +23,7 @@ function Home(props) {
 
   return (
     <div className="container">
+      <Currencies/>
       <form>
         <label htmlFor="country">Add new country</label>
         <input type="text" name="country" value={country} onChange={(e) => setCountry(e.target.value)}/>

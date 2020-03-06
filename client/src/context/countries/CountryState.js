@@ -97,7 +97,7 @@ export default function CountryState(props) {
   // add new expense to category
   const addExpense = async ({expenseName, expensePrice, countryID, categoryID}) => {
     try {
-      const req = await axios.post('http://localhost:4000/api/expense/country/add', {expenseName, expensePrice, countryID, categoryID});
+      await axios.post('http://localhost:4000/api/expense/country/add', {expenseName, expensePrice, countryID, categoryID});
       fetchCountries()
     } catch (error) {
       console.log(error);
