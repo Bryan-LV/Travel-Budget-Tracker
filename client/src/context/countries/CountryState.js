@@ -26,6 +26,8 @@ const initialState = {
   countries: [],
   selectedCountry:null,
   selectedCategory: null,
+  baseCurrency:'',
+  foreignCurrency:'',
   loading:true
 }
 
@@ -46,11 +48,16 @@ export default function CountryState(props) {
   }
   
 
+  // set currencies
+  const setCurrency = (currency) => {
+    dispatch({type:'SET_CURRENCY', payload: currency});
+  }
+  
+
   // add new country
   const addCountry = async (country) => {
     try {
       const req = await axios.post('http://localhost:4000/api/countries', {country});
-      const res = req.data;
       fetchCountries()
     } catch (error) {
       console.log(error.response.data.msg);
@@ -95,9 +102,11 @@ export default function CountryState(props) {
   
 
   // add new expense to category
-  const addExpense = async ({expenseName, expensePrice, countryID, categoryID}) => {
+  const addExpense = async ({expenseName, expensePrice, countryID, categoryID, baseCurrency, foreignCurrency}) => {
+    console.log(foreignCurrency);
+    console.log(baseCurrency);
     try {
-      await axios.post('http://localhost:4000/api/expense/country/add', {expenseName, expensePrice, countryID, categoryID});
+      await axios.post('http://localhost:4000/api/expense/country/add', {expenseName, expensePrice, countryID, categoryID, baseCurrency, foreignCurrency});
       fetchCountries()
     } catch (error) {
       console.log(error);
@@ -131,10 +140,13 @@ export default function CountryState(props) {
   return (
     <CountryContext.Provider value={{
       countries: state.countries,
+      baseCurrency: state.baseCurrency,
+      foreignCurrency: state.foreignCurrency,
       selectedCountry: state.selectedCountry,
       selectedCategory: state.selectedCategory,
       loading: state.loading,
       fetchCountries,
+      setCurrency,
       addCountry,
       deleteCountry,
       addCategory,

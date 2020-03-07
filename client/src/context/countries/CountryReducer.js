@@ -3,6 +3,13 @@ const CountryReducer = (state, action) => {
   switch (type) {
     case 'SET_COUNTRIES':
       return {...state, countries: [...payload], loading:false}
+    case 'SET_CURRENCY':
+      if(payload.baseCurrency){
+        return {...state, baseCurrency: payload.baseCurrency }
+      } else if(payload.foreignCurrency) {
+        return {...state, foreignCurrency: payload.foreignCurrency }
+      }
+      break;
     case 'ADD_COUNTRIES':
       return {...state, countries: [...state.countries, payload], loading:false};
       break;

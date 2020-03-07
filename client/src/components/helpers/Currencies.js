@@ -1,9 +1,13 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import currencies from '../../currencies'
+import CountryContext from '../../context/countries/CountryContext'
 
 export default function Currencies() {
-  const [baseCurrency, setBaseCurrency] = useState('');
-  const [foreignCurrency, setForeignCurrency] = useState('');
+  const [state, setstate] = useState({
+    baseCurrency:'',
+    foreignCurrency:''
+  })
+  const context = useContext(CountryContext);
 
   const listOfCurrencies = [];
   for(const property in currencies){
@@ -15,13 +19,25 @@ export default function Currencies() {
     return options;
   }
   
+  const handleChange = (e) => {
+    setstate({...state, [e.target.name]: e.target.value})
+    const currency = {
+      [e.target.name]: e.target.value
+    }
+    context.setCurrency(currency);
+    
+  }
+  
+
   return (
     <div>
       <form>
-      <select name="base" id="base" value={baseCurrency} onChange={(e) => setBaseCurrency(e.target.value)}>
+      <label htmlFor="baseCurrency">Base Currency</label>
+      <select name="baseCurrency" id="base" value={state.baseCurrency} onChange={handleChange}>
         {currencyOptions()}
       </select>
-      <select name="foreign" id="foreign" value={foreignCurrency} onChange={(e) => setForeignCurrency(e.target.value)}>
+      <label htmlFor="foreignCurrency">Foreign Currency</label>
+      <select name="foreignCurrency" id="foreign" value={state.foreignCurrency} onChange={handleChange}>
         {currencyOptions()}
       </select>
       </form>

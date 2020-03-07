@@ -2,6 +2,7 @@ const express = require('express');
 const Country = require('../models/countries');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
+const axios = require('axios');
 
 // get all expenses from category
 router.post('/country',[
@@ -81,22 +82,29 @@ router.post('/country/add', [
   check('categoryID', 'Please enter categoryID').not().isEmpty(),
   check('expenseName', 'Please enter expense name').not().isEmpty(),
   check('expensePrice', 'Please enter expense price').not().isEmpty(),
+  check('baseCurrency', 'Please enter base currency').not().isEmpty(),
+  check('foreignCurrency', 'Please enter foreign currency').not().isEmpty(),
 ],async (req,res) => {
   const errors = validationResult(req);
   if(!errors) {
     return res.status(400).json({errors: errors.array()});
   }
 
-  const {countryID, categoryID, expenseName, expensePrice} = req.body;
+  const {countryID, categoryID, expenseName, expensePrice, baseCurrency, foreignCurrency} = req.body;
 
   const stringifyCategoryID = JSON.stringify(categoryID);
 
-  const expenseObj = {
-    name: expenseName,
-    price: expensePrice
-  }
-
+  
   try {
+    const getCurrencyExchange = await axios(`https://api.exchangeratesapi.io/latest?base=${baseCurrency}&symbols=${baseCurrency},${foreignCurrency}`);
+    const foreignCurrencyRate = getCurrencyExchange.data.rates[foreignCurrency];
+
+    const conversion = expensePrice / foreignCurrencyRate;
+
+    const expenseObj = {
+      name: expenseName,
+      price: conversion.toFixed(2)
+    }
 
     // find country
     let country = await Country.findById(countryID);

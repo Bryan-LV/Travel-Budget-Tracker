@@ -35,7 +35,9 @@ export default function SingleCategory(props) {
         expenseName: expense.name,
         expensePrice: expense.price,
         countryID: context.selectedCountry[0]._id,
-        categoryID: category._id
+        categoryID: category._id,
+        baseCurrency: context.baseCurrency,
+        foreignCurrency: context.foreignCurrency
       }
 
       context.addExpense(expensePayload);
