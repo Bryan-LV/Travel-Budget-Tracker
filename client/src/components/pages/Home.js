@@ -4,6 +4,7 @@ import CountryList from '../helpers/CountryList';
 import AuthContext from '../../context/auth/AuthContext';
 import PlusButton from '../helpers/PlusButton';
 import Topbar from '../layout/Topbar';
+import TripBox from '../helpers/TripBox';
 
 function Home(props) {
   const context = useContext(CountryContext);
@@ -15,7 +16,7 @@ function Home(props) {
   useEffect( () => {
     if(isAuth){
       loadUser();
-      // context.fetchCountries();
+      context.fetchCountries();
     } else{
       props.history.push('/');
     }
@@ -38,21 +39,11 @@ function Home(props) {
 
       <div className="bg-medium-blue border-radius-top pt4 pb4 top-layer">
         <div className="container">
-        <div className="trip-box">
-          <div className="trip-box-top">
-            <div className="trip-box-img border-radius-top"></div>
-          </div>
-          <div className="trip-box-bottom border-radius-bottom p2 bg-grey">
-            <h3 className="trip-box-title">Indonesia</h3>
-            <h4 className="trip-box-dates">March 12 - April 14</h4>
-            <h4>$950 / $31.60 per day</h4>
-          </div>
-        </div>
+          {context.countries.map(country => <TripBox country={country} key={country._id} id={country._id}/>)}
         </div>
       </div>
 
       <PlusButton page="/addtrip"/>
-      {/* {context.countries.map(country => <CountryList country={country} key={country._id} id={country._id}/>)} */}
     </div>
   )
 }
