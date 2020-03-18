@@ -31,14 +31,23 @@ const initialState = {
   loading:true
 }
 
+const getConfig = () => {
+  const axiosConfig = {
+    headers: {
+      'Content-Type': 'application/json',
+      'auth-token': localStorage.getItem('token')
+    }
+  }
+  return axiosConfig;
+}
+
 export default function CountryState(props) {
   const [state, dispatch] = useReducer(CountryReducer, initialState);
-  
 
   // fetch countries
   const fetchCountries = async () => {
     try {
-      const request = await axios.get('http://localhost:4000/api/countries');
+      const request = await axios.get('http://localhost:4000/api/countries', getConfig());
       const countries = request.data;
       dispatch({type:'SET_COUNTRIES', payload: countries})
 
@@ -53,14 +62,15 @@ export default function CountryState(props) {
     dispatch({type:'SET_CURRENCY', payload: currency});
   }
   
-
   // add new country
-  const addCountry = async (country) => {
+  const addCountry = async (trip) => {
     try {
-      const req = await axios.post('http://localhost:4000/api/countries', {country});
+      const req = await axios.post('http://localhost:4000/api/countries', trip, getConfig());
+      const res = req.data;
+      console.log(res);
       fetchCountries()
     } catch (error) {
-      console.log(error.response.data.msg);
+      console.log(error.response);
     }
   }
 

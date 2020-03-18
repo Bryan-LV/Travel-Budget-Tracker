@@ -3,6 +3,12 @@ const Schema = mongoose.Schema;
 
 const countries = Schema({
   name: {type:String, required: true},
+  user: {type:Schema.Types.ObjectId, ref: 'user'},
+  baseCurrency: {type:String, required: true},
+  budget: {type:Number, required: true},
+  photo: {type:String },
+  startDate: {type:String, required: true},
+  endDate: {type:String},
   date: {type: Date, default: new Date()},
   categories:[
     {

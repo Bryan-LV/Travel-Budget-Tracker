@@ -1,12 +1,15 @@
 const express = require('express');
 const Country = require('../models/countries');
+const User = require('../models/user');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
+const authToken = require('../middleware/authToken');
 
-// get all countries
-router.get('/', async (req,res) => {
+// get all users countries
+router.get('/', authToken ,async (req,res) => {
   try {
-    let country = await Country.find({});
+    // map through 
+    let country = await Country.find({user:req.userID});
     res.json(country);
   } catch (error) {
     res.status(400).json({error});
@@ -15,17 +18,31 @@ router.get('/', async (req,res) => {
 
 // post new country
 router.post('/', [
-  check('country', 'please enter a country').not().isEmpty()
+  authToken,
+  check('name', 'please enter a country').not().isEmpty(),
+  check('baseCurrency', 'please enter a base currency').not().isEmpty(),
+  check('budget', 'please enter a budget').not().isEmpty(),
+  check('startDate', 'please enter a start date').not().isEmpty(),
 ], async (req,res) => {
+  console.log(req.body);
   const errors = validationResult(req);
   if(!errors) {
     return res.status(400).json({errors: errors.array()});
   }
-
+  
   try {
-    let country = new Country({
-      name: req.body.country
-    })
+    const countryObj = {
+      name: req.body.name,
+      user: req.userID,
+      baseCurrency:req.body.baseCurrency,
+      budget: req.body.budget,
+      startDate: req.body.startDate
+    };
+
+    if(req.body.endDate) countryObj.endDate = req.body.endDate;
+    if(req.body.photo) countryObj.photo = req.body.photo;
+
+    let country = new Country(countryObj)
     
     await country.save();
     res.json({msg: 'Country has been added'});
@@ -37,12 +54,15 @@ router.post('/', [
 })
 
 // get single country
-router.post('/country', async (req,res) => {
+router.post('/country', authToken, async (req,res) => {
     if(req.body.countryID){
       try {
         let country = await Country.findById(req.body.countryID);
         if(!country){
           return res.status(400).json({error:'No country exists with that name'});
+        }
+        if(country.user !== req.userID){
+          return res.status(400).json({error:'This trip does not belong to this user'});
         }
         res.json(country)
       } catch (error) {
@@ -55,8 +75,9 @@ router.post('/country', async (req,res) => {
 
 
 // delete country
-router.delete('/country', async (req,res) => {
+router.delete('/country', authToken, async (req,res) => {
   try {
+    // check if user owns this trip document ************
     // find item by id delete item
     await Country.findOneAndDelete({_id: req.body.countryID});
     res.json({msg: 'Country has been deleted'});

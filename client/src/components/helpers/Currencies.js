@@ -4,7 +4,7 @@ import CountryContext from '../../context/countries/CountryContext'
 
 export default function Currencies() {
   const [state, setstate] = useState({
-    baseCurrency:'',
+    baseCurrency:'USD',
     foreignCurrency:''
   })
   const context = useContext(CountryContext);

@@ -16,6 +16,7 @@ app.get('/', (req,res) => {
   res.send('travel budget tracker home');
 })
 
+app.use('/api/user', require('./routes/users'));
 app.use('/api/countries', require('./routes/countries'));
 app.use('/api/categories', require('./routes/categories'));
 app.use('/api/expense', require('./routes/expenses'));
