@@ -2,12 +2,13 @@ const express = require('express');
 const Country = require('../models/countries');
 const {check, validationResult} = require('express-validator');
 const router = express.Router();
-
+const authToken = require('../middleware/authToken');
 // @Route Endpoint
 // /api/categories
 
 // fetch categories
 router.post('/country', [
+  authToken,
   check('countryID', 'please enter a country id').not().isEmpty()
 ], async (req,res) => {
   const errors = validationResult(req);
@@ -32,6 +33,7 @@ router.post('/country', [
 
 // add category to country
 router.post('/', [
+  authToken,
   check('categoryName', 'please enter a name').not().isEmpty(),
   check('countryID', 'please enter a country id').not().isEmpty()
 ], async (req,res) => {

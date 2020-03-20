@@ -183,9 +183,22 @@ body{
 
 /* country listing */
 
+.trip-box-wrapper{
+  
+}
+
+@media (min-width:750px){
+  .trip-box-wrapper{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
 .trip-box{
   border-radius:20px;
-  max-width: 400px;
+  max-width: 350px;
+  min-width:300px;
+  cursor: pointer;
 }
 
 .trip-box-img{
@@ -196,6 +209,10 @@ body{
 
 .trip-box-title{
   font-weight: 700;
+}
+
+.trip-budget{
+  font-family: var(--ff-secondary);
 }
 
 /* plus button */
@@ -210,6 +227,7 @@ body{
   width:60px;
   height:60px;;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .plus-btn-icon{

@@ -1,11 +1,16 @@
 import React from 'react'
 import backArrow from '../../imgs/back.png'
 import settings from '../../imgs/settings.png'
+import { Link , withRouter} from 'react-router-dom'
 
-export default function Topbar(props) {
+function Topbar(props) {
+  const handleBackBtn = () => {
+    props.history.goBack();
+  }
+
   return (
     <div className="topbar ml2 mr2">
-      <div className="backArrow">
+      <div className="backArrow" onClick={handleBackBtn}>
         <img className="backArrow-icon" src={backArrow} alt="back"/>
       </div>
       <div className="">
@@ -17,3 +22,5 @@ export default function Topbar(props) {
     </div>
   )
 }
+
+export default withRouter(Topbar)

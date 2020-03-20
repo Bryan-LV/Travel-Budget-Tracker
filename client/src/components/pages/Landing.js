@@ -1,5 +1,5 @@
 import React from 'react'
-import Login from '../helpers/Login'
+import Login from '../forms/Login'
 
 export default function Landing(props) {
 

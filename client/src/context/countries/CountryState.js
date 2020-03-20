@@ -88,7 +88,7 @@ export default function CountryState(props) {
   // add category to country
   const addCategory = async ({categoryName, countryID}) => {
     try {
-      const req = await axios.post('http://localhost:4000/api/categories', {categoryName, countryID})
+      const req = await axios.post('http://localhost:4000/api/categories', {categoryName, countryID}, getConfig())
       const res = req.data;
       fetchCountries();
       dispatch({type:'ADD_CATEGORY', payload: countryID})
@@ -109,7 +109,6 @@ export default function CountryState(props) {
       console.log(error.response.data.msg);
     }
   }
-  
 
   // add new expense to category
   const addExpense = async ({expenseName, expensePrice, countryID, categoryID, baseCurrency, foreignCurrency}) => {
@@ -135,7 +134,6 @@ export default function CountryState(props) {
   
   // get selected country
   const getSelectedCountry = (countryID) => {
-    console.log('get selected country rendered');
     const country = state.countries.filter(country => country._id === countryID);
     dispatch({type:'GET_COUNTRY', payload:country})
   }

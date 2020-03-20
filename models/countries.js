@@ -7,8 +7,8 @@ const countries = Schema({
   baseCurrency: {type:String, required: true},
   budget: {type:Number, required: true},
   photo: {type:String },
-  startDate: {type:String, required: true},
-  endDate: {type:String},
+  startDate: {type:Date, required: true},
+  endDate: {type:Date},
   date: {type: Date, default: new Date()},
   categories:[
     {

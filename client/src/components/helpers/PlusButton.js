@@ -6,7 +6,7 @@ function PlusButton(props) {
   return (
     <div className="plus-btn-container mb2">
       <div className="plus-btn-bg" aria-role="button">
-        <img className="plus-btn-icon" src={addButton} alt="button" onClick={(e) => props.history.push(`/addtrip`)}/>
+        <img className="plus-btn-icon" src={addButton} alt="button" onClick={props.toggle} />
       </div>
     </div>
   )

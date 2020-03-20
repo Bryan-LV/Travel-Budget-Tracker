@@ -1,9 +1,29 @@
 import React, { useEffect, useContext, useState } from 'react'
 import CountryContext from '../../context/countries/CountryContext'
-import format from 'date-fns/format'
+import Topbar from '../layout/Topbar';
+import formatDistanceStrict from 'date-fns/formatDistanceStrict'
+import PlusButton from '../helpers/PlusButton';
+import {Button, Label, Input} from '../../styles/styles'
+
+const months = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+  ];
+
 
 export default function SingleCountry(props) {
   const [category, setCategory ] = useState('');
+  const [showCategoryForm, setShowCategoryForm] = useState(false);
   const context = useContext(CountryContext);
 
   const selectedCountry = context.selectedCountry[0];
@@ -27,6 +47,7 @@ export default function SingleCountry(props) {
     if(category !== ''){
       const newCategory = {categoryName: category, countryID: country._id}
       context.addCategory(newCategory)
+      setShowCategoryForm(!showCategoryForm)
     }
   }
 
@@ -42,51 +63,60 @@ export default function SingleCountry(props) {
   
   const createCategories = () => {
     const categoriesList = country.categories.map(category => {
-      return ( <div key={category._id} data-id={category._id}>
+      return ( <div key={category._id} data-id={category._id} onClick={() => handleCategoryDetails(category.category, category._id, country._id)}>
                 <h3>{category.category}</h3>
-                <button className="category__btn" onClick={() => handleCategoryDetails(category.category, category._id, country._id)}>Category Details</button>
                 <button onClick={() => handleDelete(country._id, category._id)}>Delete Category</button>
               </div> )
     })
     return categoriesList;
   }
+  
+  const formatStartDate = new Date(country.startDate);
+  const startDay = formatStartDate.getDate();
+  const getStartMonth = formatStartDate.getMonth();
+  const startMonth =  months[getStartMonth];
+  const startYear = formatStartDate.getFullYear()
 
-  const createDate = () => {
-    const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
-    ]
+  let endDay, getEndMonth, endMonth, endYear;
+  if(country.endDate){
+    const formatEndDate = new Date(country.endDate);
+    endDay = formatEndDate.getDate();
+    getEndMonth = formatEndDate.getMonth();
+    endMonth =  months[getEndMonth];
+    endYear = formatEndDate.getFullYear();
+  }
 
-    const fullDate = new Date(country.date);
-    const year = fullDate.getFullYear();
-    const month = fullDate.getMonth()
-    const getMonth = months[month]
-    return `${getMonth}, ${year}`
+  const showCategoryModal = () => {
+    return (
+      <form>
+        <Label htmlFor="category">Category</Label>
+        <Input type="text" value={category} name="category" onChange={(e) => setCategory(e.target.value)}/>
+        <Button onClick={addNewCategory}>Add Category</Button>
+      </form>
+    )
   }
   
+  const toggleCategoryForm = () => {
+    setShowCategoryForm(!showCategoryForm);
+  }
+  
+
   return (
     <div id={country._id}>
-      <h2>{country.name}</h2>
-      <h3>{createDate()}</h3>
-      <form>
-        <label htmlFor="category">Category</label>
-        <input type="text" value={category} name="category" onChange={(e) => setCategory(e.target.value)}/>
-        <button onClick={addNewCategory}>Add Category</button>
-      </form>
+      <Topbar title={country.name}/>
+      <div className="monthly-budget-title">
+        <h4>Monthly budget</h4>
+        <h4>80%</h4>
+      </div>
+
+      <h2>${country.budget}</h2>
+      <h4 className="trip-box-dates">{startMonth} {startDay} - {endMonth} {endDay}</h4>
 
       <div className="categories">
         {createCategories()}
       </div>
+      <PlusButton toggle={toggleCategoryForm}/>
+      {showCategoryForm && showCategoryModal()}
     </div>
   )
 }
