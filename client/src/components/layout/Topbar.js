@@ -16,8 +16,8 @@ function Topbar(props) {
       <div className="">
         <h2 className="topbar-title white-text">{props.title}</h2>
       </div>
-      <div className="settings">
-          <img className="settings-icon" src={settings} alt="settings"/>
+      <div className="currency-circle">
+        <h3 className="white-text">{props.currency}</h3>
       </div>
     </div>
   )

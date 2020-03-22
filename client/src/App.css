@@ -109,6 +109,18 @@ body{
   background-color: #fff;
 }
 
+.txt-center{
+  text-align: center;
+}
+
+.secondary-font{
+  font-family: var(--ff-secondary);
+}
+
+.inline-block{
+  display: inline-block;
+}
+
 /* background colors */
 
 .bg-dark-blue{
@@ -183,10 +195,6 @@ body{
 
 /* country listing */
 
-.trip-box-wrapper{
-  
-}
-
 @media (min-width:750px){
   .trip-box-wrapper{
     display: grid;
@@ -215,6 +223,35 @@ body{
   font-family: var(--ff-secondary);
 }
 
+/* single trip page */
+
+.monthly-budget-percentage-header, .trip-dates {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.category-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:0 25px;
+}
+
+.category-pair{
+  display: flex;
+  align-items: center;
+}
+
+.category-color{
+  width:35px;
+  height:35px;
+  background-color: aquamarine;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+
 /* plus button */
 
 .plus-btn-container{
@@ -233,3 +270,4 @@ body{
 .plus-btn-icon{
   max-width: 100%;
 }
+

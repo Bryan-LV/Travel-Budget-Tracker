@@ -4,6 +4,9 @@ import Topbar from '../layout/Topbar';
 import formatDistanceStrict from 'date-fns/formatDistanceStrict'
 import PlusButton from '../helpers/PlusButton';
 import {Button, Label, Input} from '../../styles/styles'
+import SelectView from '../helpers/SelectView';
+import PlusBtn from '../UI/PlusBtn';
+import currencies from '../../currencies';
 
 const months = [
   'January',
@@ -61,16 +64,50 @@ export default function SingleCountry(props) {
     context.deleteCategory(countryID, categoryID);
   }
   
+
   const createCategories = () => {
     const categoriesList = country.categories.map(category => {
-      return ( <div key={category._id} data-id={category._id} onClick={() => handleCategoryDetails(category.category, category._id, country._id)}>
-                <h3>{category.category}</h3>
-                <button onClick={() => handleDelete(country._id, category._id)}>Delete Category</button>
+
+      let getPrices = category.expenses.map(expense => expense.price);
+      let result;
+      if(getPrices.length > 1) {
+        result = getPrices.reduce((prev,next) => prev + next);
+      } else {
+        result = getPrices[0];
+      }
+
+      return ( <div key={category._id} data-id={category._id} className="category-box" onClick={() => handleCategoryDetails(category.category, category._id, country._id)}>
+                <div className="category-pair">
+                  <div className="category-color"></div>
+                  <h3 className="white-text">{category.category}</h3>
+                </div>
+                <h3 className="white-text secondary-font category-total">{result}</h3>
+                {/* <button onClick={() => handleDelete(country._id, category._id)}>Delete Category</button> */}
               </div> )
     })
     return categoriesList;
   }
-  
+
+  const findTotalSpent = () => {
+    const allExpenses = [];
+    const getExpenses = country.categories.map(category => {
+      // loop through all categories and return expenses
+      return category.expenses.map(expense => expense.price);
+    });
+
+    getExpenses.forEach(expenses => {
+      allExpenses.push(...expenses)
+    });
+
+    const total  = allExpenses.reduce((prev,next) => prev + next);
+    return total;
+}
+
+  const getPercentage = () => {
+    const percentage = (findTotalSpent() / country.budget) * 100;
+    return percentage.toFixed(2);
+  }
+
   const formatStartDate = new Date(country.startDate);
   const startDay = formatStartDate.getDate();
   const getStartMonth = formatStartDate.getMonth();
@@ -99,23 +136,36 @@ export default function SingleCountry(props) {
   const toggleCategoryForm = () => {
     setShowCategoryForm(!showCategoryForm);
   }
+
+  const getForeignCurrency = () => {
+    const selectedCountry = context.selectedCountry[0].name.toLowerCase();
+    const findCurrency = currencies.filter(country => country.countryName.toLowerCase() === selectedCountry);
+    return findCurrency[0].currencyCode;
+  }
   
 
   return (
     <div id={country._id}>
-      <Topbar title={country.name}/>
-      <div className="monthly-budget-title">
-        <h4>Monthly budget</h4>
-        <h4>80%</h4>
+      <Topbar title={country.name} currency={getForeignCurrency()}/>
+      <h2 className="white-text txt-center secondary-font">${country.budget}</h2>
+      <div className="monthly-budget-percentage-header">
+        <h4 className="white-text secondary-font">{getPercentage()}%</h4>
+        <h4 className="white-text secondary-font">Current Spending</h4>
+        <h4 className="white-text secondary-font">{findTotalSpent()}</h4>
       </div>
 
-      <h2>${country.budget}</h2>
-      <h4 className="trip-box-dates">{startMonth} {startDay} - {endMonth} {endDay}</h4>
-
-      <div className="categories">
+      <h4 className="trip-dates white-text secondary-font">{startMonth} {startDay} - {endMonth} {endDay}</h4>
+      
+      <SelectView/>
+      <div className="categories bg-light-blue">
         {createCategories()}
       </div>
-      <PlusButton toggle={toggleCategoryForm}/>
+
+      <div className="txt-center">
+        <div className="inline-block plus-button-container" onClick={toggleCategoryForm}>
+            <PlusBtn/>
+        </div>
+      </div>
       {showCategoryForm && showCategoryModal()}
     </div>
   )

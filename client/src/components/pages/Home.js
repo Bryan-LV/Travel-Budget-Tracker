@@ -2,7 +2,9 @@ import React, {useEffect, useState, useContext} from 'react'
 import CountryContext from '../../context/countries/CountryContext';
 import AuthContext from '../../context/auth/AuthContext';
 import PlusButton from '../helpers/PlusButton';
+import PlusBtn from '../UI/PlusBtn';
 import TripBox from '../helpers/TripBox';
+import {Link} from 'react-router-dom'
 
 function Home(props) {
   const context = useContext(CountryContext);
@@ -30,7 +32,14 @@ function Home(props) {
         </div>
       </div>
 
-      <PlusButton page="/addtrip"/>
+      {/* <PlusButton page="/addtrip"/> */}
+      <div className="txt-center">
+        <div className="inline-block plus-button-container">
+          <Link to="/addtrip">
+            <PlusBtn/>
+          </Link> 
+        </div>
+      </div>
     </div>
   )
 }

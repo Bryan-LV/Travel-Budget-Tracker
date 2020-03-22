@@ -112,8 +112,7 @@ export default function CountryState(props) {
 
   // add new expense to category
   const addExpense = async ({expenseName, expensePrice, countryID, categoryID, baseCurrency, foreignCurrency}) => {
-    console.log(foreignCurrency);
-    console.log(baseCurrency);
+    console.log(expenseName, expensePrice, countryID, categoryID, baseCurrency, foreignCurrency);
     try {
       await axios.post('http://localhost:4000/api/expense/country/add', {expenseName, expensePrice, countryID, categoryID, baseCurrency, foreignCurrency});
       fetchCountries()
