@@ -2,6 +2,7 @@ import React, {useContext} from 'react'
 import CountryContext from '../../context/countries/CountryContext';
 import formatDistanceStrict from 'date-fns/formatDistanceStrict'
 import { withRouter } from 'react-router-dom';
+import island from '../../imgs/island-Caribbean.jpg'
 
 const months = [
   'January',
@@ -63,7 +64,7 @@ function TripBox(props) {
   return (
     <div className="trip-box" onClick={selectTrip}>
       <div className="trip-box-top">
-        <div className="trip-box-img border-radius-top"></div>
+          <img className="trip-box-img border-radius-top" src={island} alt="trip image"/>
       </div>
       <div className="trip-box-bottom border-radius-bottom p2 bg-grey">
         <h3 className="trip-box-title">{name}</h3>

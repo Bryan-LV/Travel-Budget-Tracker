@@ -1,7 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react'
 import CountryContext from '../../context/countries/CountryContext'
 import Topbar from '../layout/Topbar';
-import SelectView from '../helpers/SelectView';
 import PlusBtn from '../UI/PlusBtn';
 import currencies from '../../currencies';
 import TripHeader from '../layout/Trip/TripHeader';
