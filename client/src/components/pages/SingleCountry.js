@@ -1,10 +1,13 @@
 import React, { useEffect, useContext, useState } from 'react'
 import CountryContext from '../../context/countries/CountryContext'
 import Topbar from '../layout/Topbar';
-import {Button, Label, Input} from '../../styles/styles'
 import SelectView from '../helpers/SelectView';
 import PlusBtn from '../UI/PlusBtn';
 import currencies from '../../currencies';
+import TripHeader from '../layout/Trip/TripHeader';
+import AddCategory from '../forms/AddCategory';
+import TripBottom from '../layout/Trip/TripBottom';
+import TripCategories from '../layout/Trip/TripCategories';
 
 const months = [
   'January',
@@ -23,7 +26,6 @@ const months = [
 
 
 export default function SingleCountry(props) {
-  const [category, setCategory ] = useState('');
   const [showCategoryForm, setShowCategoryForm] = useState(false);
   const context = useContext(CountryContext);
 
@@ -42,48 +44,8 @@ export default function SingleCountry(props) {
     checkCountryIsSelected()
   }, [selectedCountry]);
 
-  // when new category added update selectedCountry
-  const addNewCategory = (e) => {
-    e.preventDefault();
-    if(category !== ''){
-      const newCategory = {categoryName: category, countryID: country._id}
-      context.addCategory(newCategory)
-      setShowCategoryForm(!showCategoryForm)
-    }
-  }
-
-  // takes user to category page
-  const handleCategoryDetails = (categoryName, categoryID, countryID) => {
-    context.getSingleCategory(categoryID, countryID);
-    props.history.push(`/${country.name}/${categoryName}`)
-  }
-
   const handleDelete = (countryID, categoryID) => {
     context.deleteCategory(countryID, categoryID);
-  }
-  
-
-  const createCategories = () => {
-    const categoriesList = country.categories.map(category => {
-
-      let getPrices = category.expenses.map(expense => expense.price);
-      let result;
-      if(getPrices.length > 1) {
-        result = getPrices.reduce((prev,next) => prev + next);
-      } else {
-        result = getPrices[0];
-      }
-
-      return ( <div key={category._id} data-id={category._id} className="category-box" onClick={() => handleCategoryDetails(category.category, category._id, country._id)}>
-                <div className="category-pair">
-                  <div className="category-color"></div>
-                  <h3 className="white-text">{category.category}</h3>
-                </div>
-                <h3 className="white-text secondary-font category-total">{result}</h3>
-                {/* <button onClick={() => handleDelete(country._id, category._id)}>Delete Category</button> */}
-              </div> )
-    })
-    return categoriesList;
   }
 
   const findTotalSpent = () => {
@@ -93,17 +55,34 @@ export default function SingleCountry(props) {
       return category.expenses.map(expense => expense.price);
     });
 
-    getExpenses.forEach(expenses => {
-      allExpenses.push(...expenses)
-    });
+    // if expenses is 0 then return '0'
+    if(getExpenses.length === 0){
+      return 0
+    } 
+    // if expenses is only 1 
+    else if(getExpenses.length === 1 ){
+      return getExpenses[0];
+    }
+    // if expenses is more than 1
+    else if(getExpenses.length > 1){
 
-    const total  = allExpenses.reduce((prev,next) => prev + next);
-    return total;
+      getExpenses.forEach(expenses => {
+        allExpenses.push(...expenses)
+      });
+
+      const total  = allExpenses.reduce((prev,next) => prev + next);
+      return total.toFixed(2);
+    }
 }
 
   const getPercentage = () => {
-    const percentage = (findTotalSpent() / country.budget) * 100;
-    return percentage.toFixed(2);
+    let totalSpent = findTotalSpent();
+    if(totalSpent === 0){
+      return 0
+    } else {
+      const percentage = (totalSpent / country.budget) * 100;
+      return percentage.toFixed(2);
+    }
   }
 
   const formatStartDate = new Date(country.startDate);
@@ -120,56 +99,30 @@ export default function SingleCountry(props) {
     endMonth =  months[getEndMonth];
     endYear = formatEndDate.getFullYear();
   }
-
-  const showCategoryModal = () => {
-    return (
-      <form>
-        <Label htmlFor="category">Category</Label>
-        <Input type="text" value={category} name="category" onChange={(e) => setCategory(e.target.value)}/>
-        <Button onClick={addNewCategory}>Add Category</Button>
-      </form>
-    )
-  }
   
-  const toggleCategoryForm = () => {
-    setShowCategoryForm(!showCategoryForm);
-  }
-
   const getForeignCurrency = () => {
     const selectedCountry = context.selectedCountry[0].name.toLowerCase();
     const findCurrency = currencies.filter(country => country.countryName.toLowerCase() === selectedCountry);
     return findCurrency[0].currencyCode;
   }
   
-
   return (
     <div id={country._id}>
       <Topbar title={country.name} currency={getForeignCurrency()}/>
-      <h2 className="white-text txt-center secondary-font">${country.budget}</h2>
-      <div className="monthly-budget-percentage-header">
-        <h4 className="white-text secondary-font">{getPercentage()}%</h4>
-        <h4 className="white-text secondary-font">Current Spending</h4>
-        <h4 className="white-text secondary-font">{findTotalSpent()}</h4>
-      </div>
-
+      <TripHeader budget={country.budget} percentage={getPercentage()} total={findTotalSpent()} />
       <h4 className="trip-dates white-text secondary-font">{startMonth} {startDay} - {endMonth} {endDay}</h4>
       
-      <SelectView/>
-      {/* show links to category and dates */}
-      <div className="select-view-type">
-      </div>
-      {/* create routes for both category and for dates */}
-
       <div className="categories bg-light-blue">
-        {createCategories()}
+        <TripBottom country={country}/>
       </div>
 
       <div className="txt-center">
-        <div className="inline-block plus-button-container" onClick={toggleCategoryForm}>
+        <div className="inline-block plus-button-container" onClick={() => setShowCategoryForm(!showCategoryForm)}>
             <PlusBtn/>
         </div>
       </div>
-      {showCategoryForm && showCategoryModal()}
+
+      <AddCategory showCategoryForm={showCategoryForm} countryID={country._id}/>
     </div>
   )
 }

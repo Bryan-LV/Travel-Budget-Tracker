@@ -1,12 +1,12 @@
 import React from 'react'
 import backArrow from '../../imgs/back.png'
-import settings from '../../imgs/settings.png'
 import { Link , withRouter} from 'react-router-dom'
 
 function Topbar(props) {
   const handleBackBtn = () => {
     props.history.goBack();
   }
+  
 
   return (
     <div className="topbar mt2 ml2 mr2">

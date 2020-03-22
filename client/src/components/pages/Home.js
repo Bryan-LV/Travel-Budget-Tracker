@@ -1,7 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react'
 import CountryContext from '../../context/countries/CountryContext';
 import AuthContext from '../../context/auth/AuthContext';
-import PlusButton from '../helpers/PlusButton';
 import PlusBtn from '../UI/PlusBtn';
 import TripBox from '../helpers/TripBox';
 import {Link} from 'react-router-dom'
