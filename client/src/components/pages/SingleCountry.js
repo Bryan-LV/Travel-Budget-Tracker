@@ -1,8 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react'
 import CountryContext from '../../context/countries/CountryContext'
 import Topbar from '../layout/Topbar';
-import formatDistanceStrict from 'date-fns/formatDistanceStrict'
-import PlusButton from '../helpers/PlusButton';
 import {Button, Label, Input} from '../../styles/styles'
 import SelectView from '../helpers/SelectView';
 import PlusBtn from '../UI/PlusBtn';
@@ -157,6 +155,11 @@ export default function SingleCountry(props) {
       <h4 className="trip-dates white-text secondary-font">{startMonth} {startDay} - {endMonth} {endDay}</h4>
       
       <SelectView/>
+      {/* show links to category and dates */}
+      <div className="select-view-type">
+      </div>
+      {/* create routes for both category and for dates */}
+
       <div className="categories bg-light-blue">
         {createCategories()}
       </div>
