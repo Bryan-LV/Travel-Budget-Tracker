@@ -255,7 +255,25 @@ body{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding:0 25px;
+  margin:0 25px;
+  position: relative;
+}
+
+.category-box:hover{
+  background-color: #2e364c;
+  cursor: pointer;
+}
+
+.category-box::after {
+  position: absolute;
+  content: '';
+  bottom: 0;
+  left: 0;
+  bottom: 0;
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: rgba(255,255,255,0.2);
 }
 
 .category-pair{
@@ -269,6 +287,18 @@ body{
   background-color: aquamarine;
   border-radius: 50%;
   margin-right: 10px;
+}
+
+.view-container {
+  display: flex;
+  justify-content: flex-start;
+  padding: 15px 30px;
+}
+
+.view-link{
+  margin: 10px;
+  margin-left: 0;
+  cursor: pointer;
 }
 
 /* Expense */

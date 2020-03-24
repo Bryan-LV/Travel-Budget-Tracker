@@ -115,7 +115,7 @@ export default function SingleCountry(props) {
         <TripBottom country={country}/>
       </div>
 
-      <div className="txt-center">
+      <div className="txt-center bg-light-blue pt3">
         <div className="inline-block plus-button-container" onClick={() => setShowCategoryForm(!showCategoryForm)}>
             <PlusBtn/>
         </div>

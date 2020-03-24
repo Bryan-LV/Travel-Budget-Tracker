@@ -1,7 +1,7 @@
 import React, {useContext, useState} from 'react'
 import CountryContext from '../../context/countries/CountryContext'
 import {Button, Label, Input} from '../../styles/styles'
-import toTitleCase from '../../helperFuncs/ToTitleCase';
+import toTitleCase from '../../helpers/ToTitleCase';
 
 export default function AddCategory(props) {
   const [category, setCategory ] = useState('');

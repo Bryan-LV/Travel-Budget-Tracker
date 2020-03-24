@@ -1,5 +1,5 @@
 import React from 'react'
-import ToTitleCase from '../../helperFuncs/ToTitleCase';
+import ToTitleCase from '../../helpers/ToTitleCase';
 
 export default function Expense(props) {
   const {name, _id, price} = props.expense;
