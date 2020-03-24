@@ -90,7 +90,18 @@ router.post('/country/add', [
     return res.status(400).json({errors: errors.array()});
   }
 
-  const {countryID, categoryID, expenseName, expensePrice, baseCurrency, foreignCurrency} = req.body;
+  const { 
+    countryID,
+    categoryID, 
+    expenseName, 
+    expensePrice, 
+    baseCurrency, 
+    foreignCurrency,
+    methodOfPayment,
+    category,
+    spread,
+    notes,
+    photo} = req.body;
 
   const stringifyCategoryID = JSON.stringify(categoryID);
 
@@ -103,8 +114,14 @@ router.post('/country/add', [
 
     const expenseObj = {
       name: expenseName,
-      price: conversion.toFixed(2)
+      price: conversion.toFixed(2),
+      category: category
     }
+
+    if(methodOfPayment) expenseObj.methodOfPayment = methodOfPayment;
+    if(spread) expenseObj.spread = spread;
+    if(notes) expenseObj.notes = notes;
+    if(photo) expenseObj.photo = photo;
 
     // find country
     let country = await Country.findById(countryID);

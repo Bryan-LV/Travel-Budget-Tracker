@@ -2,13 +2,10 @@ import React, { useContext, useState } from 'react'
 import CountryContext from '../../context/countries/CountryContext'
 import Expense from '../helpers/Expense';
 import {format} from 'date-fns';
-import currencies from '../../currencies'
+import currencies from '../../helpers/currencies'
+import AddExpense from '../forms/AddExpense';
 
 export default function SingleCategory(props) {
-  const [expense, setExpense] = useState({
-    name: '',
-    price: ''
-  })
   const context = useContext(CountryContext);
   const [category] =  context.selectedCategory;
   const getCountry = context.countries.filter(country => country._id === context.selectedCountry[0]._id);
@@ -24,50 +21,10 @@ export default function SingleCategory(props) {
     return expenses;
   }
   
-  const handleExpenseChange = (e) => {
-    setExpense({...expense, [e.target.name]: e.target.value});
-  }
-  
-  const getForeignCurrency = () => {
-    const selectedCountry = context.selectedCountry[0].name.toLowerCase();
-    const findCurrency = currencies.filter(country => country.countryName.toLowerCase() === selectedCountry);
-    return findCurrency[0].currencyCode;
-  }
-  
-
-  const submitExpense = (e) => {
-    e.preventDefault();
-
-    if(expense.name !== '' && expense.price !== 0){
-      const expensePayload = {
-        expenseName: expense.name,
-        expensePrice: expense.price,
-        countryID: context.selectedCountry[0]._id,
-        categoryID: category._id,
-        baseCurrency: context.selectedCountry[0].baseCurrency,
-        foreignCurrency: getForeignCurrency()
-      }
-
-      context.addExpense(expensePayload);
-      
-      setExpense({
-        name: '',
-        price: ''
-      })
-    }
-  }
-  
-
   return (
     <div>
       <h3 className="underLine white-text">{category.category}</h3>
-      <form>
-        <label htmlFor="name">Add new expense</label>
-        <input type="text" value={expense.name} name="name" id="name" onChange={(e) => handleExpenseChange(e)}/>
-        <label htmlFor="price">Add new price</label>
-        <input type="text" value={expense.price} name="price" id="price" onChange={(e) => handleExpenseChange(e)}/>
-        <button onClick={submitExpense}>add expense</button>
-      </form>
+      <AddExpense/>
       <div className="expense-container">
         {loadExpenses()}
       </div>
