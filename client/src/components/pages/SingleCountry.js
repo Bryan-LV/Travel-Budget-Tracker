@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from 'react'
 import CountryContext from '../../context/countries/CountryContext'
 import Topbar from '../layout/Topbar';
 import PlusBtn from '../UI/PlusBtn';
-import currencies from '../../currencies';
+import currencies from '../../helpers/currencies';
 import TripHeader from '../layout/Trip/TripHeader';
 import AddCategory from '../forms/AddCategory';
 import TripBottom from '../layout/Trip/TripBottom';
