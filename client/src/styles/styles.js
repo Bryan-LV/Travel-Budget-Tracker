@@ -40,6 +40,7 @@ export const HollowButton = styled.button`
   padding-left: 15px;
   padding-right: 15px;
   display: block;
+  cursor:pointer;
 `
 
 export const MyBar = styled.div`

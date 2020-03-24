@@ -1,14 +1,26 @@
 import React, {useState, useContext} from 'react'
 import CountryContext from '../../context/countries/CountryContext';
-import {Label, Button, Input} from '../../styles/styles'
+import {Label, Button, Input, HollowButton} from '../../styles/styles'
 import currencies from '../../helpers/currencies'
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import cash from '../../imgs/money.png';
 
 export default function AddExpense(props) {
   const [expense, setExpense] = useState({
     name: '',
     price: '',
-    category:''
+    category:'',
+    spread: 0
   })
+
+
+  const [isSpreadExpense, setIsSpreadExpense] = useState(true);
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  const [paymentMethod, setPaymentMethod] = useState('');
 
   const context = useContext(CountryContext);
   const [category] =  context.selectedCategory;
@@ -17,6 +29,24 @@ export default function AddExpense(props) {
     setExpense({...expense, [e.target.name]: e.target.value});
   }
 
+  const handlePaymentMethod = (method) => {
+    setPaymentMethod(method);
+  }
+
+  const createPaymentBtns = () => {
+    const methods = ['cash', 'credit', 'debt'];
+    const list = methods.map(method => (
+      <div className="payment-method" onClick={() => handlePaymentMethod(method)}>
+        <div className="payment-icon" style={{width:'30px'}}>
+          <img style={{maxWidth:'100%'}} src={cash} alt=""/>
+        </div>
+        <p className="payment-name">{method}</p>
+      </div>
+    ))
+    return list
+  }
+  
+  
   const getForeignCurrency = () => {
     const selectedCountry = context.selectedCountry[0].name.toLowerCase();
     const findCurrency = currencies.filter(country => country.countryName.toLowerCase() === selectedCountry);
@@ -46,16 +76,36 @@ export default function AddExpense(props) {
     }
   }
 
+  const endDateForm = <DatePicker selected={endDate} onChange={date => setEndDate(date)} />
+
+  const handleSpreadToggle = (e) => {
+    e.preventDefault();
+    setIsSpreadExpense(!isSpreadExpense)
+  }
+
   return (
     <div>
+    <h3 className="underLine">Add Expense</h3>
     <form>
-        <Label htmlFor="name">Add new expense</Label>
+        <Label htmlFor="name">Expense name</Label>
         <Input type="text" value={expense.name} name="name" id="name" onChange={(e) => handleExpenseChange(e)}/>
-        <Label htmlFor="price">Add new price</Label>
+
+        <Label htmlFor="price">Price</Label>
         <Input type="text" value={expense.price} name="price" id="price" onChange={(e) => handleExpenseChange(e)}/>
+
+        <Label htmlFor="methodOfPayment">Method of payment</Label>
+        {createPaymentBtns()}
+
         <Label htmlFor="category">Category</Label>
         <Input type="text" value={expense.category} name="category" id="category" onChange={(e) => handleExpenseChange(e)}/>
-        <Button onClick={submitExpense}>add expense</Button>
+
+        <Label htmlFor="startDate">Date</Label>
+        <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
+
+        <HollowButton onClick={handleSpreadToggle}>Spread over dates</HollowButton>
+        {isSpreadExpense && endDateForm}
+
+        <Button onClick={submitExpense}>Add Expense</Button>
       </form>
     </div>
   )

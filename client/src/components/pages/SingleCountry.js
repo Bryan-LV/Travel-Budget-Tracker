@@ -6,23 +6,7 @@ import currencies from '../../helpers/currencies';
 import TripHeader from '../layout/Trip/TripHeader';
 import AddCategory from '../forms/AddCategory';
 import TripBottom from '../layout/Trip/TripBottom';
-import TripCategories from '../layout/Trip/TripCategories';
-
-const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December'
-  ];
-
+import months from '../../helpers/months'
 
 export default function SingleCountry(props) {
   const [showCategoryForm, setShowCategoryForm] = useState(false);

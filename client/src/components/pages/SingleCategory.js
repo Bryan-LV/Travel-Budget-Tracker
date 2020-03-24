@@ -1,8 +1,6 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import CountryContext from '../../context/countries/CountryContext'
 import Expense from '../helpers/Expense';
-import {format} from 'date-fns';
-import currencies from '../../helpers/currencies'
 import AddExpense from '../forms/AddExpense';
 
 export default function SingleCategory(props) {
