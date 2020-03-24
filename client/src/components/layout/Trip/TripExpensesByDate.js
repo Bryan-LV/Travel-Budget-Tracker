@@ -9,7 +9,9 @@ export default function TripExpensesByDate(props) {
     expenseList.push(...getAllExpenses[i]); 
   }
 
-  const sortedExpenses = expenseList.sort((a,b) => b.date - a.date);
+  const sortedExpenses = expenseList.sort((a,b) => {
+    return new Date(b.date) - new Date(a.date);
+  });
 
   const createDates = sortedExpenses.map(expense => {
     const date = new Date(expense.date);

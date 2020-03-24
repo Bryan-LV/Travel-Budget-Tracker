@@ -1,4 +1,5 @@
 import React from 'react'
+import ProgressBar from './ProgressBar'
 
 export default function TripHeader(props) {
   return (
@@ -9,6 +10,7 @@ export default function TripHeader(props) {
         <h4 className="white-text secondary-font">Current Spending</h4>
         <h4 className="white-text secondary-font">${props.total}</h4>
       </div>
+      {<ProgressBar percentage={props.percentage}/>}
     </div>
   )
 }

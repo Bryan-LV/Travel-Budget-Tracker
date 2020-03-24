@@ -2,17 +2,25 @@ import React from 'react'
 import { useState } from 'react'
 import TripCategories from './TripCategories';
 import TripExpensesByDate from './TripExpensesByDate';
-
+import SingleCategory from '../../pages/SingleCategory'
 
 export default function TripBottom(props) {
   const [view, setView] = useState('categories');
 
+  const handleSingleCategory = () => {
+    setView('singlecategory')
+  }
+  
+
   const View = () => {
     if(view === 'categories'){
-      return <TripCategories country={props.country}/>
+      return <TripCategories singlecategory={handleSingleCategory} country={props.country}/>
     }
     if(view === 'date'){
       return <TripExpensesByDate country={props.country}/>
+    }
+    if(view === 'singlecategory'){
+      return <SingleCategory/>
     }
   }
   

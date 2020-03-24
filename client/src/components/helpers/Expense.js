@@ -11,7 +11,7 @@ export default function Expense(props) {
   let capitalizedExpenseName = ToTitleCase(name);
 
   return (
-    <div data-id={_id} className="expense-item">
+    <div data-id={_id} className="expense-item category-box">
       <h3>{capitalizedExpenseName}</h3>
       <h3 className="secondary-font">${price}</h3>
       <button onClick={handleDelete}>Delete expense</button>

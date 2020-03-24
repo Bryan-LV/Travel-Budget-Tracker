@@ -2,13 +2,13 @@ import React, {useContext} from 'react'
 import CountryContext from '../../../context/countries/CountryContext';
 import { withRouter } from 'react-router-dom';
 
-function TripCategories({country, history}) {
+function TripCategories({country, history,singlecategory}) {
   const context = useContext(CountryContext);
 
 
   const handleCategoryDetails = (categoryName, categoryID, countryID) => {
     context.getSingleCategory(categoryID, countryID);
-    history.push(`/${country.name}/${categoryName}`)
+    singlecategory();
   }
 
   const createCategories = () => {

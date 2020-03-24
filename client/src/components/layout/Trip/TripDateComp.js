@@ -40,7 +40,7 @@ export default function TripDateComp(props) {
 
   return (
     <div>
-      <h3>{props.date}</h3>
+      <p className="white-text expense-date secondary-font">{props.date}</p>
       {addExpenses()}
     </div>
   )

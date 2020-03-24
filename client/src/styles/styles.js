@@ -41,3 +41,10 @@ export const HollowButton = styled.button`
   padding-right: 15px;
   display: block;
 `
+
+export const MyBar = styled.div`
+  height:3px;
+  width: ${props => props.width || '0px'};
+  background-color: ${props => props.backgroundColor || accent};
+  border-radius:4px;
+`
