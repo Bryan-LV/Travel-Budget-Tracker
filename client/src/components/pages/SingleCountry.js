@@ -40,17 +40,14 @@ export default function SingleCountry(props) {
 
     // if expenses is 0 then return '0'
     if(getExpenses.length === 0 || isEmpty(getExpenses)){
-      console.log('0 or empty');
       return 0
     } 
     // if expenses is only 1 
     if(getExpenses.length === 1){
-      console.log('1');
       return getExpenses[0];
     }
     // if expenses is more than 1
     if(getExpenses.length > 1){
-      console.log('>1');
       getExpenses.forEach(expenses => {
         allExpenses.push(...expenses)
       });

@@ -5,12 +5,17 @@ import TripExpensesByDate from './TripExpensesByDate';
 import SingleCategory from '../../pages/SingleCategory'
 import AddExpense from '../../forms/AddExpense';
 import AddCategory from '../../forms/AddCategory';
+import SingleExpense from './SingleExpense';
 
 export default function TripBottom(props) {
   const [view, setView] = useState('categories');
   const [history, setHistory] = useState([]);
+  const [expense, setExpense] = useState({});
 
-  const handleViewChange = (newView) => {
+  const handleViewChange = (newView, payload) => {
+    if(payload){
+      setExpense(payload);
+    }
     setHistory(prevView => [...prevView, newView]);
     setView(newView)
   }
@@ -24,6 +29,9 @@ export default function TripBottom(props) {
     }
     if(view === 'singlecategory'){
       return <SingleCategory handleViewChange={handleViewChange}  history={history}/>
+    }
+    if(view  === 'singleexpense'){
+      return <SingleExpense expense={expense}/>
     }
     if(view === 'addcategory'){
       return <AddCategory history={history}/>

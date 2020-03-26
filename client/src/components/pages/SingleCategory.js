@@ -15,7 +15,13 @@ export default function SingleCategory(props) {
   }
   
   const loadExpenses = () => {
-    const expenses =  getCategory[0].expenses.map(expense => <Expense key={expense._id} expense={expense} deleteExpense={deleteExpense}/>)
+    const expenses =  getCategory[0].expenses.map(expense => (
+      <Expense 
+      key={expense._id} 
+      expense={expense} 
+      deleteExpense={deleteExpense} 
+      handleViewChange={props.handleViewChange}/>)
+    )
     return expenses;
   }
   
