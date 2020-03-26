@@ -49,3 +49,14 @@ export const MyBar = styled.div`
   background-color: ${props => props.backgroundColor || accent};
   border-radius:4px;
 `
+
+export const Textarea = styled.textarea`
+    border: 1px solid black;
+    border-radius: 6px;
+    display: block;
+    background: transparent;
+    width: 90%;
+    min-height: 100px;
+    padding: 5px;
+    font-size: 1rem;
+`

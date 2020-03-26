@@ -1,14 +1,15 @@
 import React, {useContext} from 'react'
 import CountryContext from '../../../context/countries/CountryContext';
 import { withRouter } from 'react-router-dom';
+import PlusBtn from '../../UI/PlusBtn'
 
-function TripCategories({country, history,singlecategory}) {
+function TripCategories({country, history, handleViewChange}) {
   const context = useContext(CountryContext);
 
 
   const handleCategoryDetails = (categoryName, categoryID, countryID) => {
     context.getSingleCategory(categoryID, countryID);
-    singlecategory();
+    handleViewChange('singlecategory')
   }
 
   const createCategories = () => {
@@ -39,6 +40,11 @@ function TripCategories({country, history,singlecategory}) {
   return (
     <div className="">
       {createCategories()}
+      <div className="txt-center bg-light-blue pt3">
+        <div className="inline-block plus-button-container" onClick={() => handleViewChange('addcategory')}>
+            <PlusBtn/>
+        </div>
+      </div>
     </div>
   )
 }

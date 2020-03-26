@@ -14,19 +14,6 @@ export default function TripDateComp(props) {
     return newDate;
   }
 
-  // const addExpenses = ( ) => {
-  //     // const createDateList = () => {
-  // //   // iterate through expense list
-  // //   sortedExpenses.forEach(expense => {
-  // //     // use getDateFormat func on each expense to create a useable date
-  // //     // then compare the usable date to the singleSetOfDates arr and add 
-  // //     const createDate = getDateFormat(expense.date);
-  // //     console.log(createDate);
-  // //   })
-  // //   // if dates match then place in that 
-  // // }
-  // }
-
   const addExpenses = () => {
     let list = props.expenses.map(expense => {
       const getDate = getDateFormat(expense.date);

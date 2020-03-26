@@ -1,15 +1,12 @@
 import React, { useEffect, useContext, useState } from 'react'
 import CountryContext from '../../context/countries/CountryContext'
 import Topbar from '../layout/Topbar';
-import PlusBtn from '../UI/PlusBtn';
 import currencies from '../../helpers/currencies';
 import TripHeader from '../layout/Trip/TripHeader';
-import AddCategory from '../forms/AddCategory';
 import TripBottom from '../layout/Trip/TripBottom';
 import months from '../../helpers/months'
 
 export default function SingleCountry(props) {
-  const [showCategoryForm, setShowCategoryForm] = useState(false);
   const context = useContext(CountryContext);
 
   const selectedCountry = context.selectedCountry[0];
@@ -38,17 +35,22 @@ export default function SingleCountry(props) {
       return category.expenses.map(expense => expense.price);
     });
 
+    // check if 2D arrays are empty
+    let isEmpty = arr => Array.isArray(arr) && arr.every(isEmpty);
+
     // if expenses is 0 then return '0'
-    if(getExpenses.length === 0){
+    if(getExpenses.length === 0 || isEmpty(getExpenses)){
+      console.log('0 or empty');
       return 0
     } 
     // if expenses is only 1 
-    else if(getExpenses.length === 1 ){
+    if(getExpenses.length === 1){
+      console.log('1');
       return getExpenses[0];
     }
     // if expenses is more than 1
-    else if(getExpenses.length > 1){
-
+    if(getExpenses.length > 1){
+      console.log('>1');
       getExpenses.forEach(expenses => {
         allExpenses.push(...expenses)
       });
@@ -98,14 +100,6 @@ export default function SingleCountry(props) {
       <div className="categories bg-light-blue">
         <TripBottom country={country}/>
       </div>
-
-      <div className="txt-center bg-light-blue pt3">
-        <div className="inline-block plus-button-container" onClick={() => setShowCategoryForm(!showCategoryForm)}>
-            <PlusBtn/>
-        </div>
-      </div>
-
-      <AddCategory showCategoryForm={showCategoryForm} countryID={country._id}/>
     </div>
   )
 }

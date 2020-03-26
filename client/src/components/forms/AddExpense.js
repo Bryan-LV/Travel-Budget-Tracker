@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react'
 import CountryContext from '../../context/countries/CountryContext';
-import {Label, Button, Input, HollowButton} from '../../styles/styles'
+import {Label, Button, Input, HollowButton, Textarea} from '../../styles/styles'
 import currencies from '../../helpers/currencies'
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -11,11 +11,12 @@ export default function AddExpense(props) {
     name: '',
     price: '',
     category:'',
-    spread: 0
+    spread: 0,
+    notes:''
   })
 
 
-  const [isSpreadExpense, setIsSpreadExpense] = useState(true);
+  const [isSpreadExpense, setIsSpreadExpense] = useState(false);
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -63,7 +64,12 @@ export default function AddExpense(props) {
         countryID: context.selectedCountry[0]._id,
         categoryID: category._id,
         baseCurrency: context.selectedCountry[0].baseCurrency,
-        foreignCurrency: getForeignCurrency()
+        foreignCurrency: getForeignCurrency(),
+        category: expense.category,
+        methodOfPayment: paymentMethod,
+        spread:expense.spread,
+        notes: expense.notes,
+        date: startDate
       }
 
       context.addExpense(expensePayload);
@@ -104,6 +110,9 @@ export default function AddExpense(props) {
 
         <HollowButton onClick={handleSpreadToggle}>Spread over dates</HollowButton>
         {isSpreadExpense && endDateForm}
+
+        <h4>Add Photo</h4>
+        <Textarea value={expense.notes} name="notes" onChange={(e) => setExpense({...expense, [e.target.name]: e.target.value})}></Textarea>
 
         <Button onClick={submitExpense}>Add Expense</Button>
       </form>

@@ -121,6 +121,10 @@ body{
   display: inline-block;
 }
 
+.margin-left{
+  margin-left: 30px;
+}
+
 /* background colors */
 
 .bg-dark-blue{
@@ -323,7 +327,6 @@ body{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 30px;
   color: white;
 }
 

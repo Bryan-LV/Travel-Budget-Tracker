@@ -2,6 +2,7 @@ import React from 'react'
 import ToTitleCase from '../../helpers/ToTitleCase';
 
 export default function Expense(props) {
+  console.log(props);
   const {name, _id, price} = props.expense;
 
   const handleDelete = () => {

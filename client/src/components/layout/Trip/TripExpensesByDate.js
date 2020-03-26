@@ -1,6 +1,7 @@
 import React from 'react'
 import months from '../../../helpers/months'
 import TripDateComp from './TripDateComp';
+import PlusBtn from '../../UI/PlusBtn'
 
 export default function TripExpensesByDate(props) {
   const getAllExpenses = props.country.categories.map(category => category.expenses);
@@ -43,6 +44,12 @@ export default function TripExpensesByDate(props) {
   return (
     <div>
       {createDateList()}
+
+      <div className="txt-center bg-light-blue pt3">
+        <div className="inline-block plus-button-container" onClick={() => props.handleViewChange('addexpense')}>
+            <PlusBtn/>
+        </div>
+      </div>
     </div>
   )
 }

@@ -101,7 +101,8 @@ router.post('/country/add', [
     category,
     spread,
     notes,
-    photo} = req.body;
+    photo,
+    date} = req.body;
 
   const stringifyCategoryID = JSON.stringify(categoryID);
 
@@ -122,6 +123,7 @@ router.post('/country/add', [
     if(spread) expenseObj.spread = spread;
     if(notes) expenseObj.notes = notes;
     if(photo) expenseObj.photo = photo;
+    if(date) expenseObj.date = date
 
     // find country
     let country = await Country.findById(countryID);

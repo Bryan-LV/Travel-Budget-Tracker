@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import CountryContext from '../../context/countries/CountryContext'
 import Expense from '../helpers/Expense';
-import AddExpense from '../forms/AddExpense';
+import PlusBtn from '../UI/PlusBtn'
 
 export default function SingleCategory(props) {
   const context = useContext(CountryContext);
@@ -21,10 +21,15 @@ export default function SingleCategory(props) {
   
   return (
     <div>
-      <h3 className="underLine white-text">{category.category}</h3>
-      <AddExpense/>
+      <h3 className="underLine white-text margin-left">{category.category}</h3>
       <div className="expense-container">
         {loadExpenses()}
+      </div>
+
+      <div className="txt-center bg-light-blue pt3">
+        <div className="inline-block plus-button-container" onClick={() => props.handleViewChange('addexpense')}>
+            <PlusBtn/>
+        </div>
       </div>
     </div>
   )

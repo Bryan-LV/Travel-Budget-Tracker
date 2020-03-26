@@ -3,24 +3,33 @@ import { useState } from 'react'
 import TripCategories from './TripCategories';
 import TripExpensesByDate from './TripExpensesByDate';
 import SingleCategory from '../../pages/SingleCategory'
+import AddExpense from '../../forms/AddExpense';
+import AddCategory from '../../forms/AddCategory';
 
 export default function TripBottom(props) {
   const [view, setView] = useState('categories');
+  const [history, setHistory] = useState([]);
 
-  const handleSingleCategory = () => {
-    setView('singlecategory')
+  const handleViewChange = (newView) => {
+    setHistory(prevView => [...prevView, newView]);
+    setView(newView)
   }
   
-
   const View = () => {
     if(view === 'categories'){
-      return <TripCategories singlecategory={handleSingleCategory} country={props.country}/>
+      return <TripCategories handleViewChange={handleViewChange} country={props.country} history={history}/>
     }
     if(view === 'date'){
-      return <TripExpensesByDate country={props.country}/>
+      return <TripExpensesByDate handleViewChange={handleViewChange} country={props.country} history={history}/>
     }
     if(view === 'singlecategory'){
-      return <SingleCategory/>
+      return <SingleCategory handleViewChange={handleViewChange}  history={history}/>
+    }
+    if(view === 'addcategory'){
+      return <AddCategory history={history}/>
+    }
+    if(view === 'addexpense'){
+      return <AddExpense history={history}/>
     }
   }
   
