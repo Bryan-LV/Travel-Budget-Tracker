@@ -31,13 +31,13 @@ export default function TripBottom(props) {
       return <SingleCategory handleViewChange={handleViewChange}  history={history}/>
     }
     if(view  === 'singleexpense'){
-      return <SingleExpense expense={expense}/>
+      return <SingleExpense expense={expense} handleViewChange={handleViewChange}/>
     }
     if(view === 'addcategory'){
       return <AddCategory history={history}/>
     }
     if(view === 'addexpense'){
-      return <AddExpense history={history}/>
+      return <AddExpense history={history} expense={expense}/>
     }
   }
   

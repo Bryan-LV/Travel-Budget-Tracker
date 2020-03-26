@@ -1,20 +1,16 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import CountryContext from '../../context/countries/CountryContext';
 import {Label, Button, Input, HollowButton, Textarea} from '../../styles/styles'
 import currencies from '../../helpers/currencies'
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import cash from '../../imgs/money.png';
+import credit from '../../imgs/credit-card.png';
+import debt from '../../imgs/debt.png';
+import getPaymentIcon from '../../helpers/getPaymentIcon';
 
 export default function AddExpense(props) {
-  const [expense, setExpense] = useState({
-    name: '',
-    price: '',
-    category:'',
-    spread: 0,
-    notes:''
-  })
-
+  const [expense, setExpense] = useState({})
 
   const [isSpreadExpense, setIsSpreadExpense] = useState(false);
 
@@ -36,17 +32,21 @@ export default function AddExpense(props) {
 
   const createPaymentBtns = () => {
     const methods = ['cash', 'credit', 'debt'];
-    const list = methods.map(method => (
-      <div className="payment-method" onClick={() => handlePaymentMethod(method)}>
-        <div className="payment-icon" style={{width:'30px'}}>
-          <img style={{maxWidth:'100%'}} src={cash} alt=""/>
-        </div>
-        <p className="payment-name">{method}</p>
-      </div>
-    ))
+    let paymentIcon;
+    const list = methods.map(method => {
+      paymentIcon = getPaymentIcon(method);
+      const selectedMethod = method === paymentMethod ? 'selected-yellow-accent' : '';
+      return (
+          <div className={`${selectedMethod} payment-method`} onClick={() => handlePaymentMethod(method)}>
+            <div className="payment-icon" style={{width:'30px'}}>
+              <img style={{maxWidth:'100%'}} src={paymentIcon} alt=""/>
+            </div>
+            <p className="payment-name">{method}</p>
+          </div>
+      )
+  })
     return list
   }
-  
   
   const getForeignCurrency = () => {
     const selectedCountry = context.selectedCountry[0].name.toLowerCase();
@@ -72,7 +72,12 @@ export default function AddExpense(props) {
         date: startDate
       }
 
-      context.addExpense(expensePayload);
+      if(Object.keys(props.expense).length !== 0){
+        expensePayload.expenseID = props.expense._id;
+        context.editExpense(expensePayload)
+      } else {
+        context.addExpense(expensePayload);
+      }
       
       setExpense({
         name: '',
@@ -89,9 +94,24 @@ export default function AddExpense(props) {
     setIsSpreadExpense(!isSpreadExpense)
   }
 
+  useEffect(() => {
+    if(Object.keys(props.expense).length !== 0){
+      setExpense(props.expense);
+      setPaymentMethod(props.expense.methodOfPayment)
+    } else {
+      setExpense({
+        name: '',
+        price: '',
+        category:'',
+        spread: 0,
+        notes:''
+      })
+    }
+  }, [])
+
   return (
     <div>
-    <h3 className="underLine">Add Expense</h3>
+    <h3 className="underLine white-text">Add Expense</h3>
     <form>
         <Label htmlFor="name">Expense name</Label>
         <Input type="text" value={expense.name} name="name" id="name" onChange={(e) => handleExpenseChange(e)}/>
@@ -100,7 +120,9 @@ export default function AddExpense(props) {
         <Input type="text" value={expense.price} name="price" id="price" onChange={(e) => handleExpenseChange(e)}/>
 
         <Label htmlFor="methodOfPayment">Method of payment</Label>
-        {createPaymentBtns()}
+        <div className="flex">
+          {createPaymentBtns()}
+        </div>
 
         <Label htmlFor="category">Category</Label>
         <Input type="text" value={expense.category} name="category" id="category" onChange={(e) => handleExpenseChange(e)}/>

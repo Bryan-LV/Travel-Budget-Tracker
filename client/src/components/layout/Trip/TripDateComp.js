@@ -18,7 +18,7 @@ export default function TripDateComp(props) {
     let list = props.expenses.map(expense => {
       const getDate = getDateFormat(expense.date);
       if(getDate === props.date){
-        return <Expense expense={expense}/>
+        return <Expense handleViewChange={props.handleViewChange} expense={expense}/>
       }
     })
     return list

@@ -121,6 +121,17 @@ export default function CountryState(props) {
     }
   }
 
+  const editExpense = async (expense) => {
+    console.log(expense);
+    try {
+      await axios.put('http://localhost:4000/api/expense/', expense);
+      fetchCountries();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+
   const deleteExpense = async (countryID, categoryID, expenseID) => {
     try {
       await axios.delete('http://localhost:4000/api/expense/', { data: { countryID, categoryID, expenseID } } )
@@ -161,6 +172,7 @@ export default function CountryState(props) {
       getSelectedCountry,
       getSingleCategory,
       addExpense,
+      editExpense,
       deleteExpense
       }}>
       {props.children}

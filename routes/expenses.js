@@ -90,6 +90,8 @@ router.post('/country/add', [
     return res.status(400).json({errors: errors.array()});
   }
 
+  console.log(req.body);
+
   const { 
     countryID,
     categoryID, 
@@ -150,69 +152,97 @@ router.post('/country/add', [
   }
 })
 
-// delete item in expense
-router.delete('/', [ 
-  check('countryID', 'Please enter country ID').not().isEmpty(),
-  check('categoryID', 'Please enter categoryID').not().isEmpty(),
-  check('expenseID', 'Please enter expenseID').not().isEmpty()
-], async (req,res) => {
-  const errors = validationResult(req);
-  if(!errors) {
-    return res.status(400).json({errors: errors.array()});
-  }
-
-  const {countryID, categoryID, expenseID} = req.body;
-
-  try {
-    let country = await Country.findById(countryID);
-    if(!country) {
-      return res.status(400).json({error:'No country found'});
-    }
-
-    let category = country.categories.id(categoryID);
-    await category.expenses.id(expenseID).remove();
-    await country.save()
-
-    res.json({msg: country});
-
-  } catch (error) {
-    res.status(400).json({error});
-  }
-
-})
 
 // edit item in expense
 router.put('/',[
   check('countryID', 'Please enter country ID').not().isEmpty(),
   check('categoryID', 'Please enter categoryID').not().isEmpty(),
-  check('expenseID', 'Please enter expenseID').not().isEmpty(),
-  check('expenseName', 'Please enter expense name').not().isEmpty(),
-  check('expensePrice', 'Please enter expense price').not().isEmpty()
+  check('expenseID', 'Please enter expenseID').not().isEmpty()
 ], async (req,res) => {
+  
+  const { 
+    countryID,
+    categoryID,
+    expenseID, 
+    expenseName, 
+    expensePrice, 
+    baseCurrency, 
+    foreignCurrency,
+    methodOfPayment,
+    spread,
+    notes,
+    photo,
+    date} = req.body;
+    
+    try {
+      
+      // find country
+      let country = await Country.findById(countryID);
+      if(!country){
+        return res.status(400).json({errors: errors.array()});
+      }
+      
+      // find category
+      let category = country.categories.id(categoryID);
+      let expense = category.expenses.id(expenseID);
 
-  const {countryID, categoryID, expenseID, expenseName, expensePrice} = req.body;
+      // updates
+      if(expenseName) expense.name = expenseName;
+      if(methodOfPayment) expense.methodOfPayment = methodOfPayment;
+      if(spread) expense.spread = spread;
+      if(notes) expense.notes = notes;
+      if(photo) expense.photo = photo;
+      if(date) expense.date = date;
+      if(req.body.category) expense.category = req.body.category;
 
-  try {
+      if(expensePrice) {
+        const getCurrencyExchange = await axios(`https://api.exchangeratesapi.io/latest?base=${baseCurrency}&symbols=${baseCurrency},${foreignCurrency}`);
+        const foreignCurrencyRate = getCurrencyExchange.data.rates[foreignCurrency];
 
-    // find country
-    let country = await Country.findById(countryID);
-    if(!country){
+        const conversion = expensePrice / foreignCurrencyRate;
+        expense.price = conversion.toFixed(2);
+      }
+      
+      await country.save();
+      
+      res.json({msg: country});
+      
+    } catch (error) {
+      console.log(error);
+      res.status(400).json({error});
+    }
+  })
+
+
+  // delete item in expense
+  router.delete('/', [ 
+    check('countryID', 'Please enter country ID').not().isEmpty(),
+    check('categoryID', 'Please enter categoryID').not().isEmpty(),
+    check('expenseID', 'Please enter expenseID').not().isEmpty()
+  ], async (req,res) => {
+    const errors = validationResult(req);
+    if(!errors) {
       return res.status(400).json({errors: errors.array()});
     }
-
-    // find category
-    let category = country.categories.id(categoryID);
-    let expense = category.expenses.id(expenseID);
-    if(expenseName) expense.name = expenseName;
-    if(expensePrice) expense.price = expensePrice;
-    await country.save();
-
-    res.json({msg: country});
-    
-  } catch (error) {
-    console.log(error);
-    res.status(400).json({error});
-  }
-})
+  
+    const {countryID, categoryID, expenseID} = req.body;
+  
+    try {
+      let country = await Country.findById(countryID);
+      if(!country) {
+        return res.status(400).json({error:'No country found'});
+      }
+  
+      let category = country.categories.id(categoryID);
+      await category.expenses.id(expenseID).remove();
+      await country.save()
+  
+      res.json({msg: country});
+  
+    } catch (error) {
+      res.status(400).json({error});
+    }
+  
+  })
 
 module.exports = router;

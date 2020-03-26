@@ -380,6 +380,31 @@ img{
 .note-text{
   font-size:0.8em;
 }
+
+.payment-method {
+  background-color: var(--second-accent);
+  border-radius: 50%;
+  height: 80px;
+  width: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.selected-yellow-accent{
+  background-color: #e2bb2d;
+}
+
+.payment-method:hover{
+  background-color: #e2bb2d;
+}
+
+.payment-name{
+  margin:0;
+}
+
 /* plus button */
 
 .plus-btn-container{
