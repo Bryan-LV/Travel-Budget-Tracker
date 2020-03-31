@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import CountryContext from '../../context/countries/CountryContext'
 import Expense from '../helpers/Expense';
 import PlusBtn from '../UI/PlusBtn'
+import bin from '../../imgs/bin.png'
 
 export default function SingleCategory(props) {
   const context = useContext(CountryContext);
@@ -12,6 +13,11 @@ export default function SingleCategory(props) {
 
   const deleteExpense = (expenseID) => {
     context.deleteExpense(getCountry[0]._id, category._id, expenseID);
+  }
+
+  const deleteCategory = () => {
+    context.deleteCategory(getCountry[0]._id, category._id);
+    props.handleViewChange('categories')
   }
   
   const loadExpenses = () => {
@@ -27,7 +33,12 @@ export default function SingleCategory(props) {
   
   return (
     <div>
-      <h3 className="underLine white-text margin-left">{category.category}</h3>
+      <div className="flex space-between margin-sides">
+        <h3 className="underLine white-text">{category.category}</h3>
+        <div className="icon-container" onClick={deleteCategory}>
+          <img src={bin} alt="delete"/>
+        </div>
+      </div>
       <div className="expense-container">
         {loadExpenses()}
       </div>

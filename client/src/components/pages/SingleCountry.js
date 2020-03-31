@@ -24,10 +24,6 @@ export default function SingleCountry(props) {
     checkCountryIsSelected()
   }, [selectedCountry]);
 
-  const handleDelete = (countryID, categoryID) => {
-    context.deleteCategory(countryID, categoryID);
-  }
-
   const findTotalSpent = () => {
     const allExpenses = [];
     const getExpenses = country.categories.map(category => {

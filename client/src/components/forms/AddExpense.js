@@ -99,8 +99,8 @@ export default function AddExpense(props) {
     setIsSpreadExpense(!isSpreadExpense)
   }
   
-  const categoryField = isEditCategory ? <p className="input-style text-field" onClick={() => setIsEditCategory(!isEditCategory)}>{props.expense.category}</p> : (
-    <select value={category} onChange={(e) => setCategory(e.target.value)}>
+  const categoryField = isEditCategory ? <div><p className="input-style text-field">{props.expense.category}</p> <small onClick={() => setIsEditCategory(!isEditCategory)} className="underLine white-text">edit</small></div> : (
+    <select className="margin-btm" value={category} onChange={(e) => setCategory(e.target.value)}>
       {allCategories.map(category => <option value={category.category}>{category.category}</option> )}
     </select>
   );
@@ -124,7 +124,7 @@ export default function AddExpense(props) {
         {categoryField}
 
         <Label htmlFor="startDate">Date</Label>
-        <DatePicker className="input-styles" selected={startDate} onChange={date => setStartDate(date)} />
+        <DatePicker className="input-styles margin-btm" selected={startDate} onChange={date => setStartDate(date)} />
 
         <HollowButton onClick={handleSpreadToggle}>Spread over dates</HollowButton>
         {isSpreadExpense && endDateForm}
