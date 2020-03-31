@@ -66,4 +66,13 @@ export const Textarea = styled.textarea`
     min-height: 100px;
     padding: 5px;
     font-size: 1rem;
+    color: ${mediumBlue};
+
+    ::placeholder,
+    ::-webkit-input-placeholder {
+      color: ${lightBlue};
+    }
+    :-ms-input-placeholder {
+      color: ${lightBlue};
+    }
 `

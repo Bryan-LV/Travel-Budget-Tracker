@@ -42,8 +42,8 @@ export default function AddExpense(props) {
       paymentIcon = getPaymentIcon(method);
       const selectedMethod = method === paymentMethod ? 'selected-yellow-accent' : '';
       return (
-          <div className={`${selectedMethod} payment-method`} onClick={() => setPaymentMethod(method)}>
-            <div className="payment-icon" style={{width:'30px'}}>
+          <div className={`${selectedMethod} payment-method ${method === 'credit' ? 'margin-sides-5': ''}`} onClick={() => setPaymentMethod(method)}>
+            <div className="payment-icon" style={{width:'26px'}}>
               <img style={{maxWidth:'100%'}} src={paymentIcon} alt=""/>
             </div>
             <p className="payment-name">{method}</p>
@@ -99,7 +99,7 @@ export default function AddExpense(props) {
     setIsSpreadExpense(!isSpreadExpense)
   }
   
-  const categoryField = isEditCategory ? <div><p className="input-style text-field">{props.expense.category}</p> <small onClick={() => setIsEditCategory(!isEditCategory)} className="underLine white-text">edit</small></div> : (
+  const categoryField = isEditCategory ? <div> <p className="input-style text-field">{props.expense.category}</p> <small onClick={() => setIsEditCategory(!isEditCategory)} className="underLine white-text">edit</small></div> : (
     <select className="margin-btm" value={category} onChange={(e) => setCategory(e.target.value)}>
       {allCategories.map(category => <option value={category.category}>{category.category}</option> )}
     </select>
@@ -126,13 +126,19 @@ export default function AddExpense(props) {
         <Label htmlFor="startDate">Date</Label>
         <DatePicker className="input-styles margin-btm" selected={startDate} onChange={date => setStartDate(date)} />
 
-        <HollowButton onClick={handleSpreadToggle}>Spread over dates</HollowButton>
+        <HollowButton className="margin-btm" onClick={handleSpreadToggle}>Spread over dates</HollowButton>
         {isSpreadExpense && endDateForm}
 
-        <h4>Add Photo</h4>
-        <Textarea value={expense.notes} name="notes" onChange={(e) => setExpense({...expense, [e.target.name]: e.target.value})}></Textarea>
+        <Textarea className="margin-btm" value={expense.notes} name="notes" placeholder="Add a note..." onChange={(e) => setExpense({...expense, [e.target.name]: e.target.value})}></Textarea>
 
-        <Button onClick={submitExpense}>Add Expense</Button>
+        
+        {isEdit ? (
+          <div>
+            <Button>Save Edit</Button>
+            <Button>Delete Expense</Button>
+            <Button>Cancel</Button>
+          </div>) : <Button onClick={submitExpense}>Add Expense</Button>}
+
       </form>
     </div>
   )

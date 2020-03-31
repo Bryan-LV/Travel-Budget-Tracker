@@ -172,6 +172,11 @@ img{
   margin-right: 30px;
 }
 
+.margin-sides-5{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
 .padding-sides{
   padding-left: 30px;
   padding-right: 30px;
@@ -425,8 +430,8 @@ img{
 .payment-method {
   background-color: var(--second-accent);
   border-radius: 50%;
-  height: 80px;
-  width: 80px;
+  height: 65px;
+  width: 65px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -444,6 +449,7 @@ img{
 
 .payment-name{
   margin:0;
+  font-size:14px;
 }
 
 /* plus button */
