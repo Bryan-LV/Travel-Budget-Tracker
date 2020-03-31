@@ -4,30 +4,35 @@ import {Label, Button, Input, HollowButton, Textarea} from '../../styles/styles'
 import currencies from '../../helpers/currencies'
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import cash from '../../imgs/money.png';
-import credit from '../../imgs/credit-card.png';
-import debt from '../../imgs/debt.png';
 import getPaymentIcon from '../../helpers/getPaymentIcon';
+import toTitleCase from '../../helpers/ToTitleCase';
 
 export default function AddExpense(props) {
-  const [expense, setExpense] = useState({})
-
+  const [expense, setExpense] = useState({name: '', price: '', category:'', spread: 0, notes:''}) 
   const [isSpreadExpense, setIsSpreadExpense] = useState(false);
-
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-
   const [paymentMethod, setPaymentMethod] = useState('');
+  const [isEdit, setIsEdit] = useState(false);
+  const [isEditCategory, setIsEditCategory] = useState(false);
+  const [category, setCategory] = useState('');
 
   const context = useContext(CountryContext);
-  const [category] =  context.selectedCategory;
+  const [country] = context.selectedCountry;
+  const allCategories = country.categories.map(category => category);
+  const endDateForm = <DatePicker selected={endDate} onChange={date => setEndDate(date)} />
 
+  useEffect(() => {
+    if(props.expense && Object.keys(props.expense).length !== 0){
+      setExpense(props.expense);
+      setPaymentMethod(props.expense.methodOfPayment)
+      setIsEdit(!isEdit);
+      setIsEditCategory(!isEditCategory);
+    }
+  }, [])
+  
   const handleExpenseChange = (e) => {
     setExpense({...expense, [e.target.name]: e.target.value});
-  }
-
-  const handlePaymentMethod = (method) => {
-    setPaymentMethod(method);
   }
 
   const createPaymentBtns = () => {
@@ -37,7 +42,7 @@ export default function AddExpense(props) {
       paymentIcon = getPaymentIcon(method);
       const selectedMethod = method === paymentMethod ? 'selected-yellow-accent' : '';
       return (
-          <div className={`${selectedMethod} payment-method`} onClick={() => handlePaymentMethod(method)}>
+          <div className={`${selectedMethod} payment-method`} onClick={() => setPaymentMethod(method)}>
             <div className="payment-icon" style={{width:'30px'}}>
               <img style={{maxWidth:'100%'}} src={paymentIcon} alt=""/>
             </div>
@@ -58,14 +63,16 @@ export default function AddExpense(props) {
     e.preventDefault();
 
     if(expense.name !== '' && expense.price !== 0){
+      const [categoryID] = allCategories.filter(category => category.category.toLowerCase() === expense.category.toLowerCase())
+
       const expensePayload = {
         expenseName: expense.name,
         expensePrice: expense.price,
         countryID: context.selectedCountry[0]._id,
-        categoryID: category._id,
+        categoryID: categoryID,
         baseCurrency: context.selectedCountry[0].baseCurrency,
         foreignCurrency: getForeignCurrency(),
-        category: expense.category,
+        category: category,
         methodOfPayment: paymentMethod,
         spread:expense.spread,
         notes: expense.notes,
@@ -87,30 +94,19 @@ export default function AddExpense(props) {
     }
   }
 
-  const endDateForm = <DatePicker selected={endDate} onChange={date => setEndDate(date)} />
-
   const handleSpreadToggle = (e) => {
     e.preventDefault();
     setIsSpreadExpense(!isSpreadExpense)
   }
-
-  useEffect(() => {
-    if(Object.keys(props.expense).length !== 0){
-      setExpense(props.expense);
-      setPaymentMethod(props.expense.methodOfPayment)
-    } else {
-      setExpense({
-        name: '',
-        price: '',
-        category:'',
-        spread: 0,
-        notes:''
-      })
-    }
-  }, [])
+  
+  const categoryField = isEditCategory ? <p className="input-style text-field" onClick={() => setIsEditCategory(!isEditCategory)}>{props.expense.category}</p> : (
+    <select value={category} onChange={(e) => setCategory(e.target.value)}>
+      {allCategories.map(category => <option value={category.category}>{category.category}</option> )}
+    </select>
+  );
 
   return (
-    <div>
+    <div className="form padding-sides border-radius-top">
     <h3 className="underLine white-text">Add Expense</h3>
     <form>
         <Label htmlFor="name">Expense name</Label>
@@ -120,15 +116,15 @@ export default function AddExpense(props) {
         <Input type="text" value={expense.price} name="price" id="price" onChange={(e) => handleExpenseChange(e)}/>
 
         <Label htmlFor="methodOfPayment">Method of payment</Label>
-        <div className="flex">
+        <div className="flex margin-btm">
           {createPaymentBtns()}
         </div>
 
         <Label htmlFor="category">Category</Label>
-        <Input type="text" value={expense.category} name="category" id="category" onChange={(e) => handleExpenseChange(e)}/>
+        {categoryField}
 
         <Label htmlFor="startDate">Date</Label>
-        <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
+        <DatePicker className="input-styles" selected={startDate} onChange={date => setStartDate(date)} />
 
         <HollowButton onClick={handleSpreadToggle}>Spread over dates</HollowButton>
         {isSpreadExpense && endDateForm}

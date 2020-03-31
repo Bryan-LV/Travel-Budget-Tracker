@@ -155,6 +155,11 @@ export default function CountryState(props) {
     dispatch({type: 'GET_CATEGORY', payload: category})
   }
 
+   // get single category from expense obj
+   const getCategoryFromExpense = (category) => {
+    dispatch({type: 'GET_CATEGORY', payload: category})
+  }
+
   return (
     <CountryContext.Provider value={{
       countries: state.countries,
@@ -173,7 +178,8 @@ export default function CountryState(props) {
       getSingleCategory,
       addExpense,
       editExpense,
-      deleteExpense
+      deleteExpense,
+      getCategoryFromExpense
       }}>
       {props.children}
     </CountryContext.Provider>

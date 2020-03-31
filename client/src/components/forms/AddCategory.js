@@ -19,7 +19,7 @@ export default function AddCategory(props) {
   }
 
   return (
-    <form>
+    <form className="form padding-sides border-radius-top"> 
       <Label htmlFor="category">Category</Label>
       <Input type="text" value={category} name="category" onChange={(e) => setCategory(e.target.value)}/>
       <Button onClick={addNewCategory}>Add Category</Button>

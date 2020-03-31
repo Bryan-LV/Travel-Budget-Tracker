@@ -14,26 +14,29 @@ export default function AddTrip(props) {
   })
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [file, setFile] = useState('');
 
   const handleChange = (e) => {
     setTrip({...trip, [e.target.name]: e.target.value});
   }
 
   const handlePhotoSubmit = (e) => {
-    e.preventDefault();
+    setFile(e.target.files[0]);
+
   }
   
   const handleTripSubmit = (e) => {
     e.preventDefault()
-    const tripObj = {...trip, startDate, endDate };
+    const formData = new FormData();
+    formData.append('photo', file);
+    const tripObj = {...trip, startDate, endDate, file };
     context.addCountry(tripObj);
   }
-  
 
   return (
     <div>
       <Topbar title="New Trip"/>
-      <form className="container-fluid bg-accent border-radius-top">
+      <form className="container-fluid bg-accent border-radius-top" onSubmit={handleTripSubmit}>
         <Label htmlFor="trip name">Trip Name</Label>
         <Input type="text" name="name" onChange={handleChange}/>
         <Label htmlFor="base currency">Base Currency</Label>
@@ -44,8 +47,8 @@ export default function AddTrip(props) {
         <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
         <Label htmlFor="end">End Date</Label>
         <DatePicker selected={endDate} onChange={date => setEndDate(date)} />
-        <HollowButton onClick={handlePhotoSubmit}>Add Photo</HollowButton>
-        <Button className="container" onClick={handleTripSubmit}>Add Trip</Button>
+        <input type="file" name="photo" onChange={handlePhotoSubmit}/>
+        <Button className="container">Add Trip</Button>
       </form>
     </div>
   )

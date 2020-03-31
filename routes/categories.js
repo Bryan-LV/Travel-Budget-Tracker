@@ -42,10 +42,12 @@ router.post('/', [
     return res.status(400).json({errors: errors.array()});
   }
 
+  const {categoryName} = req.body;
   try {
     const category = {
-      category: req.body.categoryName
+      category: categoryName
     }
+    
     let country = await Country.findOneAndUpdate({_id: req.body.countryID}, { $push: {categories: category}});
     await country.save();
     res.json({msg: country});

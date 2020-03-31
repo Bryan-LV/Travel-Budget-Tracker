@@ -10,7 +10,11 @@ const lightBlue = '#3E465D';
 
 // Forms
 export const Label = styled.label`
-
+    font-weight: bold;
+    font-size: 0.9rem;
+    display: block;
+    padding-bottom: 4px;
+    color: ${lightBlue};
 `
 
 export const Input = styled.input`
@@ -20,6 +24,9 @@ export const Input = styled.input`
   outline:none;
   height:30px;
   display: block;
+  margin-bottom:10px;
+  color:${lightBlue};
+  font-weight: 500;
 `
 
 export const Button = styled.button`

@@ -4,6 +4,11 @@ const User = require('../models/user');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const authToken = require('../middleware/authToken');
+const fileUpload = require('express-fileupload');
+
+router.use(fileUpload({
+  limits: { fileSize: 50 * 1024 * 1024 }
+}))
 
 // get all users countries
 router.get('/', authToken ,async (req,res) => {
@@ -11,6 +16,15 @@ router.get('/', authToken ,async (req,res) => {
     // map through 
     let country = await Country.find({user:req.userID});
     res.json(country);
+  } catch (error) {
+    res.status(400).json({error});
+  }
+})
+
+router.post('/uploadImg', async (req,res) => {
+  console.log(req.files);
+  try {
+    res.send('upload img route')
   } catch (error) {
     res.status(400).json({error});
   }
@@ -24,7 +38,7 @@ router.post('/', [
   check('budget', 'please enter a budget').not().isEmpty(),
   check('startDate', 'please enter a start date').not().isEmpty(),
 ], async (req,res) => {
-  console.log(req.body);
+
   const errors = validationResult(req);
   if(!errors) {
     return res.status(400).json({errors: errors.array()});
@@ -40,7 +54,7 @@ router.post('/', [
     };
 
     if(req.body.endDate) countryObj.endDate = req.body.endDate;
-    if(req.body.photo) countryObj.photo = req.body.photo;
+    // if(req.files.photo) countryObj.photo = req.files.photo;
 
     let country = new Country(countryObj)
     
