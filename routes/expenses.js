@@ -90,8 +90,6 @@ router.post('/country/add', [
     return res.status(400).json({errors: errors.array()});
   }
 
-  console.log(req.body);
-
   const { 
     countryID,
     categoryID, 
@@ -118,6 +116,7 @@ router.post('/country/add', [
     const expenseObj = {
       name: expenseName,
       price: conversion.toFixed(2),
+      foreignPrice: expensePrice,
       category: category
     }
 
@@ -154,7 +153,7 @@ router.post('/country/add', [
 
 
 // edit item in expense
-router.put('/',[
+router.put('/country/edit',[
   check('countryID', 'Please enter country ID').not().isEmpty(),
   check('categoryID', 'Please enter categoryID').not().isEmpty(),
   check('expenseID', 'Please enter expenseID').not().isEmpty()
@@ -171,7 +170,6 @@ router.put('/',[
     methodOfPayment,
     spread,
     notes,
-    photo,
     date} = req.body;
     
     try {
@@ -191,7 +189,6 @@ router.put('/',[
       if(methodOfPayment) expense.methodOfPayment = methodOfPayment;
       if(spread) expense.spread = spread;
       if(notes) expense.notes = notes;
-      if(photo) expense.photo = photo;
       if(date) expense.date = date;
       if(req.body.category) expense.category = req.body.category;
 

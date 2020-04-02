@@ -16,12 +16,12 @@ const countries = Schema({
       expenses: [{
         name: { type:String },
         price: { type: Number },
+        foreignPrice: {type: Number},
         date: {type: Date, default: new Date()},
         methodOfPayment: {type:String},
         category:{type:String},
         spread:{type:Number},
-        notes:{type:String},
-        photo:{type:String}
+        notes:{type:String}
       }
       ]
     }

@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect} from 'react'
 import AuthContext from '../../context/auth/AuthContext';
-import { Link } from 'react-router-dom';
+import {Label, Input, Button} from '../../styles/styles';
 
 function Register(props) {
   const [user, setUser] = useState({
@@ -43,27 +43,30 @@ function Register(props) {
    
 
   return (
-    <form onSubmit={handleSubmit} className="container max-container-5">
+    <form onSubmit={handleSubmit} className="container-fluid landing-forms max-container-5">
+      <h2 className="white-text underLine">Register</h2>
+      <div className="margin-sides">
       <div className="form-group">
-        <label htmlFor="name">Name</label>
-        <input type="text" value={user.name} name="name" onChange={handleChange} required/>
+        <Label htmlFor="name">Name</Label>
+        <Input type="text" value={user.name} name="name" onChange={handleChange} required/>
       </div>
       <div className="form-group">
-        <label htmlFor="email">Email</label>
-        <input type="text" value={user.email} name="email" onChange={handleChange} required/>
+        <Label htmlFor="email">Email</Label>
+        <Input type="text" value={user.email} name="email" onChange={handleChange} required/>
       </div>
       <div className="form-group">
-        <label htmlFor="password">Password</label>
-        <input type="text" value={user.password} name="password" onChange={handleChange} required/>
+        <Label htmlFor="password">Password</Label>
+        <Input type="text" value={user.password} name="password" onChange={handleChange} required/>
       </div>
       <div className="form-group">
-        <label htmlFor="passwordCheck">PasswordCheck</label>
-        <input type="text" value={user.passwordCheck} name="passwordCheck" onChange={handleChange} required/>
+        <Label htmlFor="passwordCheck">PasswordCheck</Label>
+        <Input type="text" value={user.passwordCheck} name="passwordCheck" onChange={handleChange} required/>
       </div>
-      <button type="submit">Create User Account</button>
-      <p>
-        <Link to="/">Already have an account?</Link>
-      </p>
+      <Button type="submit">Create User Account</Button>
+      <div>
+        <p className="underLine-black" onClick={props.toggleForms}>Already have an account?</p>
+      </div>
+      </div>
     </form>
   )
 }

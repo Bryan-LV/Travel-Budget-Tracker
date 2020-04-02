@@ -1,9 +1,17 @@
-import React from 'react'
+import React, {useEffect, useContext} from 'react'
+import CountryContext from '../../../context/countries/CountryContext';
 import months from '../../../helpers/months'
 import TripDateComp from './TripDateComp';
 import PlusBtn from '../../UI/PlusBtn'
 
 export default function TripExpensesByDate(props) {
+  const context = useContext(CountryContext);
+  useEffect(() => {
+    if(context.selectedCategory !== null){
+      context.resetSelectedCategory();
+    }
+  }, [])
+
   const getAllExpenses = props.country.categories.map(category => category.expenses);
   let expenseList = [];
   for (let i = 0; i < getAllExpenses.length; i++) {

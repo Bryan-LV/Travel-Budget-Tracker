@@ -72,8 +72,9 @@ img{
 
 .input-style{
   border:none;
+  margin-bottom:10px;
   border-radius:4px;
-  padding-left:5px;
+  padding: 10px 10px 10px 5px;
   outline:none;
   display: block;
   color:var(--light-blue);
@@ -123,11 +124,23 @@ img{
   border-radius:0 0 20px 20px;
 }
 
-.underLine{
+.underLine, .underLine-black{
   position: relative;
   display: inline-block;
   cursor: pointer;
 }
+
+.underLine-black::after{
+  content:'';
+  display: block;
+  width:100%;
+  position: absolute;
+  bottom:-4px;
+  right:0;
+  height:2px;
+  background-color: var(--dark-blue);
+}
+
 
 .underLine::after{
   content:'';
@@ -192,6 +205,10 @@ img{
 
 .margin-btm{
   margin-bottom: 10px;
+}
+
+.margin-top{
+  margin-top: 10xp;
 }
 
 .flex{
@@ -259,6 +276,12 @@ img{
   background: var(--accent);
 }
 
+.landing-forms{
+    background-color: #59E8AC;
+    padding-top: 10vh;
+    padding-bottom: 10vh;
+}
+
 /* top bar */
 .topbar{
   display: flex;
@@ -269,6 +292,7 @@ img{
 .backArrow{
   width:40px;
   height:40px;
+  cursor: pointer;
 }
 
 .backArrow-icon{
@@ -305,6 +329,10 @@ img{
   .trip-box-wrapper{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .top-layer{
+    top:-8vh;
   }
 }
 
@@ -416,6 +444,23 @@ img{
   justify-content: space-between;
   align-items: center;
   color: white;
+}
+
+.selectElm{
+  display: inline-block;
+	font-size: 14px;
+	font-family: sans-serif;
+  color: #444;
+	line-height: 1.3;
+	padding: .6em 1.4em .5em .8em;
+	max-width: 100%;
+	box-sizing: border-box;
+	margin: 0;
+	border-radius: 4px;
+	-moz-appearance: none;
+	-webkit-appearance: none;
+	appearance: none;
+	background-color: #fff;
 }
 
 .icon-container{

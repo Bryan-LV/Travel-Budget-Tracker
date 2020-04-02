@@ -4,41 +4,43 @@ import TripCategories from './TripCategories';
 import TripExpensesByDate from './TripExpensesByDate';
 import SingleCategory from '../../pages/SingleCategory'
 import AddExpense from '../../forms/AddExpense';
+// import EditExpense from '../../forms/EditExpense';
 import AddCategory from '../../forms/AddCategory';
 import SingleExpense from './SingleExpense';
 
 export default function TripBottom(props) {
   const [view, setView] = useState('categories');
-  const [history, setHistory] = useState([]);
-  const [expense, setExpense] = useState({});
+  const [expense, setExpense] = useState(null);
 
   const handleViewChange = (newView, payload) => {
     if(payload){
       setExpense(payload);
     }
-    setHistory(prevView => [...prevView, newView]);
     setView(newView)
   }
   
   const View = () => {
     if(view === 'categories'){
-      return <TripCategories handleViewChange={handleViewChange} country={props.country} history={history}/>
+      return <TripCategories handleViewChange={handleViewChange} country={props.country}/>
     }
     if(view === 'date'){
-      return <TripExpensesByDate handleViewChange={handleViewChange} country={props.country} history={history}/>
+      return <TripExpensesByDate handleViewChange={handleViewChange} country={props.country}/>
     }
     if(view === 'singlecategory'){
-      return <SingleCategory handleViewChange={handleViewChange}  history={history}/>
+      return <SingleCategory handleViewChange={handleViewChange} />
     }
     if(view  === 'singleexpense'){
       return <SingleExpense expense={expense} handleViewChange={handleViewChange}/>
     }
     if(view === 'addcategory'){
-      return <AddCategory history={history}/>
+      return <AddCategory/>
     }
     if(view === 'addexpense'){
-      return <AddExpense history={history} expense={expense}/>
+      return <AddExpense/>
     }
+    // if(view === 'editexpense'){
+    //   return <EditExpense expense={expense}/>
+    // }
   }
   
   const underLineCategory = view === 'categories' ? 'underLine': '';

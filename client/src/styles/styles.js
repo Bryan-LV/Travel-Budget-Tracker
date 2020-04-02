@@ -14,6 +14,7 @@ export const Label = styled.label`
     font-size: 0.9rem;
     display: block;
     padding-bottom: 4px;
+    margin-top:10px;
     color: ${lightBlue};
 `
 
@@ -25,8 +26,8 @@ export const Input = styled.input`
   height:30px;
   display: block;
   margin-bottom:10px;
-  color:${lightBlue};
-  font-weight: 500;
+  font-size: 12px;
+  font-family: sans-serif;
 `
 
 export const Button = styled.button`
@@ -35,6 +36,10 @@ export const Button = styled.button`
   color: ${props => props.color || lightBlue};
   font-size:1.25rem;
   border-radius:4px;
+  display:block;
+  width:100%;
+  margin:5px 0;
+  cursor:pointer;
 `
 
 export const HollowButton = styled.button`

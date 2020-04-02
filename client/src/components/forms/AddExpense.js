@@ -1,36 +1,37 @@
 import React, {useState, useContext, useEffect} from 'react'
 import CountryContext from '../../context/countries/CountryContext';
 import {Label, Button, Input, HollowButton, Textarea} from '../../styles/styles'
-import currencies from '../../helpers/currencies'
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import getPaymentIcon from '../../helpers/getPaymentIcon';
 import toTitleCase from '../../helpers/ToTitleCase';
+import getForeignCurrency from '../../helpers/getForeignCurrency';
+
 
 export default function AddExpense(props) {
-  const [expense, setExpense] = useState({name: '', price: '', category:'', spread: 0, notes:''}) 
+  const context = useContext(CountryContext);
+  const [country] = context.selectedCountry;
+  const allCategories = country.categories.map(category => category);
+  let category = null;
+
+  const [expense, setExpense] = useState({name: '', price: '', category: allCategories[0].category, spread: 0, notes:''}) 
   const [isSpreadExpense, setIsSpreadExpense] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [paymentMethod, setPaymentMethod] = useState('');
-  const [isEdit, setIsEdit] = useState(false);
-  const [isEditCategory, setIsEditCategory] = useState(false);
-  const [category, setCategory] = useState('');
 
-  const context = useContext(CountryContext);
-  const [country] = context.selectedCountry;
-  const allCategories = country.categories.map(category => category);
-  const endDateForm = <DatePicker selected={endDate} onChange={date => setEndDate(date)} />
+  const getCategory = () => {
+    const [category] = allCategories.filter(item => item.category === expense.category)
+    return category;
+  }
 
   useEffect(() => {
-    if(props.expense && Object.keys(props.expense).length !== 0){
-      setExpense(props.expense);
-      setPaymentMethod(props.expense.methodOfPayment)
-      setIsEdit(!isEdit);
-      setIsEditCategory(!isEditCategory);
-    }
+      if(context.selectedCategory !== null){
+        category = context.selectedCategory[0];
+        setExpense({...expense, category: context.selectedCategory[0].category });
+      }
   }, [])
-  
+
   const handleExpenseChange = (e) => {
     setExpense({...expense, [e.target.name]: e.target.value});
   }
@@ -52,68 +53,48 @@ export default function AddExpense(props) {
   })
     return list
   }
-  
-  const getForeignCurrency = () => {
-    const selectedCountry = context.selectedCountry[0].name.toLowerCase();
-    const findCurrency = currencies.filter(country => country.countryName.toLowerCase() === selectedCountry);
-    return findCurrency[0].currencyCode;
-  }
 
   const submitExpense = (e) => {
     e.preventDefault();
 
-    if(expense.name !== '' && expense.price !== 0){
-      const [categoryID] = allCategories.filter(category => category.category.toLowerCase() === expense.category.toLowerCase())
+    if(category === null){
+      category = getCategory();
+    }
 
+    if(expense.name !== '' && expense.price !== 0){
       const expensePayload = {
-        expenseName: expense.name,
+        expenseName: toTitleCase(expense.name),
         expensePrice: expense.price,
         countryID: context.selectedCountry[0]._id,
-        categoryID: categoryID,
+        categoryID: category._id,
         baseCurrency: context.selectedCountry[0].baseCurrency,
-        foreignCurrency: getForeignCurrency(),
-        category: category,
+        foreignCurrency: getForeignCurrency(context.selectedCountry[0].name),
+        category: expense.category,
         methodOfPayment: paymentMethod,
         spread:expense.spread,
         notes: expense.notes,
         date: startDate
       }
 
-      if(Object.keys(props.expense).length !== 0){
-        expensePayload.expenseID = props.expense._id;
-        context.editExpense(expensePayload)
-      } else {
-        context.addExpense(expensePayload);
-      }
-      
-      setExpense({
-        name: '',
-        price: '',
-        category:''
-      })
-    }
+      context.addExpense(expensePayload);
+      setExpense({name: '', price: '', category:'', spread: 0, notes:''});
   }
+}
 
   const handleSpreadToggle = (e) => {
     e.preventDefault();
     setIsSpreadExpense(!isSpreadExpense)
   }
-  
-  const categoryField = isEditCategory ? <div> <p className="input-style text-field">{props.expense.category}</p> <small onClick={() => setIsEditCategory(!isEditCategory)} className="underLine white-text">edit</small></div> : (
-    <select className="margin-btm" value={category} onChange={(e) => setCategory(e.target.value)}>
-      {allCategories.map(category => <option value={category.category}>{category.category}</option> )}
-    </select>
-  );
 
   return (
     <div className="form padding-sides border-radius-top">
     <h3 className="underLine white-text">Add Expense</h3>
     <form>
         <Label htmlFor="name">Expense name</Label>
-        <Input type="text" value={expense.name} name="name" id="name" onChange={(e) => handleExpenseChange(e)}/>
+        <Input type="text" value={expense.name} name="name" id="name" onChange={handleExpenseChange}/>
 
         <Label htmlFor="price">Price</Label>
-        <Input type="text" value={expense.price} name="price" id="price" onChange={(e) => handleExpenseChange(e)}/>
+        <Input type="number" value={expense.price} name="price" id="price" onChange={handleExpenseChange}/>
 
         <Label htmlFor="methodOfPayment">Method of payment</Label>
         <div className="flex margin-btm">
@@ -121,24 +102,23 @@ export default function AddExpense(props) {
         </div>
 
         <Label htmlFor="category">Category</Label>
-        {categoryField}
+        <select 
+          className="margin-btm input-style selectElm"
+          name="category" 
+          value={expense.category} 
+          onChange={handleExpenseChange}>
+          {allCategories.map(category => <option value={category.category}>{category.category}</option> )}
+        </select>
 
         <Label htmlFor="startDate">Date</Label>
-        <DatePicker className="input-styles margin-btm" selected={startDate} onChange={date => setStartDate(date)} />
+        <DatePicker className="input-style" selected={startDate} onChange={date => setStartDate(date)} />
 
         <HollowButton className="margin-btm" onClick={handleSpreadToggle}>Spread over dates</HollowButton>
-        {isSpreadExpense && endDateForm}
+        {isSpreadExpense && <DatePicker className="input-style" selected={endDate} onChange={date => setEndDate(date)} />}
 
-        <Textarea className="margin-btm" value={expense.notes} name="notes" placeholder="Add a note..." onChange={(e) => setExpense({...expense, [e.target.name]: e.target.value})}></Textarea>
-
+        <Textarea className="margin-btm" value={expense.notes} name="notes" placeholder="Add a note..." onChange={handleExpenseChange}></Textarea>
         
-        {isEdit ? (
-          <div>
-            <Button>Save Edit</Button>
-            <Button>Delete Expense</Button>
-            <Button>Cancel</Button>
-          </div>) : <Button onClick={submitExpense}>Add Expense</Button>}
-
+        <Button onClick={submitExpense}>Add Expense</Button>
       </form>
     </div>
   )

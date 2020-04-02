@@ -19,7 +19,6 @@ function App(props) {
           {props.location.pathname === "/home" && <Navbar/> }
             <Switch>
               <Route exact path="/" component={Landing}/>
-              <Route exact path="/register" component={Register}/>
               <Route exact path="/home" component={Home}/>
               <Route exact path="/addtrip" component={AddTrip}/>
               <Route exact path="/home/:trip" component={SingleCountry}/>

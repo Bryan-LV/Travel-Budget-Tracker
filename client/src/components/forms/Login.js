@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect} from 'react'
 import AuthContext from '../../context/auth/AuthContext';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import {Label, Input, Button} from '../../styles/styles';
 
 function Login(props) {
   const [user, setUser] = useState({email: '', password: ''});
@@ -29,19 +30,22 @@ function Login(props) {
   
 
   return (
-    <form onSubmit={handleSubmit} className="container max-container-5">
+    <form onSubmit={handleSubmit} className="container-fluid max-container-5 landing-forms">
+    <h2 className="underline white-text margin-left">Login</h2>
+     <div className="margin-sides">
       <div className="form-group">
-        <label htmlFor="email">Email</label>
-        <input type="text" name="email" value={user.email} onChange={handleChange} required/>
-      </div>
-      <div className="form-group">
-        <label htmlFor="password">Password</label>
-        <input type="text" name="password" value={user.password} onChange={handleChange} required/>
-      </div>
-      <button type="submit">Log in</button>
-      <p>
-        <Link to="/register">Create an account</Link>
-      </p>
+          <Label htmlFor="email">Email</Label>
+          <Input type="text" name="email" value={user.email} onChange={handleChange} required/>
+        </div>
+        <div className="form-group">
+          <Label htmlFor="password">Password</Label>
+          <Input type="text" name="password" value={user.password} onChange={handleChange} required/>
+        </div>
+        <Button type="submit">Log in</Button>
+        <div>
+          <p className="underLine-black" onClick={props.toggleForms}>Create an account</p>
+        </div>
+     </div>
     </form>
   )
 }

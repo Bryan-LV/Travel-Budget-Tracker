@@ -3,7 +3,7 @@ import CountryContext from '../../../context/countries/CountryContext';
 import { withRouter } from 'react-router-dom';
 import PlusBtn from '../../UI/PlusBtn'
 
-function TripCategories({country, history, handleViewChange}) {
+function TripCategories({country, handleViewChange}) {
   const context = useContext(CountryContext);
 
 
@@ -31,7 +31,6 @@ function TripCategories({country, history, handleViewChange}) {
                   <h3 className="white-text">{category.category}</h3>
                 </div>
                 <h3 className="white-text secondary-font category-total">${result}</h3>
-                {/* <button onClick={() => handleDelete(country._id, category._id)}>Delete Category</button> */}
               </div> )
     })
     return categoriesList;

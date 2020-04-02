@@ -114,7 +114,7 @@ export default function CountryState(props) {
 
   // add new expense to category
   const addExpense = async (expense) => {
-
+    console.log(expense);
     try {
       await axios.post('http://localhost:4000/api/expense/country/add', expense);
       fetchCountries()
@@ -126,7 +126,7 @@ export default function CountryState(props) {
   const editExpense = async (expense) => {
     console.log(expense);
     try {
-      await axios.put('http://localhost:4000/api/expense/', expense);
+      await axios.put('http://localhost:4000/api/expense/country/edit', expense);
       fetchCountries();
     } catch (error) {
       console.log(error);
@@ -135,6 +135,7 @@ export default function CountryState(props) {
   
 
   const deleteExpense = async (countryID, categoryID, expenseID) => {
+    console.log(countryID, categoryID, expenseID);
     try {
       await axios.delete('http://localhost:4000/api/expense/', { data: { countryID, categoryID, expenseID } } )
       fetchCountries();
@@ -157,6 +158,11 @@ export default function CountryState(props) {
     dispatch({type: 'GET_CATEGORY', payload: category})
   }
 
+  // reset selected category context
+  const resetSelectedCategory = () => {
+    dispatch({type:'RESET_CATEGORY'})
+  }
+  
    // get single category from expense obj
    const getCategoryFromExpense = (category) => {
     dispatch({type: 'GET_CATEGORY', payload: category})
@@ -178,6 +184,7 @@ export default function CountryState(props) {
       deleteCategory,
       getSelectedCountry,
       getSingleCategory,
+      resetSelectedCategory,
       addExpense,
       editExpense,
       deleteExpense,

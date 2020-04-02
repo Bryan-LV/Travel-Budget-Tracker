@@ -36,20 +36,22 @@ export default function AddTrip(props) {
   return (
     <div>
       <Topbar title="New Trip"/>
-      <form className="container-fluid bg-accent border-radius-top" onSubmit={handleTripSubmit}>
-        <Label htmlFor="trip name">Trip Name</Label>
-        <Input type="text" name="name" onChange={handleChange}/>
-        <Label htmlFor="base currency">Base Currency</Label>
-        <Input type="text" name="baseCurrency" onChange={handleChange}/>
-        <Label htmlFor="budget">Budget</Label>
-        <Input type="number" name="budget" onChange={handleChange}/>
-        <Label htmlFor="start">Start Date</Label>
-        <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
-        <Label htmlFor="end">End Date</Label>
-        <DatePicker selected={endDate} onChange={date => setEndDate(date)} />
-        <input type="file" name="photo" onChange={handlePhotoSubmit}/>
-        <Button className="container">Add Trip</Button>
-      </form>
+      <div className="container-fluid bg-accent border-radius-top">
+        <form className="margin-sides" onSubmit={handleTripSubmit}>
+          <Label htmlFor="trip name">Trip Name</Label>
+          <Input type="text" name="name" onChange={handleChange}/>
+          <Label htmlFor="base currency">Base Currency</Label>
+          <Input type="text" name="baseCurrency" onChange={handleChange}/>
+          <Label htmlFor="budget">Budget</Label>
+          <Input type="number" name="budget" onChange={handleChange}/>
+          <Label htmlFor="start">Start Date</Label>
+          <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
+          <Label htmlFor="end">End Date</Label>
+          <DatePicker selected={endDate} onChange={date => setEndDate(date)} />
+          <input type="file" name="photo" onChange={handlePhotoSubmit}/>
+          <Button className="container">Add Trip</Button>
+        </form>
+      </div>
     </div>
   )
 }
