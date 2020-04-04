@@ -186,6 +186,7 @@ router.put('/country/edit',[
 
       // updates
       if(expenseName) expense.name = expenseName;
+      if(expensePrice) expense.foreignPrice = expensePrice;
       if(methodOfPayment) expense.methodOfPayment = methodOfPayment;
       if(spread) expense.spread = spread;
       if(notes) expense.notes = notes;

@@ -27,7 +27,7 @@ export default function SingleExpense(props) {
       <div className="flex space-between">
         <h3 className="underLine">Expense</h3>
         <div className="icon-container" >
-          <img style={{maxWidth:'80%'}} src={edit} alt="" onClick={() => props.handleViewChange('addexpense', props.expense)}/>
+          <img style={{maxWidth:'80%'}} src={edit} alt="" onClick={() => props.handleViewChange('editexpense', props.expense)}/>
         </div>
       </div>
       <p className="full-width-underline">{formatedDate}</p>

@@ -18,6 +18,7 @@ const countries = Schema({
         price: { type: Number },
         foreignPrice: {type: Number},
         date: {type: Date, default: new Date()},
+        endDate:{type: Date},
         methodOfPayment: {type:String},
         category:{type:String},
         spread:{type:Number},

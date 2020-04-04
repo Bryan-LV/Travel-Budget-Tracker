@@ -61,7 +61,7 @@ export default function AddExpense(props) {
       category = getCategory();
     }
 
-    if(expense.name !== '' && expense.price !== 0){
+    if(expense.name !== '' && expense.price !== 0 && paymentMethod !== ''){
       const expensePayload = {
         expenseName: toTitleCase(expense.name),
         expensePrice: expense.price,

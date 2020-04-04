@@ -4,7 +4,7 @@ import TripCategories from './TripCategories';
 import TripExpensesByDate from './TripExpensesByDate';
 import SingleCategory from '../../pages/SingleCategory'
 import AddExpense from '../../forms/AddExpense';
-// import EditExpense from '../../forms/EditExpense';
+import EditExpense from '../../forms/EditExpense';
 import AddCategory from '../../forms/AddCategory';
 import SingleExpense from './SingleExpense';
 
@@ -13,6 +13,10 @@ export default function TripBottom(props) {
   const [expense, setExpense] = useState(null);
 
   const handleViewChange = (newView, payload) => {
+
+    if(payload === ''){
+      setExpense(null);
+    }
     if(payload){
       setExpense(payload);
     }
@@ -38,9 +42,9 @@ export default function TripBottom(props) {
     if(view === 'addexpense'){
       return <AddExpense/>
     }
-    // if(view === 'editexpense'){
-    //   return <EditExpense expense={expense}/>
-    // }
+    if(view === 'editexpense'){
+      return <EditExpense expense={expense} handleViewChange={handleViewChange}/>
+    }
   }
   
   const underLineCategory = view === 'categories' ? 'underLine': '';
