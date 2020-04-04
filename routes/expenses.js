@@ -102,7 +102,8 @@ router.post('/country/add', [
     spread,
     notes,
     photo,
-    date} = req.body;
+    date,
+    endDate} = req.body;
 
   const stringifyCategoryID = JSON.stringify(categoryID);
 
@@ -125,6 +126,7 @@ router.post('/country/add', [
     if(notes) expenseObj.notes = notes;
     if(photo) expenseObj.photo = photo;
     if(date) expenseObj.date = date
+    if(endDate) expenseObj.endDate = endDate
 
     // find country
     let country = await Country.findById(countryID);
@@ -170,7 +172,8 @@ router.put('/country/edit',[
     methodOfPayment,
     spread,
     notes,
-    date} = req.body;
+    date,
+    endDate} = req.body;
     
     try {
       
@@ -191,6 +194,7 @@ router.put('/country/edit',[
       if(spread) expense.spread = spread;
       if(notes) expense.notes = notes;
       if(date) expense.date = date;
+      if(endDate) expense.endDate = endDate;
       if(req.body.category) expense.category = req.body.category;
 
       if(expensePrice) {

@@ -73,7 +73,11 @@ export default function AddExpense(props) {
         methodOfPayment: paymentMethod,
         spread:expense.spread,
         notes: expense.notes,
-        date: startDate
+        date: startDate,
+      }
+
+      if(isSpreadExpense){
+        expensePayload.endDate = endDate
       }
 
       context.addExpense(expensePayload);

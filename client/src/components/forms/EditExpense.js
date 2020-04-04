@@ -27,6 +27,9 @@ export default function EditExpense(props) {
       setExpense({...props.expense, price: props.expense.foreignPrice});
       setPaymentMethod(props.expense.methodOfPayment)
       setStartDate(new Date(props.expense.date));
+      if(props.expense.endDate){
+        setEndDate(new Date(props.expense.endDate));
+      }
     }
   }, [])
   
@@ -76,6 +79,10 @@ export default function EditExpense(props) {
         spread:expense.spread,
         notes: expense.notes,
         date: startDate
+      }
+
+      if(isSpreadExpense){
+        expensePayload.endDate = endDate
       }
 
       context.editExpense(expensePayload);
