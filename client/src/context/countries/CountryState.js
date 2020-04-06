@@ -2,25 +2,6 @@ import React, {useReducer} from 'react'
 import CountryContext from './CountryContext'
 import CountryReducer from './CountryReducer'
 import axios from 'axios';
-import uuid from 'uuid/v4'
-
-const countries = [
-  {
-    name:'Indonesia',
-    categories: [{category: 'food', _id: uuid(), expenses: [{name:'breakfast', price: 2.10, _id: uuid()}]}],
-    _id: uuid()
-  },
-  {
-    name: 'Thailand',
-    categories: [{category: 'food', _id: uuid(), expenses: [{name:'breakfast', price: 2.10, _id: uuid()}]}],
-    _id: uuid()
-  },
-  {
-    name: 'Philippines',
-    categories: [{category: 'food', _id: uuid(), expenses: [{name:'breakfast', price: 2.10, _id: uuid()}]}],
-    _id: uuid()
-  }
-]
 
 const initialState = {
   countries: [],
@@ -67,7 +48,6 @@ export default function CountryState(props) {
     try {
       const req = await axios.post('http://localhost:4000/api/countries', trip, getConfig());
       const res = req.data;
-      console.log(res);
       fetchCountries()
     } catch (error) {
       console.log(error.response);
@@ -88,21 +68,16 @@ export default function CountryState(props) {
   // add category to country
   const addCategory = async ({categoryName, countryID}) => {
     try {
-      const req = await axios.post('http://localhost:4000/api/categories', {categoryName, countryID}, getConfig())
-      const res = req.data;
+      await axios.post('http://localhost:4000/api/categories', {categoryName, countryID}, getConfig())
       fetchCountries();
       dispatch({type:'ADD_CATEGORY', payload: countryID})
-
     } catch (error) {
       console.log(error);
     }
-    
   }
 
   // delete category
   const deleteCategory = async (countryID, categoryID) => {
-
-    console.log(countryID, categoryID);
     try {
       await axios.delete('http://localhost:4000/api/categories', {data: {countryID, categoryID}});
       fetchCountries();
@@ -114,7 +89,6 @@ export default function CountryState(props) {
 
   // add new expense to category
   const addExpense = async (expense) => {
-    console.log(expense);
     try {
       await axios.post('http://localhost:4000/api/expense/country/add', expense);
       fetchCountries()

@@ -9,7 +9,7 @@ import months from '../../helpers/months'
 export default function SingleCountry(props) {
   const context = useContext(CountryContext);
 
-  const selectedCountry = context.selectedCountry[0];
+  const [selectedCountry] = context.selectedCountry;
   const filterCountry = context.countries.filter(Country => Country._id === selectedCountry._id);
   const [country] = filterCountry;
 
@@ -22,7 +22,10 @@ export default function SingleCountry(props) {
   
   useEffect(() => {
     checkCountryIsSelected()
-  }, [selectedCountry]);
+    if(selectedCountry.categories.length !== country.categories.length){
+      context.getSelectedCountry(selectedCountry._id);
+    }
+  }, [selectedCountry, country.categories]);
 
   const findTotalSpent = () => {
     const allExpenses = [];
