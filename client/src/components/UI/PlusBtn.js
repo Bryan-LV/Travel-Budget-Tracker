@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom'
 function PlusBtn(props) {
   return (
     <div className="plus-btn-container mb2">
-      <div className="plus-btn-bg" aria-role="button">
+      <div className="plus-btn-bg">
         <img className="plus-btn-icon" src={addButton} alt="button"/>
       </div>
     </div>

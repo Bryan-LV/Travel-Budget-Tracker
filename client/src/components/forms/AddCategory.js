@@ -1,11 +1,13 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import CountryContext from '../../context/countries/CountryContext'
+import AlertContext from '../../context/alerts/AlertContext'
 import {Button, Label, Input} from '../../styles/styles'
 import toTitleCase from '../../helpers/ToTitleCase';
 
 export default function AddCategory(props) {
   const [category, setCategory ] = useState('');
   const context = useContext(CountryContext);
+  const alertContext = useContext(AlertContext);
 
   const country = context.selectedCountry[0];
 
@@ -17,6 +19,9 @@ export default function AddCategory(props) {
       const newCategory = category.replace(/ /g, "");
       return existingCategory.toLowerCase() === newCategory.toLowerCase();
     });
+
+    if(category === '') alertContext.addAlert({text:'Category field cannot be blank', needsConfirmation: false});
+    if(categoryExists.length > 0) alertContext.addAlert({text:'Category already exists', needsConfirmation: false});
 
     if(category !== '' && categoryExists.length === 0){
       let categoryCap = toTitleCase(category)

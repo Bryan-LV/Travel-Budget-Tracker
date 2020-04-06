@@ -57,11 +57,11 @@ export default function EditExpense(props) {
   const createPaymentBtns = () => {
     const methods = ['cash', 'credit', 'debt'];
     let paymentIcon;
-    const list = methods.map(method => {
+    const list = methods.map((method, index) => {
       paymentIcon = getPaymentIcon(method);
       const selectedMethod = method === paymentMethod ? 'selected-yellow-accent' : '';
       return (
-          <div className={`${selectedMethod} payment-method ${method === 'credit' ? 'margin-sides-5': ''}`} onClick={() => setPaymentMethod(method)}>
+          <div className={`${selectedMethod} payment-method ${method === 'credit' ? 'margin-sides-5': ''}`} onClick={() => setPaymentMethod(method)} key={index}>
             <div className="payment-icon" style={{width:'26px'}}>
               <img style={{maxWidth:'100%'}} src={paymentIcon} alt=""/>
             </div>
@@ -125,7 +125,7 @@ export default function EditExpense(props) {
 
         <Label htmlFor="category">Category</Label>
         <select className="margin-btm input-style selectElm" value={expense.category} name="category" onChange={handleExpenseChange}>
-          {allCategories.map(category => <option value={category.category}>{category.category}</option> )}
+          {allCategories.map((category, index) => <option value={category.category} key={index}>{category.category}</option> )}
         </select>
 
         <Label htmlFor="startDate">Date</Label>

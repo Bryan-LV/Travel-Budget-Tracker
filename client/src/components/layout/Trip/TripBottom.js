@@ -40,7 +40,7 @@ export default function TripBottom(props) {
       return <AddCategory/>
     }
     if(view === 'addexpense'){
-      return <AddExpense/>
+      return <AddExpense handleViewChange={handleViewChange}/>
     }
     if(view === 'editexpense'){
       return <EditExpense expense={expense} handleViewChange={handleViewChange}/>

@@ -14,9 +14,10 @@ export default function AddExpense(props) {
   const alertContext = useContext(AlertContext);
   const [country] = context.selectedCountry;
   const allCategories = country.categories.map(category => category);
+  const setCategory = allCategories.length > 0 ? allCategories[0].category : '';
   let category = null;
 
-  const [expense, setExpense] = useState({name: '', price: '', category: allCategories[0].category, spread: 0, notes:''}) 
+  const [expense, setExpense] = useState({name: '', price: '', category: setCategory, spread: 0, notes:''}) 
   const [isSpreadExpense, setIsSpreadExpense] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -28,6 +29,10 @@ export default function AddExpense(props) {
   }
 
   useEffect(() => {
+      if(allCategories.length  === 0){
+        props.handleViewChange('addcategory');
+        alertContext.addAlert({text:'Please create category first', needsConfirmation: false});
+      }
       if(context.selectedCategory !== null){
         category = context.selectedCategory[0];
         setExpense({...expense, category: context.selectedCategory[0].category });
@@ -41,11 +46,11 @@ export default function AddExpense(props) {
   const createPaymentBtns = () => {
     const methods = ['cash', 'credit', 'debt'];
     let paymentIcon;
-    const list = methods.map(method => {
+    const list = methods.map((method, index) => {
       paymentIcon = getPaymentIcon(method);
       const selectedMethod = method === paymentMethod ? 'selected-yellow-accent' : '';
       return (
-          <div className={`${selectedMethod} payment-method ${method === 'credit' ? 'margin-sides-5': ''}`} onClick={() => setPaymentMethod(method)}>
+          <div className={`${selectedMethod} payment-method ${method === 'credit' ? 'margin-sides-5': ''}`} onClick={() => setPaymentMethod(method)} key={index}>
             <div className="payment-icon" style={{width:'26px'}}>
               <img style={{maxWidth:'100%'}} src={paymentIcon} alt=""/>
             </div>
@@ -117,7 +122,7 @@ export default function AddExpense(props) {
           name="category" 
           value={expense.category} 
           onChange={handleExpenseChange}>
-          {allCategories.map(category => <option value={category.category}>{category.category}</option> )}
+          {allCategories.map((category, index) => <option value={category.category} key={index} >{category.category}</option> )}
         </select>
 
         <Label htmlFor="startDate">Date</Label>

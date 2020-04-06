@@ -35,7 +35,7 @@ export default function TripExpensesByDate(props) {
   const singleSetOfDates = [...new Set(createDates)];
 
   const createDateList = () => {
-    const list = singleSetOfDates.map(date => <TripDateComp handleViewChange={props.handleViewChange} expenses={sortedExpenses} date={date}/>)
+    const list = singleSetOfDates.map((date, index) => <TripDateComp handleViewChange={props.handleViewChange} expenses={sortedExpenses} date={date} key={index}/>)
     return list
   }
 
