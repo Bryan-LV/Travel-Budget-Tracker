@@ -70,6 +70,10 @@ img{
   max-width:100%;
 }
 
+button{
+  cursor: pointer;
+}
+
 .input-style{
   border:none;
   margin-bottom:10px;
@@ -96,6 +100,7 @@ img{
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  position: relative;
 }
 
 .container{
@@ -516,3 +521,24 @@ img{
   max-width: 100%;
 }
 
+/* Alert Modal */
+
+.alert-modal {
+  position: absolute;
+  max-width: 650px;
+  min-width: 250px;
+  padding: 50px 10%;
+  background-color: #fafafa;
+  border-radius: 4px;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.alertBtn{
+  border: none;
+  border-radius: 4px;
+  padding: 12px 25px;
+  font-size: 1rem;
+  margin: 0px 25px;
+}

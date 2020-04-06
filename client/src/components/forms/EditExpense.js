@@ -1,5 +1,6 @@
 import React, {useState, useContext, useEffect} from 'react'
 import CountryContext from '../../context/countries/CountryContext';
+import AlertContext from '../../context/alerts/AlertContext';
 import {Label, Button, Input, HollowButton, Textarea} from '../../styles/styles'
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -13,6 +14,7 @@ import getForeignCurrency from '../../helpers/getForeignCurrency';
 
 export default function EditExpense(props) {
   const context = useContext(CountryContext);
+  const alertContext = useContext(AlertContext);
   const [country] = context.selectedCountry;
   const allCategories = country.categories.map(category => category);
 
@@ -31,11 +33,21 @@ export default function EditExpense(props) {
         setEndDate(new Date(props.expense.endDate));
       }
     }
-  }, [])
+    if(alertContext.confirm){
+      const categoryID = getCategoryID();
+      context.deleteExpense(context.selectedCountry[0]._id, categoryID , props.expense._id)
+      props.handleViewChange('categories','');
+    }
+  }, [alertContext.confirm])
   
   const getCategoryID = () => {
     const [category] = allCategories.filter(item => item.category === expense.category)
     return category._id;
+  }
+
+  const handleExpenseDelete = (e) => {
+    e.preventDefault();
+    alertContext.addAlert({text:'Are you sure you want to delete?', needsConfirmation: true});
   }
 
   const handleExpenseChange = (e) => {
@@ -94,13 +106,6 @@ export default function EditExpense(props) {
   const handleSpreadToggle = (e) => {
     e.preventDefault();
     setIsSpreadExpense(!isSpreadExpense)
-  }
-
-  const handleExpenseDelete = (e) => {
-    e.preventDefault();
-    const categoryID = getCategoryID();
-    context.deleteExpense(context.selectedCountry[0]._id, categoryID , props.expense._id)
-    props.handleViewChange('categories','');
   }
 
   return (

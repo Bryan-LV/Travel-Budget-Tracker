@@ -1,23 +1,33 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect} from 'react'
 import CountryContext from '../../context/countries/CountryContext'
 import Expense from '../helpers/Expense';
 import PlusBtn from '../UI/PlusBtn'
 import bin from '../../imgs/bin.png'
+import AlertContext from '../../context/alerts/AlertContext';
 
 export default function SingleCategory(props) {
   const context = useContext(CountryContext);
+  const alertContext = useContext(AlertContext);
   const [category] =  context.selectedCategory;
   const getCountry = context.countries.filter(country => country._id === context.selectedCountry[0]._id);
   const getCategory =  getCountry[0].categories.filter(category => category._id === context.selectedCategory[0]._id);
 
+  useEffect(() => {
+    if(alertContext.confirm){
+      context.deleteCategory(getCountry[0]._id, category._id);
+      props.handleViewChange('categories')
+    }
+  },[alertContext.confirm])
+
 
   const deleteExpense = (expenseID) => {
-    context.deleteExpense(getCountry[0]._id, category._id, expenseID);
+      context.deleteExpense(getCountry[0]._id, category._id, expenseID);
   }
 
   const deleteCategory = () => {
-    context.deleteCategory(getCountry[0]._id, category._id);
-    props.handleViewChange('categories')
+    alertContext.addAlert({text:'Are you sure you want to delete?', needsConfirmation: true});
+      // context.deleteCategory(getCountry[0]._id, category._id);
+      // props.handleViewChange('categories')
   }
   
   const loadExpenses = () => {

@@ -41,9 +41,9 @@ export default function SingleExpense(props) {
           <img style={{maxWidth:'80%'}} src={edit} alt="" onClick={() => props.handleViewChange('editexpense', props.expense)}/>
         </div>
       </div>
-      <div className="full-width-underline">
+      <div className="full-width-underline flex ">
         <p>{formatedDate}</p>
-        {showEndDate && <p>{formatedEndDate}</p>}
+        {showEndDate && <p> <span style={{padding:'0px 5px'}} >-</span> {formatedEndDate}</p>}
       </div>
       <p>{capName}</p>
       <p>${price}</p>

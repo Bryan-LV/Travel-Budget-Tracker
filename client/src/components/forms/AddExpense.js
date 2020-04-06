@@ -1,5 +1,6 @@
 import React, {useState, useContext, useEffect} from 'react'
 import CountryContext from '../../context/countries/CountryContext';
+import AlertContext from '../../context/alerts/AlertContext';
 import {Label, Button, Input, HollowButton, Textarea} from '../../styles/styles'
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -10,6 +11,7 @@ import getForeignCurrency from '../../helpers/getForeignCurrency';
 
 export default function AddExpense(props) {
   const context = useContext(CountryContext);
+  const alertContext = useContext(AlertContext);
   const [country] = context.selectedCountry;
   const allCategories = country.categories.map(category => category);
   let category = null;
@@ -60,6 +62,10 @@ export default function AddExpense(props) {
     if(category === null){
       category = getCategory();
     }
+    
+    if(expense.name === '') alertContext.addAlert({text:'Name field can not be blank', needsConfirmation:false})
+    if(expense.expense === '') alertContext.addAlert({text:'Expense field can not be blank', needsConfirmation:false})
+    if(paymentMethod === '') alertContext.addAlert({text:'Choose payment method', needsConfirmation:false})
 
     if(expense.name !== '' && expense.price !== 0 && paymentMethod !== ''){
       const expensePayload = {
