@@ -15,7 +15,7 @@ export default function Alert(props) {
     if(isShowing && alert.needsConfirmation === false){
       setTimeout(() => {
         removeAlert()
-      }, 1200);
+      }, alert.duration);
     }
   }, [isShowing])
 

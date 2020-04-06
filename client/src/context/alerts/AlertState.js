@@ -15,6 +15,7 @@ export default function AlertState(props) {
   // add alert(s)
   const addAlert = (payload) => {
     payload.id = uuid();
+    payload.duration = payload.duration || 1200;
     dispatch({type:'ADD_ALERT', payload: payload});
   }
 
