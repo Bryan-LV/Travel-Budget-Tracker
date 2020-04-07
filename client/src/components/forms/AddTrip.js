@@ -1,17 +1,15 @@
 import React, {useState, useContext} from 'react'
 import Topbar from '../layout/Topbar'
 import CountryContext from '../../context/countries/CountryContext';
-import {Label, Input, Button, HollowButton} from '../../styles/styles';
+import AlertContext from '../../context/alerts/AlertContext';
+import {Label, Input, Button} from '../../styles/styles';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 
 export default function AddTrip(props) {
   const context = useContext(CountryContext);
-  const [trip, setTrip] = useState({
-    name:'',
-    baseCurrency:'',
-    budget:''
-  })
+  const alertContext = useContext(AlertContext);
+  const [trip, setTrip] = useState({ name:'', baseCurrency:'', budget:''});
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [file, setFile] = useState('');
@@ -22,15 +20,21 @@ export default function AddTrip(props) {
 
   const handlePhotoSubmit = (e) => {
     setFile(e.target.files[0]);
-
   }
   
   const handleTripSubmit = (e) => {
     e.preventDefault()
-    const formData = new FormData();
-    formData.append('photo', file);
-    const tripObj = {...trip, startDate, endDate, file };
-    context.addCountry(tripObj);
+
+    if(trip.name === '') alertContext.addAlert({text:'Name field must be filled', needsConfirmation:false})
+    if(trip.baseCurrency === '') alertContext.addAlert({text:'Base Currency field must be filled', needsConfirmation:false})
+    if(trip.budget === '') alertContext.addAlert({text:'Budget field must be filled', needsConfirmation:false})
+
+    if(trip.name !== '' && trip.baseCurrency !== '' && trip.budget !== ''){
+      const formData = new FormData();
+      formData.append('photo', file);
+      const tripObj = {...trip, startDate, endDate, file };
+      context.addCountry(tripObj);
+    }
   }
 
   return (

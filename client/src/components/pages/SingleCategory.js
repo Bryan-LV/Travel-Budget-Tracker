@@ -26,8 +26,7 @@ export default function SingleCategory(props) {
 
   const deleteCategory = () => {
     alertContext.addAlert({text:'Are you sure you want to delete?', needsConfirmation: true});
-      // context.deleteCategory(getCountry[0]._id, category._id);
-      // props.handleViewChange('categories')
+    // after alert confirm useeffect will run delete func
   }
   
   const loadExpenses = () => {

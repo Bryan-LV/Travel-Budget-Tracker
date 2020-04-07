@@ -1,5 +1,5 @@
-import React from 'react'
-import { useState } from 'react'
+import React, { useState, useContext, useEffect} from 'react'
+import { withRouter } from 'react-router-dom';
 import TripCategories from './TripCategories';
 import TripExpensesByDate from './TripExpensesByDate';
 import SingleCategory from '../../pages/SingleCategory'
@@ -7,13 +7,17 @@ import AddExpense from '../../forms/AddExpense';
 import EditExpense from '../../forms/EditExpense';
 import AddCategory from '../../forms/AddCategory';
 import SingleExpense from './SingleExpense';
+import CountryContext from '../../../context/countries/CountryContext';
+import AlertContext from '../../../context/alerts/AlertContext';
+import bin from '../../../imgs/bin.png'
 
-export default function TripBottom(props) {
+function TripBottom(props) {
   const [view, setView] = useState('categories');
   const [expense, setExpense] = useState(null);
+  const context = useContext(CountryContext);
+  const alertContext = useContext(AlertContext);
 
   const handleViewChange = (newView, payload) => {
-
     if(payload === ''){
       setExpense(null);
     }
@@ -50,11 +54,29 @@ export default function TripBottom(props) {
   const underLineCategory = view === 'categories' ? 'underLine': '';
   const underLineDate = view === 'date' ? 'underLine': '';
 
+  
+  useEffect(() => {
+    if(alertContext.confirm){
+      context.deleteCountry(props.country._id);
+      props.history.push('/home');
+    }
+  }, [alertContext.confirm])
+
+  const deleteCountry = () => {
+    alertContext.addAlert({text:'Are you sure you want to delete?', needsConfirmation: true});
+  }
+  
+
   return (
     <div>
       <div className="view-container">
-        <h3 className={`${underLineCategory} white-text view-link`} onClick={() => setView('categories')} >Category</h3>
-        <h3 className={`${underLineDate} white-text view-link`} onClick={() => setView('date')} >Date</h3>
+        <div className="flex">
+          <h3 className={`${underLineCategory} white-text view-link`} onClick={() => setView('categories')} >Category</h3>
+          <h3 className={`${underLineDate} white-text view-link`} onClick={() => setView('date')} >Date</h3>
+        </div>
+        <div className="icon-container" onClick={deleteCountry}>
+          <img src={bin} alt="delete"/>
+        </div>
       </div>
       <div>
         {View()}
@@ -62,3 +84,5 @@ export default function TripBottom(props) {
     </div>
   )
 }
+
+export default withRouter(TripBottom);
