@@ -13,7 +13,6 @@ export default function AddTrip(props) {
   const [trip, setTrip] = useState({ name:'', baseCurrency:'', budget:''});
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [file, setFile] = useState('');
 
   const handleChange = (e) => {
     setTrip({...trip, [e.target.name]: e.target.value});
@@ -47,9 +46,7 @@ export default function AddTrip(props) {
     }
 
     if(trip.name !== '' && trip.baseCurrency !== '' && trip.budget !== ''){
-      const formData = new FormData();
-      formData.append('photo', file);
-      const tripObj = {...trip, startDate, endDate, file };
+      const tripObj = {...trip, startDate, endDate };
       context.addCountry(tripObj);
       setTrip({ name:'', baseCurrency:'', budget:''});
       setStartDate(new Date());

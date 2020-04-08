@@ -57,7 +57,7 @@ export default function CountryState(props) {
   // delete country
   const deleteCountry = async (id) => {
     try {
-      await axios.delete('http://localhost:4000/api/countries/country', { data: {countryID: id}})
+      await axios.delete('http://localhost:4000/api/countries/country', { headers: {'Content-Type': 'application/json', 'auth-token': localStorage.getItem('token') } , data: {countryID: id}});
     } catch (error) {
       alertContext.addAlert({text:'Having a problem deleting your trip 😅', needsConfirmation:false, duration: 2000});
     }

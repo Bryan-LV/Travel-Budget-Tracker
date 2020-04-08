@@ -4,11 +4,6 @@ const User = require('../models/user');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 const authToken = require('../middleware/authToken');
-const fileUpload = require('express-fileupload');
-
-router.use(fileUpload({
-  limits: { fileSize: 50 * 1024 * 1024 }
-}))
 
 // get all users countries
 router.get('/', authToken ,async (req,res) => {
@@ -16,15 +11,6 @@ router.get('/', authToken ,async (req,res) => {
     // map through 
     let country = await Country.find({user:req.userID});
     res.json(country);
-  } catch (error) {
-    res.status(400).json({error});
-  }
-})
-
-router.post('/uploadImg', async (req,res) => {
-  console.log(req.files);
-  try {
-    res.send('upload img route')
   } catch (error) {
     res.status(400).json({error});
   }
@@ -54,7 +40,6 @@ router.post('/', [
     };
 
     if(req.body.endDate) countryObj.endDate = req.body.endDate;
-    // if(req.files.photo) countryObj.photo = req.files.photo;
 
     let country = new Country(countryObj)
     
@@ -89,10 +74,8 @@ router.post('/country', authToken, async (req,res) => {
 
 
 // delete country
-router.delete('/country', authToken, async (req,res) => {
+router.delete('/country',authToken, async (req,res) => {
   try {
-    // check if user owns this trip document ************
-    // find item by id delete item
     await Country.findOneAndDelete({_id: req.body.countryID});
     res.json({msg: 'Country has been deleted'});
 
