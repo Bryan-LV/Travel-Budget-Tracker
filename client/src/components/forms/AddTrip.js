@@ -5,6 +5,7 @@ import AlertContext from '../../context/alerts/AlertContext';
 import {Label, Input, Button} from '../../styles/styles';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import currencies from '../../helpers/currencies';
 
 export default function AddTrip(props) {
   const context = useContext(CountryContext);
@@ -17,17 +18,33 @@ export default function AddTrip(props) {
   const handleChange = (e) => {
     setTrip({...trip, [e.target.name]: e.target.value});
   }
-
-  const handlePhotoSubmit = (e) => {
-    setFile(e.target.files[0]);
-  }
   
   const handleTripSubmit = (e) => {
     e.preventDefault()
 
-    if(trip.name === '') alertContext.addAlert({text:'Name field must be filled', needsConfirmation:false})
-    if(trip.baseCurrency === '') alertContext.addAlert({text:'Base Currency field must be filled', needsConfirmation:false})
-    if(trip.budget === '') alertContext.addAlert({text:'Budget field must be filled', needsConfirmation:false})
+    if(trip.name === ''){
+      alertContext.addAlert({text:'Name field must be filled', needsConfirmation:false})
+      return;
+    }
+
+    const checkTripName = currencies.some(cur => cur.countryName.toLowerCase() === trip.name.toLowerCase());
+    if(!checkTripName) {
+      alertContext.addAlert({text:'Country name not found', needsConfirmation:false});
+      return;
+    }
+    if(trip.baseCurrency === ''){
+      alertContext.addAlert({text:'Base Currency field must be filled', needsConfirmation:false});
+      return;
+    }
+    const checkBaseCurrency = currencies.some(cur => cur.currencyCode.toLowerCase() === trip.baseCurrency.toLowerCase());
+    if(!checkBaseCurrency){
+      alertContext.addAlert({text:'Can not find currency witht that code', needsConfirmation:false});
+      return;
+    }
+    if(trip.budget === '') {
+      alertContext.addAlert({text:'Budget field must be filled', needsConfirmation:false});
+      return;
+    }
 
     if(trip.name !== '' && trip.baseCurrency !== '' && trip.budget !== ''){
       const formData = new FormData();
@@ -40,22 +57,35 @@ export default function AddTrip(props) {
     }
   }
 
+  const currencyCodes = () => {
+    const currencySet = new Set();
+    currencies.forEach(cur => currencySet.add(cur.currencyCode));
+    const filteredList = Array.from(currencySet);
+    return filteredList.map(cur => <option value={cur}/>);
+  }
+  
+
   return (
     <div>
       <Topbar title="New Trip"/>
       <div className="container-fluid bg-accent border-radius-top">
         <form className="margin-sides" onSubmit={handleTripSubmit}>
-          <Label htmlFor="trip name">Trip Name</Label>
-          <Input type="text" name="name" onChange={handleChange}/>
+          <Label htmlFor="country-name">Country Name</Label>
+          <input className="styles-input-css" type="text" name="name" list="country-name" onChange={handleChange}/>
+          <datalist id="country-name">
+            {currencies.map(cur => <option value={cur.countryName}/>)}
+          </datalist>
           <Label htmlFor="base currency">Base Currency</Label>
-          <Input type="text" name="baseCurrency" onChange={handleChange}/>
+          <input className="styles-input-css" type="text" name="baseCurrency" list="base-currency" onChange={handleChange}/>
+          <datalist id="base-currency">
+            {currencyCodes()}
+          </datalist>
           <Label htmlFor="budget">Budget</Label>
           <Input type="number" name="budget" onChange={handleChange}/>
           <Label htmlFor="start">Start Date</Label>
           <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
           <Label htmlFor="end">End Date</Label>
           <DatePicker selected={endDate} onChange={date => setEndDate(date)} />
-          <input type="file" name="photo" onChange={handlePhotoSubmit}/>
           <Button className="container">Add Trip</Button>
         </form>
       </div>
