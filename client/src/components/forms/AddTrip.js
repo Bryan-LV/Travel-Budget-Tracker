@@ -34,6 +34,9 @@ export default function AddTrip(props) {
       formData.append('photo', file);
       const tripObj = {...trip, startDate, endDate, file };
       context.addCountry(tripObj);
+      setTrip({ name:'', baseCurrency:'', budget:''});
+      setStartDate(new Date());
+      setEndDate(new Date());
     }
   }
 

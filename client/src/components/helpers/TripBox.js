@@ -3,22 +3,7 @@ import CountryContext from '../../context/countries/CountryContext';
 import formatDistanceStrict from 'date-fns/formatDistanceStrict'
 import { withRouter } from 'react-router-dom';
 import island from '../../imgs/island-Caribbean.jpg'
-
-const months = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December'
-  ];
-
+import months from '../../helpers/months';
 
 function TripBox(props) {
   const context = useContext(CountryContext);
@@ -44,15 +29,20 @@ function TripBox(props) {
     // find how many days the user has on their trip
     const createStartDate = new Date(startYear,getStartMonth, startDay);
     const createEndDate = new Date(endYear, getEndMonth, endDay);
-    const days = formatDistanceStrict(createStartDate, createEndDate, {unit:'day'});
+    if(createStartDate.toString() !== createEndDate.toString()){
+      const days = formatDistanceStrict(createStartDate, createEndDate, {unit:'day'});
 
-    // get only number from days;
-    const getNumberFromDays = days.replace(/ .*/,'');
+      // get only number from days;
+      const getNumberFromDays = days.replace(/ .*/,'');
 
-    // divide the budget by the number of days
-    const dailySpend =  parseInt(budget) / parseInt(getNumberFromDays);
-    const result  = dailySpend.toFixed(2);
-    return result;
+      // divide the budget by the number of days
+      const dailySpend =  parseInt(budget) / parseInt(getNumberFromDays);
+      const result  = dailySpend.toFixed(2);
+      return result;
+    }
+    else {
+      return parseInt(budget);
+    }
   }
 
   const selectTrip = () => {
@@ -74,6 +64,5 @@ function TripBox(props) {
     </div>
   )
 }
-
 
 export default withRouter(TripBox);

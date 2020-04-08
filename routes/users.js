@@ -116,7 +116,7 @@ router.get('/', authToken, async (req,res) => {
     res.json(user);
 
   } catch (error) {
-    res.status(400).json({error: error});
+    res.status(400).json({error: 'Having a problem loading your profile 😅'});
   }
 })
 

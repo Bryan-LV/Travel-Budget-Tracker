@@ -12,7 +12,8 @@ export default function Landing() {
   }
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid pb1">
+      <h2 className="padding-sides white-text">TripWallet</h2>
       {login && <Login toggleForms={toggleForms}/> }
       {register && <Register toggleForms={toggleForms}/>}
     </div>

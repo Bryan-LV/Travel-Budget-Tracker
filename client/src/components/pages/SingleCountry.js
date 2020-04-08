@@ -1,9 +1,9 @@
 import React, { useEffect, useContext, useState } from 'react'
 import CountryContext from '../../context/countries/CountryContext'
 import Topbar from '../layout/Topbar';
-import currencies from '../../helpers/currencies';
 import TripHeader from '../layout/Trip/TripHeader';
 import TripBottom from '../layout/Trip/TripBottom';
+import getForeignCurrency from '../../helpers/getForeignCurrency';
 import months from '../../helpers/months'
 
 export default function SingleCountry(props) {
@@ -81,15 +81,9 @@ export default function SingleCountry(props) {
     endYear = formatEndDate.getFullYear();
   }
   
-  const getForeignCurrency = () => {
-    const selectedCountry = context.selectedCountry[0].name.toLowerCase();
-    const findCurrency = currencies.filter(country => country.countryName.toLowerCase() === selectedCountry);
-    return findCurrency[0].currencyCode;
-  }
-  
   return (
     <div id={country._id}>
-      <Topbar title={country.name} currency={getForeignCurrency()}/>
+      <Topbar title={country.name} currency={getForeignCurrency(selectedCountry.name)}/>
       <TripHeader budget={country.budget} percentage={getPercentage()} total={findTotalSpent()} />
       <h4 className="trip-dates white-text secondary-font">{startMonth} {startDay} - {endMonth} {endDay}</h4>
       

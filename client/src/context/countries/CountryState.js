@@ -107,7 +107,6 @@ export default function CountryState(props) {
   
 
   const deleteExpense = async (countryID, categoryID, expenseID) => {
-    console.log(countryID, categoryID, expenseID);
     try {
       await axios.delete('http://localhost:4000/api/expense/', { data: { countryID, categoryID, expenseID } } )
       fetchCountries();

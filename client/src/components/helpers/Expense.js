@@ -4,11 +4,7 @@ import ToTitleCase from '../../helpers/ToTitleCase';
 import getPaymentIcon from '../../helpers/getPaymentIcon';
 
 export default function Expense(props) {
-  const {name, _id, price, methodOfPayment, date} = props.expense;
-
-  const handleDelete = () => {
-    props.deleteExpense(_id);
-  }
+  const {name, _id, price, methodOfPayment} = props.expense;
 
   const paymentIcon = getPaymentIcon(methodOfPayment);
   
@@ -24,7 +20,6 @@ export default function Expense(props) {
       <div className="icon-container">
         <img className="expense-payment-icon" src={enter} alt="payment method"/>
       </div>
-      {/* <button onClick={handleDelete}>Delete expense</button> */}
     </div>
   )
 }

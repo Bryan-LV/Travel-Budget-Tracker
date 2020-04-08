@@ -30,6 +30,6 @@ export default function Alert(props) {
       </div>
     )
   } else {
-    return (<div></div>)
+    return (<></>)
   }
 }

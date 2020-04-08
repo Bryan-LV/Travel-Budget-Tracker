@@ -230,6 +230,10 @@ button{
   border-radius: 6px;
 }
 
+.pointer{
+  cursor: pointer;
+}
+
 /* background colors */
 
 .bg-dark-blue{
@@ -268,12 +272,14 @@ button{
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .settings-icon{
   max-width: 100%;
   width:30px;
   height:30px;
+  cursor: pointer;
 }
 
 /* forms */
@@ -283,8 +289,8 @@ button{
 
 .landing-forms{
     background-color: #59E8AC;
-    padding-top: 10vh;
-    padding-bottom: 10vh;
+    padding-top: 5vh;
+    padding-bottom: 8vh;
 }
 
 /* top bar */
@@ -542,4 +548,18 @@ button{
   padding: 12px 25px;
   font-size: 1rem;
   margin: 0px 25px;
+}
+
+/* Side bar */
+.sidebar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 100000000;
+  height: 100%;
+  background-color: var(--dark-blue);
+  width: 240px;
+  max-width: 500px;
+  text-align: center;
+  padding-top: 30px;
 }

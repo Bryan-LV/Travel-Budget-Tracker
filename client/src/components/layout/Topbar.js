@@ -1,6 +1,6 @@
 import React from 'react'
 import backArrow from '../../imgs/back.png'
-import { Link , withRouter} from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 
 function Topbar(props) {
   const handleBackBtn = () => {

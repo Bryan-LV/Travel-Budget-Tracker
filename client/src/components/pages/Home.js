@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom'
 
 function Home(props) {
   const context = useContext(CountryContext);
-  const {loadUser, isAuth} = useContext(AuthContext);
+  const {loadUser, isAuth, error} = useContext(AuthContext);
   const {countries} = context.countries;
 
   useEffect( () => {
@@ -17,7 +17,7 @@ function Home(props) {
     } else{
       props.history.push('/');
     }
-  }, [countries])
+  }, [countries, error])
   
   return (
     <div className="">
