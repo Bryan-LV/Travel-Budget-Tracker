@@ -37,7 +37,7 @@ export default function AddTrip(props) {
     }
     const checkBaseCurrency = currencies.some(cur => cur.currencyCode.toLowerCase() === trip.baseCurrency.toLowerCase());
     if(!checkBaseCurrency){
-      alertContext.addAlert({text:'Can not find currency witht that code', needsConfirmation:false});
+      alertContext.addAlert({text:'Can not find currency with that code', needsConfirmation:false});
       return;
     }
     if(trip.budget === '') {
@@ -68,21 +68,23 @@ export default function AddTrip(props) {
       <div className="container-fluid bg-accent border-radius-top">
         <form className="margin-sides" onSubmit={handleTripSubmit}>
           <Label htmlFor="country-name">Country Name</Label>
-          <input className="styles-input-css" type="text" name="name" list="country-name" onChange={handleChange}/>
+          <input className="styles-input-css" type="text" name="name" value={trip.name} list="country-name" onChange={handleChange}/>
           <datalist id="country-name">
             {currencies.map(cur => <option value={cur.countryName}/>)}
           </datalist>
           <Label htmlFor="base currency">Base Currency</Label>
-          <input className="styles-input-css" type="text" name="baseCurrency" list="base-currency" onChange={handleChange}/>
+          <input className="styles-input-css" type="text" name="baseCurrency" value={trip.baseCurrency} list="base-currency" onChange={handleChange}/>
           <datalist id="base-currency">
             {currencyCodes()}
           </datalist>
           <Label htmlFor="budget">Budget</Label>
-          <Input type="number" name="budget" onChange={handleChange}/>
+          <Input type="number" name="budget" value={trip.budget} onChange={handleChange}/>
           <Label htmlFor="start">Start Date</Label>
           <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
           <Label htmlFor="end">End Date</Label>
           <DatePicker selected={endDate} onChange={date => setEndDate(date)} />
+          <Label htmlFor="photo">Choose Trip Photo</Label>
+          <Input type="text" name="photo" onChange={handleChange}/>
           <Button className="container">Add Trip</Button>
         </form>
       </div>

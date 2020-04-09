@@ -47,11 +47,27 @@ export default function AuthState(props) {
     }
   }
 
+  const editUser = async (payload) => {
+    try {
+      await axios.put('http://localhost:4000/api/user/profile', payload, axiosConfig);
+    } catch (error) {
+      dispatch({type:'USER_ERROR', payload: error.response.data});
+    }
+  }
+
+  const updateUserPassword = async (payload) => {
+    try {
+      await axios.put('http://localhost:4000/api/user/password', payload, axiosConfig);
+    } catch (error) {
+      dispatch({type:'USER_ERROR', payload: error.response.data});
+    }
+  }
+
   const logoutUser = async () => {
       dispatch({type:'LOGOUT_USER'})
   }
   
-  const deleteUser = async (id) => {
+  const deleteUser = async () => {
     try {
       const res = await axios.delete('/api/user', axiosConfig);
       dispatch({type:'DELETE_USER', payload: res.data});
@@ -76,7 +92,9 @@ export default function AuthState(props) {
       loadUser,
       logoutUser,
       deleteUser,
-      clearError
+      clearError,
+      editUser,
+      updateUserPassword
     }}>
       {props.children}
     </AuthContext.Provider>

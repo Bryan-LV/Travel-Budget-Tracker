@@ -11,7 +11,7 @@ import Landing from './components/pages/Landing';
 import AuthState from './context/auth/AuthState';
 import AddTrip from './components/forms/AddTrip';
 import AlertState from './context/alerts/AlertState';
-import UserSidebar from './components/layout/User/UserSidebar';
+import UserSidebar from './components/layout/UserSidebar';
 import UserPage from './components/pages/UserPage';
 
 function App(props) {

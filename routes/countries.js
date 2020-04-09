@@ -49,7 +49,6 @@ router.post('/', [
   } catch (error) {
     res.status(400).json({error});
   }
-  
 })
 
 // get single country

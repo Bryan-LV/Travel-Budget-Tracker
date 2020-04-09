@@ -4,12 +4,12 @@ const {check, validationResult} = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const Country = require('../models/countries');
 const config = process.env.JWT_SECRET;
 const authToken = require('../middleware/authToken');
 
 // =Route /api/user/create
 // =Desc Create a user
-// =Access Public
 router.post('/create',[
   check('name','Please enter name').not().isEmpty(),
   check('email','Please enter email').isEmail(),
@@ -61,7 +61,6 @@ router.post('/create',[
 
 // =Route /api/user/login
 // =Desc Login a user
-// =Access Public
 router.post('/login', [
   check('email','Please enter valid email').isEmail(),
   check('password','Please enter valid password').isLength({min:6})
@@ -105,7 +104,6 @@ router.post('/login', [
 
 // =Route /api/user
 // =Desc Get the logged in user
-// =Access Private
 router.get('/', authToken, async (req,res) => {
   try {
     // find user with authToken
@@ -122,7 +120,6 @@ router.get('/', authToken, async (req,res) => {
 
 // =Route /api/user
 // =Desc Delete a user
-// =Access Private
 router.delete('/', authToken, async (req,res) => {
   try {
     // find user with authToken
@@ -131,12 +128,12 @@ router.delete('/', authToken, async (req,res) => {
       return res.status(400).json({error: 'User cannot be found'});
     }
 
-    // check if user is deleting their profile
+    // check if user owns profile
     if(req.userID !== user.id.toString()){
       return res.status(400).json({error: 'User is not authenticated to delete this account'});
     }
 
-    await Status.deleteMany({user: req.userID});
+    await Country.deleteMany({user: req.userID});
     await user.remove();
     res.json({ msg: 'User has been deleted'})
 
@@ -145,27 +142,12 @@ router.delete('/', authToken, async (req,res) => {
   }
 })
 
-// =Route /api/user
+// =Route /api/user/profile
 // =Desc Update a user profile
-// =Access Private
-router.put('/', [authToken,
-  check('name','Please enter name').not().isEmpty(),
-  check('email','Please enter valid email').isEmail(),
-  check('password','Please enter valid password').isLength({min:6})
-  ], async (req,res) => {
-    // validate inputs
-    const errors = validationResult(req);
-    if(!errors.isEmpty()){
-      return res.status(400).json({error: errors.array()});
-    }
-
-    const { name, email, password} = req.body;
-
-    // build update object
+router.put('/profile', authToken, async (req,res) => {
     const updateObj = {};
-    if(name) updateObj.name = name;
-    if(email) updateObj.email = email;
-    if(password) updateObj.password = password;
+    if(req.body.name) updateObj.name = req.body.name;
+    if(req.body.email) updateObj.email = req.body.email;
 
     try {
       // find user 
@@ -173,10 +155,9 @@ router.put('/', [authToken,
       if(!user){
         return res.status(400).json({error: 'User cannot be found'});
       }
-
       // update user 
       user = await User.findByIdAndUpdate(req.userID,{ $set: updateObj});
-      res.json(user);
+      res.json({msg: 'User has been updated'});
 
     } catch (error) {
       res.status(400).json({error: error});
@@ -184,10 +165,38 @@ router.put('/', [authToken,
 
 })
 
+// =Route /api/user/password
+// =Desc Update a user password
+router.put('/password', authToken, async (req,res) => {
+  const {password, newPassword} = req.body;
+
+  try {
+    // find user 
+    let user = await User.findById(req.userID);
+    if(!user){
+      return res.status(400).json({error: 'User cannot be found'});
+    }
+    
+    // check password is correct
+    const checkPassword = await bcrypt.compare(password, user.password);
+    if(!checkPassword){
+      return res.status(400).json({error: 'Password does not match what we have on record'});
+    }
+
+    let salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // update user 
+    user = await User.findByIdAndUpdate(req.userID,{ $set: {password: hashedPassword}});
+    res.json(user);
+
+  } catch (error) {
+    res.status(400).json({error: error});
+  }
+})
+
 // =Route /api/user/all
 // =Desc Get all users
-// =Access Public
-
 router.get('/all', async (req,res) => {
   try {
     let users = await User.find();

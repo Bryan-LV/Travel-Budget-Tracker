@@ -134,6 +134,10 @@ button{
   color: var(--grey)
 }
 
+.dark-text{
+  color: var(--dark-blue);
+}
+
 .border-radius-top{
   border-radius: 20px 20px 0 0;
 }
@@ -188,6 +192,10 @@ button{
 
 .txt-center{
   text-align: center;
+}
+
+.txt-left{
+  text-align: left;
 }
 
 .secondary-font{
