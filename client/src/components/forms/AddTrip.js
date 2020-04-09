@@ -2,20 +2,34 @@ import React, {useState, useContext} from 'react'
 import Topbar from '../layout/Topbar'
 import CountryContext from '../../context/countries/CountryContext';
 import AlertContext from '../../context/alerts/AlertContext';
-import {Label, Input, Button} from '../../styles/styles';
+import {Label, Input, Button, HollowButton} from '../../styles/styles';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import currencies from '../../helpers/currencies';
+import SelectTripImg from './SelectTripImg';
 
 export default function AddTrip(props) {
   const context = useContext(CountryContext);
   const alertContext = useContext(AlertContext);
-  const [trip, setTrip] = useState({ name:'', baseCurrency:'', budget:''});
+  const [trip, setTrip] = useState({ name:'', baseCurrency:'', budget:'', img: null});
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [openImgModal, setOpenImgModal] = useState(false);
+  const [previewImg, setPreviewImg] = useState(false);
 
   const handleChange = (e) => {
     setTrip({...trip, [e.target.name]: e.target.value});
+  }
+
+  const handleOpenImgModal = (e) => {
+    e.preventDefault();
+    setOpenImgModal(!openImgModal)
+  }
+  
+  const selectImg = (img) => {
+    setTrip({...trip, img: img});
+    setOpenImgModal(!openImgModal);
+    setPreviewImg(true)
   }
   
   const handleTripSubmit = (e) => {
@@ -44,11 +58,15 @@ export default function AddTrip(props) {
       alertContext.addAlert({text:'Budget field must be filled', needsConfirmation:false});
       return;
     }
+    if(trip.img === null){
+      alertContext.addAlert({text:'Please select a trip image', needsConfirmation:false});
+      return;
+    }
 
     if(trip.name !== '' && trip.baseCurrency !== '' && trip.budget !== ''){
       const tripObj = {...trip, startDate, endDate };
       context.addCountry(tripObj);
-      setTrip({ name:'', baseCurrency:'', budget:''});
+      setTrip({ name:'', baseCurrency:'', budget:'', img: null});
       setStartDate(new Date());
       setEndDate(new Date());
     }
@@ -65,7 +83,7 @@ export default function AddTrip(props) {
   return (
     <div>
       <Topbar title="New Trip"/>
-      <div className="container-fluid bg-accent border-radius-top">
+      <div className="container-fluid bg-accent border-radius-top pos-rel">
         <form className="margin-sides" onSubmit={handleTripSubmit}>
           <Label htmlFor="country-name">Country Name</Label>
           <input className="styles-input-css" type="text" name="name" value={trip.name} list="country-name" onChange={handleChange}/>
@@ -80,11 +98,12 @@ export default function AddTrip(props) {
           <Label htmlFor="budget">Budget</Label>
           <Input type="number" name="budget" value={trip.budget} onChange={handleChange}/>
           <Label htmlFor="start">Start Date</Label>
-          <DatePicker selected={startDate} onChange={date => setStartDate(date)} />
+          <DatePicker className="input-style pointer" selected={startDate} onChange={date => setStartDate(date)} />
           <Label htmlFor="end">End Date</Label>
-          <DatePicker selected={endDate} onChange={date => setEndDate(date)} />
-          <Label htmlFor="photo">Choose Trip Photo</Label>
-          <Input type="text" name="photo" onChange={handleChange}/>
+          <DatePicker className="input-style pointer" selected={endDate} onChange={date => setEndDate(date)} />
+          <HollowButton className="mt2 mb2" onClick={handleOpenImgModal}>Select Photo</HollowButton>
+          {openImgModal && <SelectTripImg selectImg={selectImg}/>}
+          {previewImg ? <img src={trip.img}/> : <></>}
           <Button className="container">Add Trip</Button>
         </form>
       </div>

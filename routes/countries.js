@@ -36,7 +36,8 @@ router.post('/', [
       user: req.userID,
       baseCurrency:req.body.baseCurrency,
       budget: req.body.budget,
-      startDate: req.body.startDate
+      startDate: req.body.startDate,
+      img:req.body.img
     };
 
     if(req.body.endDate) countryObj.endDate = req.body.endDate;

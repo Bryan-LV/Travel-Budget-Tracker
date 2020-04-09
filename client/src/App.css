@@ -33,6 +33,10 @@
   }
 }
 
+*{
+  box-sizing: border-box;
+}
+
 /* Base Styles */
 html{
   scroll-behavior: smooth;
@@ -314,6 +318,32 @@ button{
     padding-bottom: 8vh;
 }
 
+/* modal */
+.modal {
+  background-color: var(--white);
+  position: absolute;
+  z-index: 100000;
+  width: 80%;
+  max-width: 700px;
+  top: 20px;
+  left: 0;
+  right:0;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+}
+
+.trip-select-box{
+  width:40%;
+  display:inline-block;
+  margin:8px;
+  cursor: pointer;
+}
+
+.trip-img{
+  position: relative;
+}
+
 /* top bar */
 .topbar{
   display: flex;
@@ -342,7 +372,6 @@ button{
 }
 
 /* tabs */
-
 .bottom-layer{
   height:20vh;
   position: relative;

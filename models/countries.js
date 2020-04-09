@@ -10,6 +10,7 @@ const countries = Schema({
   startDate: {type:Date, required: true},
   endDate: {type:Date},
   date: {type: Date, default: new Date()},
+  img:{type:String},
   categories:[
     {
       category: {type:String},
