@@ -22,7 +22,7 @@ export default function AuthState(props) {
 
   const createUser = async (user) => {
     try {
-      const res = await axios.post('http://localhost:4000/api/user/create', user, axiosConfig);
+      const res = await axios.post('/api/user/create', user, axiosConfig);
       dispatch({type:'CREATE_USER', payload: res.data})
     } catch (error) {
       dispatch({type:'USER_ERROR', payload: error.response.data})
@@ -49,7 +49,7 @@ export default function AuthState(props) {
 
   const editUser = async (payload) => {
     try {
-      await axios.put('http://localhost:4000/api/user/profile', payload, axiosConfig);
+      await axios.put('/api/user/profile', payload, axiosConfig);
     } catch (error) {
       dispatch({type:'USER_ERROR', payload: error.response.data});
     }
@@ -57,7 +57,7 @@ export default function AuthState(props) {
 
   const updateUserPassword = async (payload) => {
     try {
-      await axios.put('http://localhost:4000/api/user/password', payload, axiosConfig);
+      await axios.put('/api/user/password', payload, axiosConfig);
     } catch (error) {
       dispatch({type:'USER_ERROR', payload: error.response.data});
     }

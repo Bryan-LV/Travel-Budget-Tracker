@@ -30,7 +30,7 @@ export default function CountryState(props) {
   // fetch countries
   const fetchCountries = async () => {
     try {
-      const request = await axios.get('http://localhost:4000/api/countries', getConfig());
+      const request = await axios.get('/api/countries', getConfig());
       const countries = request.data;
       dispatch({type:'SET_COUNTRIES', payload: countries})
 
@@ -47,7 +47,7 @@ export default function CountryState(props) {
   // add new country
   const addCountry = async (trip) => {
     try {
-      const req = await axios.post('http://localhost:4000/api/countries', trip, getConfig());
+      const req = await axios.post('/api/countries', trip, getConfig());
       fetchCountries()
     } catch (error) {
       alertContext.addAlert({text:'Having a problem adding your trip 😅', needsConfirmation:false, duration: 2000});
@@ -57,7 +57,7 @@ export default function CountryState(props) {
   // delete country
   const deleteCountry = async (id) => {
     try {
-      await axios.delete('http://localhost:4000/api/countries/country', { headers: {'Content-Type': 'application/json', 'auth-token': localStorage.getItem('token') } , data: {countryID: id}});
+      await axios.delete('/api/countries/country', { headers: {'Content-Type': 'application/json', 'auth-token': localStorage.getItem('token') } , data: {countryID: id}});
     } catch (error) {
       alertContext.addAlert({text:'Having a problem deleting your trip 😅', needsConfirmation:false, duration: 2000});
     }
@@ -67,7 +67,7 @@ export default function CountryState(props) {
   // add category to country
   const addCategory = async ({categoryName, countryID}) => {
     try {
-      await axios.post('http://localhost:4000/api/categories', {categoryName, countryID}, getConfig())
+      await axios.post('/api/categories', {categoryName, countryID}, getConfig())
       fetchCountries();
       dispatch({type:'ADD_CATEGORY', payload: countryID})
     } catch (error) {
@@ -78,7 +78,7 @@ export default function CountryState(props) {
   // delete category
   const deleteCategory = async (countryID, categoryID) => {
     try {
-      await axios.delete('http://localhost:4000/api/categories', {data: {countryID, categoryID}});
+      await axios.delete('/api/categories', {data: {countryID, categoryID}});
       fetchCountries();
       dispatch({type:'DELETE_CATEGORY', payload: countryID});
     } catch (error) {
@@ -89,7 +89,7 @@ export default function CountryState(props) {
   // add new expense to category
   const addExpense = async (expense) => {
     try {
-      await axios.post('http://localhost:4000/api/expense/country/add', expense);
+      await axios.post('/api/expense/country/add', expense);
       fetchCountries()
     } catch (error) {
       alertContext.addAlert({text:'Having a problem adding your expense 😅', needsConfirmation:false, duration: 2000});
@@ -98,7 +98,7 @@ export default function CountryState(props) {
 
   const editExpense = async (expense) => {
     try {
-      await axios.put('http://localhost:4000/api/expense/country/edit', expense);
+      await axios.put('/api/expense/country/edit', expense);
       fetchCountries();
     } catch (error) {
       alertContext.addAlert({text:'Having a problem editing your expense 😅', needsConfirmation:false, duration: 2000});
@@ -108,7 +108,7 @@ export default function CountryState(props) {
 
   const deleteExpense = async (countryID, categoryID, expenseID) => {
     try {
-      await axios.delete('http://localhost:4000/api/expense/', { data: { countryID, categoryID, expenseID } } )
+      await axios.delete('/api/expense/', { data: { countryID, categoryID, expenseID } } )
       fetchCountries();
     } catch (error) {
       alertContext.addAlert({text:'Having a problem deleting your expense 😅', needsConfirmation:false, duration: 2000});
