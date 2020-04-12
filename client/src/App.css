@@ -289,8 +289,8 @@ button{
 }
 
 .settings{
-  width:32px;
-  height:32px;
+  width:42px;
+  height:42px;
   border-radius: 50%;
   border:1px solid var(--white);
   padding:6px;
@@ -303,7 +303,7 @@ button{
 .settings-icon{
   max-width: 100%;
   width:30px;
-  height:30px;
+  height:29px;
   cursor: pointer;
 }
 

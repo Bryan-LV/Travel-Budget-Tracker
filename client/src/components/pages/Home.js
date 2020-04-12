@@ -30,7 +30,7 @@ function Home(props) {
           {context.countries.map(country => <TripBox country={country} key={country._id} id={country._id} />)}
         </div>
       </div>
-      
+
       <div className="txt-center">
         <div className="inline-block plus-button-container">
           <Link to="/addtrip">

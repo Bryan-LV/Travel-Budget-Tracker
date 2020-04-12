@@ -89,7 +89,7 @@ export default function CountryState(props) {
   // add new expense to category
   const addExpense = async (expense) => {
     try {
-      await axios.post('/api/expense/country/add', expense);
+      await axios.post('http://localhost:4000/api/expense/country/add', expense);
       fetchCountries()
     } catch (error) {
       alertContext.addAlert({text:'Having a problem adding your expense 😅', needsConfirmation:false, duration: 2000});

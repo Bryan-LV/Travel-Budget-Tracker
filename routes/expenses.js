@@ -107,7 +107,7 @@ router.post('/country/add', [
 
   const stringifyCategoryID = JSON.stringify(categoryID);
 
-  
+  console.log(baseCurrency, foreignCurrency);
   try {
     const getCurrencyExchange = await axios(`https://api.exchangeratesapi.io/latest?base=${baseCurrency}&symbols=${baseCurrency},${foreignCurrency}`);
     const foreignCurrencyRate = getCurrencyExchange.data.rates[foreignCurrency];
