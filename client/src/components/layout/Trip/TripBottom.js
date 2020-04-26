@@ -10,6 +10,7 @@ import SingleExpense from './SingleExpense';
 import CountryContext from '../../../context/countries/CountryContext';
 import AlertContext from '../../../context/alerts/AlertContext';
 import bin from '../../../imgs/bin.png'
+import edit from '../../../imgs/edit.png'
 
 function TripBottom(props) {
   const [view, setView] = useState('categories');
@@ -66,6 +67,9 @@ function TripBottom(props) {
     alertContext.addAlert({text:'Are you sure you want to delete?', needsConfirmation: true});
   }
   
+  const editCountry = () => {
+
+  }
 
   return (
     <div>
@@ -74,8 +78,13 @@ function TripBottom(props) {
           <h3 className={`${underLineCategory} white-text view-link`} onClick={() => setView('categories')} >Category</h3>
           <h3 className={`${underLineDate} white-text view-link`} onClick={() => setView('date')} >Date</h3>
         </div>
-        <div className="icon-container" onClick={deleteCountry}>
-          <img src={bin} alt="delete"/>
+        <div className="icon-container" >
+          <div onClick={deleteCountry}>
+            <img src={bin} alt="delete"/>
+          </div>
+          <div onClick={editCountry}>
+            <img src={edit} alt=""/>
+          </div>
         </div>
       </div>
       <div>

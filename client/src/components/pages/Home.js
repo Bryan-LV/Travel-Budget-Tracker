@@ -1,24 +1,24 @@
-import React, {useEffect, useState, useContext} from 'react'
+import React, { useEffect, useContext } from 'react'
 import CountryContext from '../../context/countries/CountryContext';
 import AuthContext from '../../context/auth/AuthContext';
 import PlusBtn from '../UI/PlusBtn';
 import TripBox from '../helpers/TripBox';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 function Home(props) {
   const context = useContext(CountryContext);
-  const {loadUser, isAuth, error} = useContext(AuthContext);
-  const {countries} = context.countries;
+  const { loadUser, isAuth, error } = useContext(AuthContext);
+  const { countries } = context.countries;
 
-  useEffect( () => {
-    if(isAuth){
+  useEffect(() => {
+    if (isAuth) {
       loadUser();
       context.fetchCountries();
-    } else{
+    } else {
       props.history.push('/');
     }
-  }, [countries, error])
-  
+  }, [countries, error, isAuth])
+
   return (
     <div className="">
       <div className="bg-light-blue border-radius-top bottom-layer">
@@ -34,8 +34,8 @@ function Home(props) {
       <div className="txt-center">
         <div className="inline-block plus-button-container">
           <Link to="/addtrip">
-            <PlusBtn/>
-          </Link> 
+            <PlusBtn />
+          </Link>
         </div>
       </div>
     </div>

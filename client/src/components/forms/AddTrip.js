@@ -7,8 +7,9 @@ import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import currencies from '../../helpers/currencies';
 import SelectTripImg from './SelectTripImg';
+import { withRouter } from 'react-router-dom';
 
-export default function AddTrip(props) {
+function AddTrip(props) {
   const context = useContext(CountryContext);
   const alertContext = useContext(AlertContext);
   const [trip, setTrip] = useState({ name:'', baseCurrency:'', budget:'', img: null});
@@ -69,6 +70,7 @@ export default function AddTrip(props) {
       setTrip({ name:'', baseCurrency:'', budget:'', img: null});
       setStartDate(new Date());
       setEndDate(new Date());
+      props.history.push('/')
     }
   }
 
@@ -110,3 +112,6 @@ export default function AddTrip(props) {
     </div>
   )
 }
+
+
+export default withRouter(AddTrip);

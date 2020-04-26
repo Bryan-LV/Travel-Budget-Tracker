@@ -21,8 +21,6 @@ function App(props) {
     setSideBar(!sideBar);
   }
 
-
-
   return (
     <AuthState>
       <AlertState>
