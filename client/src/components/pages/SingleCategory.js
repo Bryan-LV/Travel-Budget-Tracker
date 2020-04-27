@@ -1,51 +1,51 @@
-import React, { useContext, useEffect} from 'react'
+import React, { useContext, useEffect } from 'react'
 import CountryContext from '../../context/countries/CountryContext'
+import AlertContext from '../../context/alerts/AlertContext';
 import Expense from '../helpers/Expense';
 import PlusBtn from '../UI/PlusBtn'
 import bin from '../../imgs/bin.png'
-import AlertContext from '../../context/alerts/AlertContext';
 
 export default function SingleCategory(props) {
-  const context = useContext(CountryContext);
-  const alertContext = useContext(AlertContext);
-  const [category] =  context.selectedCategory;
-  const getCountry = context.countries.filter(country => country._id === context.selectedCountry[0]._id);
-  const getCategory =  getCountry[0].categories.filter(category => category._id === context.selectedCategory[0]._id);
+  const { deleteCategory, deleteExpense, selectedCategory, selectedCountry } = useContext(CountryContext);
+  const { confirm, addAlert } = useContext(AlertContext);
+  const [category] = selectedCategory;
+  const [country] = selectedCountry;
 
   useEffect(() => {
-    if(alertContext.confirm){
-      context.deleteCategory(getCountry[0]._id, category._id);
+    console.log('single cat');
+    if (confirm) {
+      deleteCategory(country._id, category._id);
       props.handleViewChange('categories')
     }
-  },[alertContext.confirm])
+  }, [confirm])
 
 
-  const deleteExpense = (expenseID) => {
-      context.deleteExpense(getCountry[0]._id, category._id, expenseID);
+  const DeleteExpense = (expenseID) => {
+    deleteExpense(country._id, category._id, expenseID);
   }
 
-  const deleteCategory = () => {
-    alertContext.addAlert({text:'Are you sure you want to delete?', needsConfirmation: true});
+  const DeleteCategory = () => {
+    addAlert({ text: 'Are you sure you want to delete?', needsConfirmation: true });
     // after alert confirm useeffect will run delete func
   }
-  
+
   const loadExpenses = () => {
-    const expenses =  getCategory[0].expenses.map(expense => (
-      <Expense 
-      key={expense._id} 
-      expense={expense} 
-      deleteExpense={deleteExpense} 
-      handleViewChange={props.handleViewChange}/>)
+    const expenses = category.expenses.map(expense => (
+      <Expense
+        key={expense._id}
+        expense={expense}
+        deleteExpense={DeleteExpense}
+        handleViewChange={props.handleViewChange} />)
     )
     return expenses;
   }
-  
+
   return (
     <div>
       <div className="flex space-between margin-sides">
         <h3 className="underLine white-text">{category.category}</h3>
-        <div className="icon-container" onClick={deleteCategory}>
-          <img src={bin} alt="delete"/>
+        <div className="icon-container" onClick={DeleteCategory}>
+          <img src={bin} alt="delete" />
         </div>
       </div>
       <div className="expense-container">
@@ -54,7 +54,7 @@ export default function SingleCategory(props) {
 
       <div className="txt-center bg-light-blue pt3">
         <div className="inline-block plus-button-container" onClick={() => props.handleViewChange('addexpense')}>
-            <PlusBtn/>
+          <PlusBtn />
         </div>
       </div>
     </div>

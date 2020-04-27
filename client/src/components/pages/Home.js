@@ -6,18 +6,18 @@ import TripBox from '../helpers/TripBox';
 import { Link } from 'react-router-dom'
 
 function Home(props) {
-  const context = useContext(CountryContext);
+  const { fetchCountries, countries } = useContext(CountryContext);
   const { loadUser, isAuth, error } = useContext(AuthContext);
-  const { countries } = context.countries;
 
   useEffect(() => {
+    console.log('home');
     if (isAuth) {
       loadUser();
-      context.fetchCountries();
+      fetchCountries();
     } else {
       props.history.push('/');
     }
-  }, [countries, error, isAuth])
+  }, [error, isAuth])
 
   return (
     <div className="">
@@ -27,7 +27,7 @@ function Home(props) {
 
       <div className="bg-medium-blue border-radius-top pt4 pb4 top-layer">
         <div className="container trip-box-wrapper">
-          {context.countries.map(country => <TripBox country={country} key={country._id} id={country._id} />)}
+          {countries.map(country => <TripBox country={country} key={country._id} id={country._id} />)}
         </div>
       </div>
 

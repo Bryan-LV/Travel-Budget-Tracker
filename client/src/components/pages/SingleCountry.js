@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react'
+import React, { useEffect, useContext } from 'react'
 import CountryContext from '../../context/countries/CountryContext'
 import Topbar from '../layout/Topbar';
 import TripHeader from '../layout/Trip/TripHeader';
@@ -7,25 +7,14 @@ import getForeignCurrency from '../../helpers/getForeignCurrency';
 import months from '../../helpers/months'
 
 export default function SingleCountry(props) {
-  const context = useContext(CountryContext);
+  const [country] = useContext(CountryContext).selectedCountry;
 
-  const [selectedCountry] = context.selectedCountry;
-  const filterCountry = context.countries.filter(Country => Country._id === selectedCountry._id);
-  const [country] = filterCountry;
-
-  // check if a country has been selected, if not push back to home page
-  const checkCountryIsSelected = () => {
-   if(!country){
-     props.history.push('/');
-   }
-  }
-  
   useEffect(() => {
-    checkCountryIsSelected()
-    if(selectedCountry.categories.length !== country.categories.length){
-      context.getSelectedCountry(selectedCountry._id);
+    console.log('single country');
+    if (!country) {
+      props.history.push('/');
     }
-  }, [selectedCountry, country.categories]);
+  }, [country])
 
   const findTotalSpent = () => {
     const allExpenses = [];
@@ -38,27 +27,27 @@ export default function SingleCountry(props) {
     let isEmpty = arr => Array.isArray(arr) && arr.every(isEmpty);
 
     // if expenses is 0 then return '0'
-    if(getExpenses.length === 0 || isEmpty(getExpenses)){
+    if (getExpenses.length === 0 || isEmpty(getExpenses)) {
       return 0
-    } 
+    }
     // if expenses is only 1 
-    if(getExpenses.length === 1){
+    if (getExpenses.length === 1) {
       return getExpenses[0];
     }
     // if expenses is more than 1
-    if(getExpenses.length > 1){
+    if (getExpenses.length > 1) {
       getExpenses.forEach(expenses => {
         allExpenses.push(...expenses)
       });
 
-      const total  = allExpenses.reduce((prev,next) => prev + next);
+      const total = allExpenses.reduce((prev, next) => prev + next);
       return total.toFixed(2);
     }
-}
+  }
 
   const getPercentage = () => {
     let totalSpent = findTotalSpent();
-    if(totalSpent === 0){
+    if (totalSpent === 0) {
       return 0
     } else {
       const percentage = (totalSpent / country.budget) * 100;
@@ -69,26 +58,26 @@ export default function SingleCountry(props) {
   const formatStartDate = new Date(country.startDate);
   const startDay = formatStartDate.getDate();
   const getStartMonth = formatStartDate.getMonth();
-  const startMonth =  months[getStartMonth];
+  const startMonth = months[getStartMonth];
   const startYear = formatStartDate.getFullYear()
 
   let endDay, getEndMonth, endMonth, endYear;
-  if(country.endDate){
+  if (country.endDate) {
     const formatEndDate = new Date(country.endDate);
     endDay = formatEndDate.getDate();
     getEndMonth = formatEndDate.getMonth();
-    endMonth =  months[getEndMonth];
+    endMonth = months[getEndMonth];
     endYear = formatEndDate.getFullYear();
   }
-  
+
   return (
     <div id={country._id}>
-      <Topbar title={country.name} currency={getForeignCurrency(selectedCountry.name)}/>
+      <Topbar title={country.name} currency={getForeignCurrency(country.name)} />
       <TripHeader budget={country.budget} percentage={getPercentage()} total={findTotalSpent()} />
       <h4 className="trip-dates white-text secondary-font">{startMonth} {startDay} - {endMonth} {endDay}</h4>
-      
+
       <div className="categories bg-light-blue">
-        <TripBottom country={country}/>
+        <TripBottom country={country} />
       </div>
     </div>
   )

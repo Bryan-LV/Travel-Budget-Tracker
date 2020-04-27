@@ -1,0 +1,8 @@
+export { default as Home } from './pages/Home'
+export { default as SingleCountry } from './pages/SingleCountry'
+export { default as SingleCategory } from './pages/SingleCategory'
+export { default as Landing } from './pages/Landing'
+export { default as UserPage } from './pages/UserPage'
+export { default as Navbar } from './layout/Navbar'
+export { default as Alert } from './layout/Alert'
+export { default as UserSidebar } from './layout/UserSidebar'
