@@ -69,7 +69,6 @@ export default function CountryState(props) {
       await axios.post('/api/categories', { categoryName, countryID }, getConfig())
       await fetchCountries();
       dispatch({ type: 'ADD_CATEGORY', payload: countryID })
-      console.log('add cat');
     } catch (error) {
       alertContext.addAlert({ text: 'Having a problem adding your category 😅', needsConfirmation: false, duration: 2000 });
     }

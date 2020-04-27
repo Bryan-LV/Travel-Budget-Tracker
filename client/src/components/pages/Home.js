@@ -10,7 +10,6 @@ function Home(props) {
   const { loadUser, isAuth, error } = useContext(AuthContext);
 
   useEffect(() => {
-    console.log('home');
     if (isAuth) {
       loadUser();
       fetchCountries();

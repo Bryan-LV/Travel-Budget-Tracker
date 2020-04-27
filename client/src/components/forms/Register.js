@@ -40,7 +40,6 @@ function Register(props) {
       return;
     }
     if(user.password.length < 6){
-      console.log(user.password.length);
       alertContext.addAlert({text:'Password must be 6 characters or longer', needsConfirmation: false});
       return;
     } 

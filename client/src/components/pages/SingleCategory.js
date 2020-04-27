@@ -12,7 +12,6 @@ export default function SingleCategory(props) {
   const [country] = selectedCountry;
 
   useEffect(() => {
-    console.log('single cat');
     if (confirm) {
       deleteCategory(country._id, category._id);
       props.handleViewChange('categories')

@@ -10,7 +10,6 @@ export default function SingleCountry(props) {
   const [country] = useContext(CountryContext).selectedCountry;
 
   useEffect(() => {
-    console.log('single country');
     if (!country) {
       props.history.push('/');
     }

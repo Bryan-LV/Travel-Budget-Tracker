@@ -12,7 +12,6 @@ export default function Alert(props) {
   }
 
   useEffect(() => {
-    console.log('alert');
     if (isShowing && alert.needsConfirmation === false) {
       setTimeout(() => {
         removeAlert()
