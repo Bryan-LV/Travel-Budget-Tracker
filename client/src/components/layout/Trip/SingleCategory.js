@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react'
-import CountryContext from '../../context/countries/CountryContext'
-import AlertContext from '../../context/alerts/AlertContext';
-import Expense from '../helpers/Expense';
-import PlusBtn from '../UI/PlusBtn'
-import bin from '../../imgs/bin.png'
+import CountryContext from '../../../context/countries/CountryContext'
+import AlertContext from '../../../context/alerts/AlertContext';
+import Expense from '../../helpers/Expense';
+import PlusBtn from '../../UI/PlusBtn'
+import bin from '../../../imgs/bin.png'
 
 export default function SingleCategory(props) {
   const { deleteCategory, deleteExpense, selectedCategory, selectedCountry } = useContext(CountryContext);
@@ -24,7 +24,7 @@ export default function SingleCategory(props) {
   }
 
   const DeleteCategory = () => {
-    addAlert({ text: 'Are you sure you want to delete?', needsConfirmation: true });
+    addAlert({ text: 'Are you sure you want to delete category?', needsConfirmation: true });
     // after alert confirm useeffect will run delete func
   }
 

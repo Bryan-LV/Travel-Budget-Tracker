@@ -1,0 +1,1 @@
+export { default as cityOcean } from './tripImgs/city-ocean.jpg'

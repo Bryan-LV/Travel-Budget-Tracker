@@ -1,14 +1,12 @@
-import React, { useState, useContext, useEffect} from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { withRouter } from 'react-router-dom';
-import TripCategories from './TripCategories';
-import TripExpensesByDate from './TripExpensesByDate';
-import SingleCategory from '../../pages/SingleCategory'
-import AddExpense from '../../forms/AddExpense';
-import EditExpense from '../../forms/EditExpense';
-import AddCategory from '../../forms/AddCategory';
-import SingleExpense from './SingleExpense';
 import CountryContext from '../../../context/countries/CountryContext';
 import AlertContext from '../../../context/alerts/AlertContext';
+import TripCategories from './TripCategories';
+import TripExpensesByDate from './TripExpensesByDate';
+import SingleCategory from './SingleCategory'
+import SingleExpense from './SingleExpense';
+import { AddExpense, EditExpense, AddCategory } from '../../forms/'
 import bin from '../../../imgs/bin.png'
 import edit from '../../../imgs/edit.png'
 
@@ -19,54 +17,54 @@ function TripBottom(props) {
   const alertContext = useContext(AlertContext);
 
   const handleViewChange = (newView, payload) => {
-    if(payload === ''){
+    if (payload === '') {
       setExpense(null);
     }
-    if(payload){
+    if (payload) {
       setExpense(payload);
     }
     setView(newView)
   }
-  
+
   const View = () => {
-    if(view === 'categories'){
-      return <TripCategories handleViewChange={handleViewChange} country={props.country}/>
+    if (view === 'categories') {
+      return <TripCategories handleViewChange={handleViewChange} country={props.country} />
     }
-    if(view === 'date'){
-      return <TripExpensesByDate handleViewChange={handleViewChange} country={props.country}/>
+    if (view === 'date') {
+      return <TripExpensesByDate handleViewChange={handleViewChange} country={props.country} />
     }
-    if(view === 'singlecategory'){
+    if (view === 'singlecategory') {
       return <SingleCategory handleViewChange={handleViewChange} />
     }
-    if(view  === 'singleexpense'){
-      return <SingleExpense expense={expense} handleViewChange={handleViewChange}/>
+    if (view === 'singleexpense') {
+      return <SingleExpense expense={expense} handleViewChange={handleViewChange} />
     }
-    if(view === 'addcategory'){
-      return <AddCategory/>
+    if (view === 'addcategory') {
+      return <AddCategory />
     }
-    if(view === 'addexpense'){
-      return <AddExpense handleViewChange={handleViewChange}/>
+    if (view === 'addexpense') {
+      return <AddExpense handleViewChange={handleViewChange} />
     }
-    if(view === 'editexpense'){
-      return <EditExpense expense={expense} handleViewChange={handleViewChange}/>
+    if (view === 'editexpense') {
+      return <EditExpense expense={expense} handleViewChange={handleViewChange} />
     }
   }
-  
-  const underLineCategory = view === 'categories' ? 'underLine': '';
-  const underLineDate = view === 'date' ? 'underLine': '';
 
-  
-  useEffect(() => {
-    if(alertContext.confirm){
-      context.deleteCountry(props.country._id);
-      props.history.push('/home');
-    }
-  }, [alertContext.confirm])
+  const underLineCategory = view === 'categories' ? 'underLine' : '';
+  const underLineDate = view === 'date' ? 'underLine' : '';
+
+
+  // useEffect(() => {
+  //   if (alertContext.confirm) {
+  //     context.deleteCountry(props.country._id);
+  //     props.history.push('/home');
+  //   }
+  // }, [alertContext.confirm])
 
   const deleteCountry = () => {
-    alertContext.addAlert({text:'Are you sure you want to delete?', needsConfirmation: true});
+    alertContext.addAlert({ text: 'Are you sure you want to delete?', needsConfirmation: true });
   }
-  
+
   const editCountry = () => {
 
   }
@@ -80,10 +78,10 @@ function TripBottom(props) {
         </div>
         <div className="icon-container" >
           <div onClick={deleteCountry}>
-            <img src={bin} alt="delete"/>
+            <img src={bin} alt="delete" />
           </div>
           <div onClick={editCountry}>
-            <img src={edit} alt=""/>
+            <img src={edit} alt="" />
           </div>
         </div>
       </div>

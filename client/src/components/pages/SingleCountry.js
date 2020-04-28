@@ -76,6 +76,7 @@ export default function SingleCountry(props) {
       <h4 className="trip-dates white-text secondary-font">{startMonth} {startDay} - {endMonth} {endDay}</h4>
 
       <div className="categories bg-light-blue">
+        {/* Nested Routes */}
         <TripBottom country={country} />
       </div>
     </div>
