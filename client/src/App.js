@@ -9,8 +9,6 @@ import './App.css';
 function App(props) {
   const [showSideBar, toggleSideBar] = useSideBar();
 
-  // keep as much of the state management in here.
-
   return (
     <div className="App">
       {props.location.pathname === "/home" && <Navbar handleSideBar={toggleSideBar} />}

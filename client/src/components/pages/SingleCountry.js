@@ -39,7 +39,7 @@ export default function SingleCountry(props) {
         allExpenses.push(...expenses)
       });
 
-      const total = allExpenses.reduce((prev, next) => prev + next);
+      const total = allExpenses.reduce((prev, next) => prev + next, 0);
       return total.toFixed(2);
     }
   }

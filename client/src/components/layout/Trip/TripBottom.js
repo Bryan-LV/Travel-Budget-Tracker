@@ -2,10 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import { withRouter } from 'react-router-dom';
 import CountryContext from '../../../context/countries/CountryContext';
 import AlertContext from '../../../context/alerts/AlertContext';
-import TripCategories from './TripCategories';
-import TripExpensesByDate from './TripExpensesByDate';
-import SingleCategory from './SingleCategory'
-import SingleExpense from './SingleExpense';
+import { TripCategories, TripExpensesByDate, SingleCategory, SingleExpense } from './';
 import { AddExpense, EditExpense, AddCategory } from '../../forms/'
 import bin from '../../../imgs/bin.png'
 import edit from '../../../imgs/edit.png'
